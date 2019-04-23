@@ -134,8 +134,8 @@ select name
 from Reader
 where ID NOT IN 
 (
-	select distinct ID
-    from Reader
+	select distinct Reader_Id
+    from Borrow
 );
 ------------------------------------------------------------------------------------------------
 /*=== (4) 检索 Ullman 所写的书的书名和单价 ===*/
@@ -188,7 +188,7 @@ where name Like '%Oracle%';
 /*===     并使用该视图查询最近一年所有读者的读者号以及所借阅的不同图书数 ===*/
 Drop View BorrowInfo;
 Create View BorrowInfo (Reader_Id, Reader_Name, Book_Id, Book_Name, Borrow_Date)
-AS	Select Borrow.Reader_Id, Reader.Name, Borrow.Book_Id, Book.Id, Borrow.Borrow_Date
+AS	Select Borrow.Reader_Id, Reader.Name, Borrow.Book_Id, Book.Name, Borrow.Borrow_Date
 	From Book, Reader, Borrow
     Where
     	Reader.Id = Borrow.Reader_Id and
@@ -203,24 +203,25 @@ where
 ;
 /*====================================================================================*/
 /*=== 对 Book 表的 ID的修改 ===*/
+-- set serveroutput on;
 Create or Replace Procedure Change_Book_ID(
     oldBookId IN char,
     newBookId IN char
 )
 AS
-    tmp_book_ID varchar(8);
+    tempCount   number;
     oldNameNotFound Exception;
     newNameOccupied Exception;
 BEGIN
     ---------------------------------------------------------------------------------
-    Select ID into tmp_book_ID From Book Where ID = newBookId;
-    if SQL%FOUND Then
+    SELECT COUNT(*) INTO tempCount FROM DUAL WHERE EXISTS(SELECT NULL FROM Book WHERE ID = newBookId);
+    IF (tempCount = 1) Then
         raise newNameOccupied;
-   	else
-        Select ID into tmp_book_ID From Book Where ID = oldBookId;
-      	if SQL%NOTFOUND Then
-     		raise oldNameNotFound;
-       	else 
+   	ELSE
+        SELECT COUNT(*) INTO tempCount FROM DUAL WHERE EXISTS(SELECT NULL FROM Book WHERE ID = oldBookId);
+        IF (tempCount = 0) THEN
+            raise oldNameNotFound;
+        ELSE
             execute immediate 'Alter Table Borrow Drop Constraint FK_book_ID';
             ------------------------------------      
     		Update Book
@@ -232,8 +233,8 @@ BEGIN
             Where book_Id = oldBookId;
             ------------------------------------
             execute immediate 'Alter Table Borrow Add Constraint FK_book_ID Foreign Key(book_ID) References Book(ID)';
-        End if;
-   	End if;
+        End IF;
+   	End IF;
     ---------------------------------------------------------------------------------
     EXCEPTION
         When oldNameNotFound Then
@@ -241,7 +242,7 @@ BEGIN
        	When newNameOccupied Then
             raise_application_error(-20002,'命名冲突');
        	When Others Then
-            DBMS_OUTPUT.PUT_LINE('错误号：'||SQLCODE||'错误描述：'||SQLERRM);
+            DBMS_OUTPUT.PUT_LINE('错误号：'||SQLCODE||'   错误描述：'||SQLERRM);
     ---------------------------------------------------------------------------------
 END Change_Book_ID;
 /
