@@ -3,6 +3,7 @@
 import index from '@/views/index.vue'
 import register from '@/views/register.vue'
 import login from '@/views/login'
+import bank from '@/views/bank'
 
 const routers = [
   {
@@ -14,6 +15,16 @@ const routers = [
     path: '/',
     name: 'Login',
     component: login
+  },
+  {
+    path: '/index',
+    name: 'Index',
+    component: index
+  },
+  {
+    path: '/bank',
+    name: 'Bank',
+    component: bank
   }
 ]
 

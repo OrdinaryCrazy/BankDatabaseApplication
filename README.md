@@ -23,12 +23,17 @@ This is a personal USTC 011147 Course work repository aims at designing and impl
     > cnpm install vue  
     > cnpm install --global vue-cli
 
-4. 进入lab3-BankManage\bankManage目录，在命令行中输入下面的命令：
-    > cnpm install  
+4. 下载相关库：
     > cnpm install --save vue-resource  
+    > cnpm install element-ui   
+    > cnpm install xe-utils vue-element-extends  
+    > cnpm install --save xe-ajax  
+    > cnpm install --save xe-utils
+5. 进入lab3-BankManage\bankManage目录，在命令行中输入下面的命令：
+    > cnpm install   
     > cnpm run dev
 
-5. 打开浏览器，在地址栏输入[http://localhost:8080/](http://localhost:8080/)可以对网页进行访问
+6. 打开浏览器，在地址栏输入[http://localhost:8080/](http://localhost:8080/)可以对网页进行访问
 
 
 ## 页面路由
@@ -37,3 +42,6 @@ This is a personal USTC 011147 Course work repository aims at designing and impl
     ```js
     this.$router.push({path:'/register'});
     ```        
+
+## 表格
+在网上找到了一个开源可编辑表格[vue-element-extends](https://github.com/xuliangzhan/vue-element-extends)，可以使用它来实现数据的增删改查功能。

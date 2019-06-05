@@ -8,9 +8,12 @@ import VueRouter from 'vue-router'
 import routers from './router/index.js'
 // import http from 'http'
 // Vue.prototype.$http = http
-import VueResource from 'vue-resource'
-Vue.use(VueResource)
+import Elements from 'element-ui'
+import VueElementExtends from 'vue-element-extends'
+import 'vue-element-extends/lib/index.css'
 
+Vue.use(VueElementExtends)
+Vue.use(Elements)
 Vue.use(VueRouter)
 
 const router = new VueRouter({

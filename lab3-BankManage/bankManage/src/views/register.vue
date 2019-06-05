@@ -2,9 +2,9 @@
     <form validate>
         <h1>注册界面</h1>       
             <label > 账户类型 &nbsp;&nbsp;&nbsp;</label>
-            <input type="radio" name="type" value="管理" required=true>管理账户&emsp;
-            <input type="radio" name="type" value="支行" required=true>支行账户&emsp;
-            <input type="radio" name="type" value="客户" required=true>客户账户&nbsp;
+            <input type="radio" name='type' v-model="type" value="管理" required=true>管理账户&emsp;
+            <input type="radio" name='type' v-model="type" value="支行" required=true>支行账户&emsp;
+            <input type="radio" name='type' v-model="type" value="客户" required=true>客户账户&nbsp;
         <br/><br/>
         <label for="username">用&nbsp;&nbsp;户&nbsp;&nbsp;名&emsp;</label>
         <input 
@@ -40,6 +40,9 @@
                     font-family: 'Fira Code', '汉仪南宫体简';
                     "
         ><br/><br/>
+        <label style='font-family:汉仪南宫体简;color:red;font-size:15px;' >注：用户名和密码必须由字母或数字组成，且密码长度不能小于6。</label>
+        <br>
+       
         <button class="button" v-on:click="submit"> <span>提交</span> </button>
         <div id=demo></div>
     </form>
@@ -50,13 +53,45 @@ export default {
     name: 'login',
     data: function () {
         return {
+            type: '',
             username: '',
-            password: ''
+            password: '',
+            password2: ''
         }
     },
     methods: {
-        submit: function () {           
-           //TODO
+        submit: function () {      
+            console.log(this.type);          
+            for (var i=0;i<this.username.length;i++){
+                var x=this.username.charAt(i);
+                if (!((x>='0'&&x<='9')||(x>='a'&&x<='z')||(x>='A'&&x<='Z'))){
+                    window.alert("用户名非法");
+                    return;
+                }
+            }
+            for (var i=0;i<this.password.length;i++){
+                var x=this.password.charAt(i);
+                if (!((x>='0'&&x<='9')||(x>='a'&&x<='z')||(x>='A'&&x<='Z'))){
+                    window.alert("密码非法");
+                    return;
+                }
+            }
+            if (this.password.length<6){
+                window.alert("密码过短");
+                return;
+            }
+            if (this.password!==this.password2){
+                window.alert("两次输入的密码不相同");
+            }   
+            else {
+                this.$http.post('http://' + document.domain + ':5000/register', {
+                    type: this.type,
+                    username: this.username,
+                    password: this.password
+                }).then(function (response) {
+                    //TODO
+                })
+            }                
         }
     }
 }
