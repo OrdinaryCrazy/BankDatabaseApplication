@@ -1,17 +1,20 @@
-import Vue from 'vue'
-import Router from 'vue-router' /* 引入了路由插件vue-router */
-import HelloWorld from '@/components/HelloWorld'
+//  import Vue from "vue";
+//  import Router from "vue-router"; /* 引入了路由插件vue-router */
+import index from '@/views/index.vue'
+import register from '@/views/register.vue'
+import login from '@/views/login'
 
-// import login from '@/views/login'
+const routers = [
+  {
+    path: '/register',
+    name: 'Register',
+    component: register
+  },
+  {
+    path: '/',
+    name: 'Login',
+    component: login
+  }
+]
 
-Vue.use(Router) /* 显式声明要用路由 Vue.use(Router) */
-
-export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    }
-  ]
-})
+export default routers

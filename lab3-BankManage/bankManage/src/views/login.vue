@@ -20,7 +20,7 @@
         ><br/><br/>
         <label for="password">密码</label>
         <input 
-            type="text" 
+            type="password" 
             placeholder="Please enter your password" 
             id="password"
             v-model="password"
@@ -30,7 +30,7 @@
                     "
         ><br/><br/>
         <button class="button" v-on:click="login"> <span>登录</span> </button>
-        <button class="button" v-on:click="login"> <span>注册</span> </button>
+        <button class="button" v-on:click="register"> <span>注册</span> </button>
         <div id=demo></div>
     </form>
 </template>
@@ -66,6 +66,10 @@ export default {
                     // document.getElementById('demo').innerHTML = "登录成功"
                 }
             })
+        },
+        register: function(){
+            this.$router.push({path:'/register'});
+            //window.alert("注册")
         }
     }
 }
