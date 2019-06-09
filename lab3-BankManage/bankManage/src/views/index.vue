@@ -2,7 +2,7 @@
     <div>
         <h1>欢迎使用银行管理系统</h1>
         <button class="button" v-on:click="goBank"> <span>支行管理</span> </button>
-        <button class="button" v-on:click="go"> <span>员工管理</span> </button>
+        <button class="button" v-on:click="goStaff"> <span>员工管理</span> </button>
         <button class="button" v-on:click="go"> <span>客户管理</span> </button>
         <button class="button" v-on:click="go"> <span>账户管理</span> </button>
         <button class="button" v-on:click="go"> <span>贷款管理</span> </button>
@@ -19,6 +19,9 @@ export default {
         },
         goBank: function() {
           this.$router.push('/bank');
+        },
+        goStaff: function(){
+          this.$router.push('/staff');
         }
     }
 }

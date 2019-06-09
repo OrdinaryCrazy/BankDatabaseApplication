@@ -50,20 +50,25 @@ export default {
             this.$http.post('http://' + document.domain + ':5000/login', {
                 username: this.username,
                 password: this.password
+            },{
+                emulateJSON:true  
             }).then(function (response) {
                 console.log(response.data);
                 if(parseInt(response.data.code) === 400){
                 // 登录失败
                 this.username = '';
                 this.password = '';
-                window.alert("登录失败，请检查用户名和密码是否错误")
+                window.alert("登录失败，请检查用户名和密码是否错误");
                 } else if (parseInt(response.data.code) === 200){
                     // 存token
                     sessionStorage.setItem('token', response.data.token);
                     // 登录成功,跳转到index
-                    // this.$router.push('index')
-                    window.alert("登录成功")
+                    this.$router.push('index');
+                    window.alert("登录成功");
                     // document.getElementById('demo').innerHTML = "登录成功"
+                }
+                else {
+                    window.alert("未知错误");
                 }
             })
         },

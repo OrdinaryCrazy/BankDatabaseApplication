@@ -1,48 +1,76 @@
 <template>
   <div v-loading="loading">
-    <h1>支行管理</h1>
+    <h1>员工管理</h1>
     <p style="color: red;font-size: 24px;" align="left">条件筛选</p>
     <div align="left">
-    支行名称
+    身份证号
     <input 
       type="text" 
       placeholder="包含关键字" 
-      id="bankSearch"
-      v-model="bankSearch"
+      id="idSearch"
+      v-model="idSearch"
       required=false
       style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;所在城市
+    >&emsp;姓名
     <input 
       type="text" 
       placeholder="包含关键字" 
-      id="citySearch"
-      v-model="citySearch"
+      id="nameSearch"
+      v-model="nameSearch"
       required=false
       style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;资产总额
+    >&emsp;所在部门
     <input 
-      type="number" 
-      min=0
+      type="text" 
+      placeholder="包含关键字" 
+      id="deptSearch"
+      v-model="deptSearch"
+      required=false
+      style=" width:300px;
+              font-family: 'Fira Code', '汉仪南宫体简';
+            "
+    >&emsp;电话号码
+    <input 
+      type="text" 
+      placeholder="包含关键字" 
+      id="telSearch"
+      v-model="telSearch"
+      required=false
+      style=" width:300px;
+              font-family: 'Fira Code', '汉仪南宫体简';
+            "
+    >&emsp;<br>家庭住址
+    <input 
+      type="text" 
+      placeholder="包含关键字" 
+      id="addrSearch"
+      v-model="addrSearch"
+      required=false
+      style=" width:300px;
+              font-family: 'Fira Code', '汉仪南宫体简';
+            "
+    >&emsp;入职日期
+    <input 
+      type="date" 
       placeholder="下界" 
       id="lowerBound"
       v-model="lowerBound"
       required=false
-      style=" width:100px;
+      style=" width:200px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
     >~~
     <input 
-      type="number" 
-      min=0
+      type="date" 
       placeholder="上界" 
       id="upperBound"
       v-model="upperBound"
       required=false
-      style=" width:100px;
+      style=" width:200px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
     >&emsp;
@@ -66,17 +94,29 @@
         type="index"
         width="55"></elx-editable-column>
       <elx-editable-column
+        prop="ID"
+        label="身份证号"
+        :edit-render="{name: 'ElInput'}"></elx-editable-column>
+      <elx-editable-column
         prop="name"
-        label="支行名称"
+        label="姓名"
         :edit-render="{name: 'ElInput'}"></elx-editable-column>
       <elx-editable-column
-        prop="city"
-        label="所在城市"
+        prop="dept"
+        label="所在部门"
         :edit-render="{name: 'ElInput'}"></elx-editable-column>
       <elx-editable-column
-        prop="money"
-        label="资产总额"
-        :edit-render="{name: 'ElInputNumber'}"></elx-editable-column>
+        prop="tel"
+        label="电话号码"
+        :edit-render="{name: 'ElInput'}"></elx-editable-column>
+      <elx-editable-column
+        prop="addr"
+        label="家庭住址"
+        :edit-render="{name: 'ElInput'}"></elx-editable-column>
+      <elx-editable-column
+        prop="date"
+        label="入职日期"
+        :edit-render="{name: 'ElDatePicker', props: {type: 'date', format: 'yyyy-MM-dd'}}"></elx-editable-column>
       <elx-editable-column label="操作" width="160">
         <template v-slot="scope">
           <template v-if="$refs.elxEditable.hasActiveRow(scope.row)">
@@ -104,8 +144,11 @@ export default {
       loading: false,
       list: [],
       isClearActiveFlag: true,
-      bankSearch: "",
-      citySearch: "",
+      nameSearch: "",
+      idSearch: "",
+      deptSearch: "",
+      telSearch:"",
+      addrSearch:"",
       lowerBound: "",
       upperBound: "",
       primary: null //全局变量，保存记录修改前的主键。当没有活跃的记录时为null，当新增记录时也为null
@@ -118,6 +161,14 @@ export default {
     findList () {
       this.loading = true;
       this.list=[
+        {
+          ID: "33122220001010001X",
+          name: "张三",
+          dept: "人事处",
+          tel: "13822100086",
+          addr: "合肥浣纱路256号",
+          date: new Date("2018-2-2")
+        }
       ];
       this.loading = false
 

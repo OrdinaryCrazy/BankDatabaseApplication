@@ -61,7 +61,7 @@ export default {
     },
     methods: {
         submit: function () {      
-            console.log(this.type);          
+            //console.log(this.type);          
             for (var i=0;i<this.username.length;i++){
                 var x=this.username.charAt(i);
                 if (!((x>='0'&&x<='9')||(x>='a'&&x<='z')||(x>='A'&&x<='Z'))){
@@ -88,9 +88,24 @@ export default {
                     type: this.type,
                     username: this.username,
                     password: this.password
+                },{  
+                    emulateJSON:true  
                 }).then(function (response) {
-                    //TODO
-                })
+                    //console.log(response.status);
+                    if (parseInt(response.body.code) === 200){
+                        window.alert("注册成功");
+                        console.log("OK");
+                        //this.$router.push({path:'/index'});
+                        //return;                       
+                    }
+                    else if (parseInt(response.body.code) === 400) {
+                        window.alert("用户名已存在");
+                    }
+                    else {
+                        window.alert("注册失败");
+                    }                   
+                }                
+                )
             }                
         }
     }

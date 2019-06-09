@@ -11,10 +11,12 @@ import routers from './router/index.js'
 import Elements from 'element-ui'
 import VueElementExtends from 'vue-element-extends'
 import 'vue-element-extends/lib/index.css'
+import VueResource from 'vue-resource'
 
 Vue.use(VueElementExtends)
 Vue.use(Elements)
 Vue.use(VueRouter)
+Vue.use(VueResource)
 
 const router = new VueRouter({
   mode: 'history',

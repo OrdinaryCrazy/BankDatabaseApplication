@@ -28,7 +28,9 @@ This is a personal USTC 011147 Course work repository aims at designing and impl
     > cnpm install element-ui   
     > cnpm install xe-utils vue-element-extends  
     > cnpm install --save xe-ajax  
-    > cnpm install --save xe-utils
+    > cnpm install --save xe-utils  
+    > pip install Flask  
+    > pip install flask-cors --upgrade
 5. 进入lab3-BankManage\bankManage目录，在命令行中输入下面的命令：
     > cnpm install   
     > cnpm run dev
@@ -45,3 +47,5 @@ This is a personal USTC 011147 Course work repository aims at designing and impl
 
 ## 表格
 在网上找到了一个开源可编辑表格[vue-element-extends](https://github.com/xuliangzhan/vue-element-extends)，可以使用它来实现数据的增删改查功能。
+
+
