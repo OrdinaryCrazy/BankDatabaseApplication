@@ -60,8 +60,6 @@ def login():
     response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
     return response
 
-
-
 @app.route('/register',methods=['POST','OPTIONS'])
 def register():
     username=request.form['username']
@@ -213,6 +211,112 @@ def customer():
         response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
         response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
         return response
+
+@app.route('/account',methods=['POST'])
+def account():
+    rstype=request.form['type']
+    if (rstype=="Search"):
+        # Todo: 实现数据库操作，返回查询的结果
+        print('Search')
+        response = make_response(jsonify({    
+                                        'code':200,
+                                        'list':[
+                                            {'ID': "123000",'owner': "张三，李四，王五，马云，刘强东",'bank': "合肥支行",'money':2563.00,
+                                            'open_date': '2016-2-20','visit_date': '2018-5-6','type': '0','interest': 0.043,'cashtype': '1'},
+                                            {'ID': "123020",'owner': "刘强东",'bank': "合肥支行",'money':23563.00,
+                                            'open_date': '2016-2-20','visit_date': '2018-5-6','type': '1','overdraft': 25000000}
+                                        ]
+                                    })
+                                )
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+        return response
+    if (rstype=="Update"):
+        # Todo: 实现数据库操作，修改或新增记录
+        print('Update')
+        response = make_response(jsonify({    
+                                        'code':200,
+                                        'msg': 'ok'
+                                        })
+                                )
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+        return response
+    if (rstype=="Delete"):
+        # Todo: 实现数据库操作，删除记录
+        print('Delete')
+        response = make_response(jsonify({    
+                                        'code':200,
+                                        'msg': 'ok'
+                                        })
+                                )
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+        return response
+
+@app.route('/loan',methods=['POST'])
+def loan():
+    rstype=request.form['type']
+    if (rstype=="Search"):
+        # Todo: 实现数据库操作，返回查询的结果
+        print('Search')
+        response = make_response(jsonify({    
+                                        'code':200,
+                                        'list':[
+                                            {'ID': "123000",'customer': "张三",'bank': "合肥支行",'amount':2563.00,'status':'1'},
+                                            {'ID': "123001",'customer': "李四",'bank': "合肥支行",'amount':252263.00,'status':'0'},
+                                            {'ID': "123023",'customer': "王五",'bank': "合肥支行",'amount':25.00,'status':'2'}
+                                        ]
+                                    })
+                                )
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+        return response
+    if (rstype=="Update"):
+        # Todo: 实现数据库操作，修改或新增记录
+        print('Update')
+        response = make_response(jsonify({    
+                                        'code':200,
+                                        'msg': 'ok'
+                                        })
+                                )
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+        return response
+    if (rstype=="Delete"):
+        # Todo: 实现数据库操作，删除记录
+        print('Delete')
+        response = make_response(jsonify({    
+                                        'code':200,
+                                        'msg': 'ok'
+                                        })
+                                )
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+        return response
+
+@app.route('/summary',methods=['POST'])
+def summary():
+    # Todo: 根据前端返回的要求，实现数据库操作，返回统计数据。另外，可以生成统计图，路径为static/summary.png，以供前端调用
+    response = make_response(jsonify({    
+                                    'code':200,
+                                    'columnList':['合肥支行','南京支行','上海支行','杭州支行','宁波支行'],
+                                    'rawData':[
+                                        {'time':'2018','合肥支行':25,'南京支行':45,'上海支行':21,'杭州支行':41,'宁波支行':25},
+                                        {'time':'2019','合肥支行':52,'南京支行':5,'上海支行':121,'杭州支行':52,'宁波支行':20},                                       
+                                    ]
+                                    })
+                            )
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+    response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+    return response
 
 
 

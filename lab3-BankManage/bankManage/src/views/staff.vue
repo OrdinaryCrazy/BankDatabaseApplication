@@ -389,10 +389,13 @@ export default {
     },
     //清空查询栏
     reset(){
-      this.bankSearch="";
-      this.citySearch="";
-      this.lowerBound="";
-      this.upperBound="";
+        this.nameSearch="";
+        this.idSearch="";
+        this.deptSearch="";
+        this.telSearch="";
+        this.addrSearch="";
+        this.lowerBound="";
+        this.upperBound="";
     }
   }
 }

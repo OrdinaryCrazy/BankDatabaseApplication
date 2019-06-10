@@ -4,9 +4,9 @@
         <button class="buttonred" v-on:click="goBank"> <span>支行管理</span> </button>
         <button class="buttonred" v-on:click="goStaff"> <span>员工管理</span> </button>
         <button class="buttonred" v-on:click="goCustomer"> <span>客户管理</span> </button>
-        <button class="buttonred" v-on:click="go"> <span>账户管理</span> </button>
-        <button class="buttonred" v-on:click="go"> <span>贷款管理</span> </button>
-        <button class="buttonred" v-on:click="go"> <span>业务统计</span> </button>
+        <button class="buttonred" v-on:click="goAccount"> <span>账户管理</span> </button>
+        <button class="buttonred" v-on:click="goLoan"> <span>贷款管理</span> </button>
+        <button class="buttonred" v-on:click="goSummary"> <span>业务统计</span> </button>
         <br><br><br>
     </div>
 </template>
@@ -14,8 +14,8 @@
 <script>
 export default {
     methods: {
-        go: function () {      
-                  
+        goSummary: function () {      
+          this.$router.push('/summary');
         },
         goBank: function() {
           this.$router.push('/bank');
@@ -25,6 +25,12 @@ export default {
         },
         goCustomer: function(){
           this.$router.push('/customer');
+        },
+        goAccount: function(){
+          this.$router.push('/account');
+        },
+        goLoan: function(){
+          this.$router.push('/loan');
         }
     }
 }

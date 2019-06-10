@@ -1,9 +1,9 @@
 <template>
   <div v-loading="loading">
-    <h1>客户管理</h1>
+    <h1>贷款管理</h1>
     <p style="color: red;font-size: 24px;" align="left">条件筛选</p>
     <div align="left">
-    身份证号
+    贷款号
     <input 
       type="text" 
       placeholder="包含关键字" 
@@ -13,74 +13,64 @@
       style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;姓名
+    >&emsp;放款支行
     <input 
       type="text" 
       placeholder="包含关键字" 
-      id="nameSearch"
-      v-model="nameSearch"
+      id="bankSearch"
+      v-model="bankSearch"
       required=false
       style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;联系电话
+    >&emsp;贷款人
     <input 
       type="text" 
       placeholder="包含关键字" 
-      id="telSearch"
-      v-model="telSearch"
+      id="custSearch"
+      v-model="custSearch"
       required=false
       style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;家庭住址
+    >&emsp;状态
+    <select v-model="statusSearch" id="statusSearch" placeholder="any">
+      <option value ="any" selected>任意</option>
+      <option value ="none">未开始发放</option>
+      <option value ="part">发放中</option> 
+      <option value="all">已全部发放</option>
+    </select><br><br>金额
     <input 
-      type="text" 
-      placeholder="包含关键字" 
-      id="addrSearch"
-      v-model="addrSearch"
+      type="number" 
+      min=0
+      placeholder="下界" 
+      id="lowerBound"
+      v-model="lowerBound"
       required=false
-      style=" width:300px;
+      style=" width:100px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;<br>联系人姓名
+    >~~
     <input 
-      type="text" 
-      placeholder="包含关键字" 
-      id="linknameSearch"
-      v-model="linknameSearch"
+      type="number" 
+      min=0
+      placeholder="上界" 
+      id="upperBound"
+      v-model="upperBound"
       required=false
-      style=" width:300px;
-              font-family: 'Fira Code', '汉仪南宫体简';
-            "
-    >&emsp;联系人手机号
-    <input 
-      type="text" 
-      placeholder="包含关键字" 
-      id="linktelSearch"
-      v-model="linktelSearch"
-      required=false
-      style=" width:300px;
-              font-family: 'Fira Code', '汉仪南宫体简';
-            "
-    >&emsp;联系人Email
-    <input 
-      type="email" 
-      placeholder="包含关键字" 
-      id="emailSearch"
-      v-model="emailSearch"
-      required=false
-      style=" width:300px;
+      style=" width:100px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
     >&emsp;
+
+
     <el-button class="button" size="small" type="primary" @click="submit()">查询</el-button>
     <el-button class="button" size="small" type="primary" @click="reset()">重置</el-button>
 
     </div><br>
     <div align="left" >
-      <el-button class="button" type="success" size="small" @click="insertEvent()">新增</el-button>
       <el-button class="button" type="success" size="small" @click="exportCsvEvent()">导出</el-button>
+      <el-button class="button" type="success" size="small" @click="insertEvent()">发放贷款</el-button>     
     </div>
     <br><br>
     <elx-editable
@@ -95,46 +85,31 @@
         width="55"></elx-editable-column>
       <elx-editable-column
         prop="ID"
-        label="身份证号"
-        width="210"
+        label="贷款号"
         :edit-render="{name: 'ElInput'}"></elx-editable-column>
       <elx-editable-column
-        prop="name"
-        label="姓名"
+        prop="bank"
+        label="放款支行"
         :edit-render="{name: 'ElInput'}"></elx-editable-column>
       <elx-editable-column
-        prop="tel"
-        label="联系电话"
+        prop="customer"
+        label="贷款人"
         :edit-render="{name: 'ElInput'}"></elx-editable-column>
       <elx-editable-column
-        prop="addr"
-        label="家庭住址"
-        :edit-render="{name: 'ElInput'}"></elx-editable-column>
+        prop="amount"
+        label="金额"
+        :edit-render="{name: 'ElInputNumber'}"></elx-editable-column>
       <elx-editable-column
-        prop="name_link"
-        label="联系人姓名"
-        :edit-render="{name: 'ElInput'}"></elx-editable-column>
-      <elx-editable-column
-        prop="tel_link"
-        label="联系人手机号"
-        :edit-render="{name: 'ElInput'}"></elx-editable-column>
-      <elx-editable-column
-        prop="email_link"
-        label="联系人Email"
-        width="200"
-        :edit-render="{name: 'ElInput'}"></elx-editable-column>
-      <elx-editable-column
-        prop="relation"
-        label="联系人与客户关系"
-        :edit-render="{name: 'ElInput'}"></elx-editable-column>
-      <elx-editable-column label="操作" width="160">
+        prop="status"
+        label="状态"
+        :edit-render="{name: 'ElSelect', options: statusList}"></elx-editable-column>
+      <elx-editable-column label="操作" width="80">
         <template v-slot="scope">
           <template v-if="$refs.elxEditable.hasActiveRow(scope.row)">
             <el-button size="small" type="success" @click="saveRowEvent(scope.row)">保存</el-button>
             <el-button size="small" type="warning" @click="cancelRowEvent(scope.row)">取消</el-button>
           </template>
           <template v-else>
-            <el-button size="small" type="primary" @click="openActiveRowEvent(scope.row)">编辑</el-button>
             <el-button size="small" type="danger" @click="removeEvent(scope.row)">删除</el-button>
           </template>
         </template>
@@ -153,33 +128,44 @@ export default {
     return {
       loading: false,
       list: [],
+      statusList:[
+        {
+          'label': '未开始发放',
+          'value': '0'
+        },
+        {
+          'label': '发放中',
+          'value': '1'
+        },
+        {
+          'label': '已全部发放',
+          'value': '2'
+        }
+      ],
       isClearActiveFlag: true,
-      nameSearch: "",
+      bankSearch: "",
       idSearch: "",
-      telSearch:"",
-      addrSearch:"",
-      linknameSearch:"",
-      linktelSearch:"",
-      emailSearch:"",
+      statusSearch: "",
+      custSearch: "",
+      upperBound: "",
+      lowerBound: "",
       primary: null //全局变量，保存记录修改前的主键。当没有活跃的记录时为null，当新增记录时也为null
     }
   },
   created () {
-    this.findList()
+    this.findList();
+    this.statusSearch='any';
   },
   methods: {
     findList () {
       this.loading = true;
       this.list=[
         {
-          ID: "33122220001010001X",
-          name: "张三",
-          tel: "13822100086",
-          addr: "合肥浣纱路256号",
-          name_link: "张三丰",
-          tel_link: "11012345678",
-          email_link: "sfzhang@mail.ustc.edu.cn",
-          relation: "父子"
+          ID: "2019031145",
+          bank: "合肥城南支行",
+          customer: "王三云",
+          amount: 500000,
+          status: '1'
         }
       ];
       this.loading = false
@@ -201,13 +187,10 @@ export default {
       if (!activeInfo) {
         this.$refs.elxEditable.insert({
           ID: "new id",
-          name: "",
-          tel: "",
-          addr: "",
-          name_link:"",
-          tel_link:"",
-          email_link:"",
-          relation:""
+          bank: "",
+          customer: "",
+          amount: 0,
+          status: '0'
         }).then(({ row }) => {
           this.$refs.elxEditable.setActiveRow(row)
         })
@@ -325,7 +308,11 @@ export default {
     },
     //删除某一行
     removeEvent (row) {
-      this.$http.post('http://' + document.domain + ':5000/customer', {
+      if (row.status=='1'){
+          window.alert("发放中的贷款不能删除");
+          return;
+      }
+      this.$http.post('http://' + document.domain + ':5000/loan', {
         type: "Delete",
         primary: row.ID
       },{  
@@ -345,16 +332,13 @@ export default {
       this.$refs.elxEditable.validateRow(row, valid => {
         if (valid && this.$refs.elxEditable.hasRowChange(row)) {
           //数据发生了修改，需要反馈给服务器
-          this.$http.post('http://' + document.domain + ':5000/customer', {
+          this.$http.post('http://' + document.domain + ':5000/loan', {
             type: "Update",
             ID: row.ID,
-            name: row.name,
-            tel:  row.tel,
-            addr: row.addr,
-            name_link: row.name_link,
-            tel_link: row.tel_link,
-            email_link: row.email_link,
-            relation: row.relation,
+            bank: row.bank,
+            customer: row.customer,
+            amount: row.amount,
+            status: row.status,
             old_primary: this.primary//null代表新增
           },{  
             emulateJSON:true  
@@ -383,15 +367,14 @@ export default {
     },
     //提交查询请求
     submit(){
-      this.$http.post('http://' + document.domain + ':5000/customer', {
+      this.$http.post('http://' + document.domain + ':5000/loan', {
         type: "Search",
-        nameSearch: this.nameSearch,
         idSearch: this.idSearch,
-        telSearch: this.telSearch,
-        addrSearch: this.addrSearch,
-        linknameSearch: this.linknameSearch,
-        linktelSearch: this.linktelSearch,
-        emailSearch: this.emailSearch
+        bankSearch: this.bankSearch,
+        statusSearch: this.statusSearch,
+        custSearch: this.custSearch,
+        upperBound: this.upperBound,
+        lowerBound: this.lowerBound
       },{  
         emulateJSON:true  
       }).then(function (response) {
@@ -405,13 +388,12 @@ export default {
     },
     //清空查询栏
     reset(){
-        this.nameSearch="";
+        this.bankSearch="";
         this.idSearch="";
-        this.telSearch="";
-        this.addrSearch="";
-        this.linknameSearch="";
-        this.linktelSearch="";
-        this.emailSearch="";
+        this.statusSearch="any";
+        this.custSearch="";
+        this.upperBound="";
+        this.lowerBound="";
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-    <form validate>
+    <form validate onSubmit="return false">
         <h1>注册界面</h1>       
             <label > 账户类型 &nbsp;&nbsp;&nbsp;</label>
             <input type="radio" name='type' v-model="type" value="管理" required=true>管理账户&emsp;
@@ -43,7 +43,7 @@
         <label style='font-family:汉仪南宫体简;color:red;font-size:15px;' >注：用户名和密码必须由字母或数字组成，且密码长度不能小于6。</label>
         <br>
        
-        <button class="button" v-on:click="submit"> <span>提交</span> </button>
+        <button class="button" v-on:click="submit()"> <span>提交</span> </button>
         <div id=demo></div>
     </form>
 </template>
@@ -61,7 +61,10 @@ export default {
     },
     methods: {
         submit: function () {      
-            //console.log(this.type);          
+            //console.log(this.type);    
+            if (this.type=="" || this.username==""){
+                return;
+            }      
             for (var i=0;i<this.username.length;i++){
                 var x=this.username.charAt(i);
                 if (!((x>='0'&&x<='9')||(x>='a'&&x<='z')||(x>='A'&&x<='Z'))){
@@ -93,9 +96,10 @@ export default {
                 }).then(function (response) {
                     //console.log(response.status);
                     if (parseInt(response.body.code) === 200){
+                        
+                        //console.log("OK");
+                        this.$router.push('/index');
                         window.alert("注册成功");
-                        console.log("OK");
-                        //this.$router.push({path:'/index'});
                         //return;                       
                     }
                     else if (parseInt(response.body.code) === 400) {

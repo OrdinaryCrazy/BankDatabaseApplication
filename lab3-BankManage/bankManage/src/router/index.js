@@ -6,6 +6,9 @@ import login from '@/views/login'
 import bank from '@/views/bank'
 import staff from '@/views/staff'
 import customer from '@/views/customer'
+import account from '@/views/account'  
+import loan from '@/views/loan'
+import summary from '@/views/summary'
 
 const routers = [{
   path: '/register',
@@ -36,6 +39,21 @@ const routers = [{
   path: '/customer',
   name: 'Customer',
   component: customer
+},
+{
+  path: '/account',
+  name: 'Account',
+  component: account
+},
+{
+  path: '/loan',
+  name: 'Loan',
+  component: loan
+},
+{
+  path: '/summary',
+  name: 'Summary',
+  component: summary
 }
 ]
 

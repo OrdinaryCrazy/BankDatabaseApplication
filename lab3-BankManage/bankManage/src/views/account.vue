@@ -1,9 +1,9 @@
 <template>
   <div v-loading="loading">
-    <h1>客户管理</h1>
+    <h1>账户管理</h1>
     <p style="color: red;font-size: 24px;" align="left">条件筛选</p>
     <div align="left">
-    身份证号
+    账户号
     <input 
       type="text" 
       placeholder="包含关键字" 
@@ -13,74 +13,107 @@
       style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;姓名
+    >&emsp;户主
     <input 
       type="text" 
       placeholder="包含关键字" 
-      id="nameSearch"
-      v-model="nameSearch"
+      id="ownerSearch"
+      v-model="ownerSearch"
       required=false
       style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;联系电话
+    >&emsp;开户银行
     <input 
       type="text" 
       placeholder="包含关键字" 
-      id="telSearch"
-      v-model="telSearch"
+      id="bankSearch"
+      v-model="bankSearch"
       required=false
       style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;家庭住址
+    >&emsp;账户类型
+    <select v-model="typeSearch" id="typeSearch" placeholder="any">
+      <option value ="any" selected>任意</option>
+      <option value ="saving">储蓄账户</option>
+      <option value="check">支票账户</option>
+    </select><br><br>余额
     <input 
-      type="text" 
-      placeholder="包含关键字" 
-      id="addrSearch"
-      v-model="addrSearch"
+      type="number" 
+      min=0
+      placeholder="下界" 
+      id="money_lo"
+      v-model="money_lo"
       required=false
-      style=" width:300px;
+      style=" width:100px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;<br>联系人姓名
+    >~~
     <input 
-      type="text" 
-      placeholder="包含关键字" 
-      id="linknameSearch"
-      v-model="linknameSearch"
+      type="number" 
+      min=0
+      placeholder="上界" 
+      id="money_up"
+      v-model="money_up"
       required=false
-      style=" width:300px;
+      style=" width:100px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;联系人手机号
+    >&emsp;开户日期
     <input 
-      type="text" 
-      placeholder="包含关键字" 
-      id="linktelSearch"
-      v-model="linktelSearch"
+      type="date" 
+      min=0
+      placeholder="下界" 
+      id="open_lo"
+      v-model="open_lo"
       required=false
-      style=" width:300px;
+      style=" width:150px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;联系人Email
+    >~~
     <input 
-      type="email" 
-      placeholder="包含关键字" 
-      id="emailSearch"
-      v-model="emailSearch"
+      type="date" 
+      min=0
+      placeholder="上界" 
+      id="open_up"
+      v-model="open_up"
       required=false
-      style=" width:300px;
+      style=" width:150px;
+              font-family: 'Fira Code', '汉仪南宫体简';
+            "
+    >&emsp;最近访问日期
+    <input 
+      type="date" 
+      min=0
+      placeholder="下界" 
+      id="visit_lo"
+      v-model="visit_lo"
+      required=false
+      style=" width:150px;
+              font-family: 'Fira Code', '汉仪南宫体简';
+            "
+    >~~
+    <input 
+      type="date" 
+      min=0
+      placeholder="上界" 
+      id="visit_up"
+      v-model="visit_up"
+      required=false
+      style=" width:150px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
     >&emsp;
+
+
     <el-button class="button" size="small" type="primary" @click="submit()">查询</el-button>
     <el-button class="button" size="small" type="primary" @click="reset()">重置</el-button>
 
     </div><br>
     <div align="left" >
-      <el-button class="button" type="success" size="small" @click="insertEvent()">新增</el-button>
       <el-button class="button" type="success" size="small" @click="exportCsvEvent()">导出</el-button>
+      <el-button class="button" type="success" size="small" @click="insertEvent()">开户</el-button>     
     </div>
     <br><br>
     <elx-editable
@@ -95,38 +128,44 @@
         width="55"></elx-editable-column>
       <elx-editable-column
         prop="ID"
-        label="身份证号"
-        width="210"
+        label="账户号"
+      ></elx-editable-column>
+      <elx-editable-column
+        prop="owner"
+        label="户主"
+      ></elx-editable-column>      
+      <elx-editable-column
+        prop="bank"
+        label="开户银行"
         :edit-render="{name: 'ElInput'}"></elx-editable-column>
       <elx-editable-column
-        prop="name"
-        label="姓名"
-        :edit-render="{name: 'ElInput'}"></elx-editable-column>
+        prop="money"
+        label="余额"
+        :edit-render="{name: 'ElInputNumber'}"></elx-editable-column>
       <elx-editable-column
-        prop="tel"
-        label="联系电话"
-        :edit-render="{name: 'ElInput'}"></elx-editable-column>
+        prop="open_date"
+        label="开户日期"
+        :edit-render="{name: 'ElDatePicker', props: {type: 'date', format: 'yyyy-MM-dd'}}"></elx-editable-column>
       <elx-editable-column
-        prop="addr"
-        label="家庭住址"
-        :edit-render="{name: 'ElInput'}"></elx-editable-column>
+        prop="visit_date"
+        label="最近访问日期"
+        :edit-render="{name: 'ElDatePicker', props: {type: 'date', format: 'yyyy-MM-dd'}}"></elx-editable-column>
       <elx-editable-column
-        prop="name_link"
-        label="联系人姓名"
-        :edit-render="{name: 'ElInput'}"></elx-editable-column>
+        prop="type"
+        label="账户类型"
+        :edit-render="{name: 'ElSelect', options: typeList}"></elx-editable-column>
       <elx-editable-column
-        prop="tel_link"
-        label="联系人手机号"
-        :edit-render="{name: 'ElInput'}"></elx-editable-column>
+        prop="interest"
+        label="利率"
+        :edit-render="{name: 'ElInputNumber'}"></elx-editable-column>
       <elx-editable-column
-        prop="email_link"
-        label="联系人Email"
-        width="200"
-        :edit-render="{name: 'ElInput'}"></elx-editable-column>
+        prop="cashtype"
+        label="货币类型"
+        :edit-render="{name: 'ElSelect', options: cashList}"></elx-editable-column>
       <elx-editable-column
-        prop="relation"
-        label="联系人与客户关系"
-        :edit-render="{name: 'ElInput'}"></elx-editable-column>
+        prop="overdraft"
+        label="透支额"
+        :edit-render="{name: 'ElInputNumber'}"></elx-editable-column>
       <elx-editable-column label="操作" width="160">
         <template v-slot="scope">
           <template v-if="$refs.elxEditable.hasActiveRow(scope.row)">
@@ -134,8 +173,9 @@
             <el-button size="small" type="warning" @click="cancelRowEvent(scope.row)">取消</el-button>
           </template>
           <template v-else>
-            <el-button size="small" type="primary" @click="openActiveRowEvent(scope.row)">编辑</el-button>
-            <el-button size="small" type="danger" @click="removeEvent(scope.row)">删除</el-button>
+            <el-button size="small" type="primary" @click="openActiveRowEvent(scope.row)">修改</el-button>
+            <el-button size="small" type="danger" @click="removeEvent(scope.row)">销户</el-button>
+            <el-button size="small" type="primary" @click="updateOwner(scope.row)">更改户主</el-button>            
           </template>
         </template>
       </elx-editable-column>
@@ -153,33 +193,67 @@ export default {
     return {
       loading: false,
       list: [],
+      typeList: [
+        {
+          'label': '储蓄账户',
+          'value': '0'
+        },
+        {
+          'label': '支票账户',
+          'value': '1'
+        }
+      ],
+      cashList: [
+        {
+          'label': '人民币',
+          'value': '0'
+        },
+        {
+          'label': '美元',
+          'value': '1'
+        },
+        {
+          'label': '欧元',
+          'value': '2'
+        },
+        {
+          'label': '日元',
+          'value': '3'
+        }
+      ],
       isClearActiveFlag: true,
-      nameSearch: "",
-      idSearch: "",
-      telSearch:"",
-      addrSearch:"",
-      linknameSearch:"",
-      linktelSearch:"",
-      emailSearch:"",
+      bankSearch:"",
+      idSearch:"",
+      ownerSearch:"",
+      typeSearch:"",
+      money_lo:"",
+      money_up:"",
+      open_lo:"",
+      open_up:"",
+      visit_lo:"",
+      visit_up:"",
       primary: null //全局变量，保存记录修改前的主键。当没有活跃的记录时为null，当新增记录时也为null
     }
   },
   created () {
-    this.findList()
+    this.findList();
+    this.typeSearch="any";
   },
   methods: {
     findList () {
       this.loading = true;
       this.list=[
         {
-          ID: "33122220001010001X",
-          name: "张三",
-          tel: "13822100086",
-          addr: "合肥浣纱路256号",
-          name_link: "张三丰",
-          tel_link: "11012345678",
-          email_link: "sfzhang@mail.ustc.edu.cn",
-          relation: "父子"
+          ID: "123000",
+          owner: "张三，李四，王五，马云，刘强东",
+          bank: "合肥支行",
+          money: 2563.00,
+          open_date: new Date("2016-2-20"),
+          visit_date: new Date(),
+          type: '0',
+          interest: 0.023,
+          cashtype: '0',
+          overdraft: null
         }
       ];
       this.loading = false
@@ -201,13 +275,15 @@ export default {
       if (!activeInfo) {
         this.$refs.elxEditable.insert({
           ID: "new id",
-          name: "",
-          tel: "",
-          addr: "",
-          name_link:"",
-          tel_link:"",
-          email_link:"",
-          relation:""
+          owner: "",
+          bank: "",
+          money: 0,
+          open_date: new Date(),
+          visit_date: new Date(),
+          type: '0',
+          interest: null,
+          cashtype: null,
+          overdraft: null
         }).then(({ row }) => {
           this.$refs.elxEditable.setActiveRow(row)
         })
@@ -325,7 +401,7 @@ export default {
     },
     //删除某一行
     removeEvent (row) {
-      this.$http.post('http://' + document.domain + ':5000/customer', {
+      this.$http.post('http://' + document.domain + ':5000/account', {
         type: "Delete",
         primary: row.ID
       },{  
@@ -345,22 +421,30 @@ export default {
       this.$refs.elxEditable.validateRow(row, valid => {
         if (valid && this.$refs.elxEditable.hasRowChange(row)) {
           //数据发生了修改，需要反馈给服务器
-          this.$http.post('http://' + document.domain + ':5000/customer', {
+          this.$http.post('http://' + document.domain + ':5000/account', {
             type: "Update",
             ID: row.ID,
-            name: row.name,
-            tel:  row.tel,
-            addr: row.addr,
-            name_link: row.name_link,
-            tel_link: row.tel_link,
-            email_link: row.email_link,
-            relation: row.relation,
+            bank: row.bank,
+            money:  row.money,
+            open_date: row.open_date,
+            visit_date: row.visit_date,
+            acctype: row.type,
+            interest: row.interest,
+            cashtype: row.cashtype,
+            overdraft: row.overdraft,
             old_primary: this.primary//null代表新增
           },{  
             emulateJSON:true  
           }).then(function (response) {
             if (parseInt(response.body.code) === 200){
               //更新合法
+              if (row.type==="0"){
+                row.overdraft=null;
+              }
+              else {
+                row.cashtype=null;
+                row.interest=null;
+              }
               this.primary=null;
               this.$refs.elxEditable.clearActive();
               console.log("Update");
@@ -383,15 +467,18 @@ export default {
     },
     //提交查询请求
     submit(){
-      this.$http.post('http://' + document.domain + ':5000/customer', {
+      this.$http.post('http://' + document.domain + ':5000/account', {
         type: "Search",
         nameSearch: this.nameSearch,
         idSearch: this.idSearch,
-        telSearch: this.telSearch,
-        addrSearch: this.addrSearch,
-        linknameSearch: this.linknameSearch,
-        linktelSearch: this.linktelSearch,
-        emailSearch: this.emailSearch
+        ownerSearch: this.ownerSearch,
+        typeSearch: this.typeSearch,
+        money_lo: this.money_lo,
+        money_up: this.money_up,
+        open_lo: this.open_lo,
+        open_up: this.open_up,
+        visit_lo: this.visit_lo,
+        visit_up: this.visit_up
       },{  
         emulateJSON:true  
       }).then(function (response) {
@@ -405,13 +492,19 @@ export default {
     },
     //清空查询栏
     reset(){
-        this.nameSearch="";
-        this.idSearch="";
-        this.telSearch="";
-        this.addrSearch="";
-        this.linknameSearch="";
-        this.linktelSearch="";
-        this.emailSearch="";
+      this.bankSearch="";
+      this.idSearch= "";
+      this.ownerSearch="";
+      this.typeSearch="any";
+      this.money_lo="";
+      this.money_up="";
+      this.open_lo="";
+      this.open_up="";
+      this.visit_lo="";
+      this.visit_up="";
+    },
+    updateOwner(row){
+
     }
   }
 }
