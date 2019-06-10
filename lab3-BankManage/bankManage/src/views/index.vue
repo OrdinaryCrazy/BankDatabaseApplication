@@ -1,12 +1,12 @@
 <template>
     <div>
         <h1>欢迎使用银行管理系统</h1>
-        <button class="button" v-on:click="goBank"> <span>支行管理</span> </button>
-        <button class="button" v-on:click="goStaff"> <span>员工管理</span> </button>
-        <button class="button" v-on:click="go"> <span>客户管理</span> </button>
-        <button class="button" v-on:click="go"> <span>账户管理</span> </button>
-        <button class="button" v-on:click="go"> <span>贷款管理</span> </button>
-        <button class="button" v-on:click="go"> <span>业务统计</span> </button>
+        <button class="buttonred" v-on:click="goBank"> <span>支行管理</span> </button>
+        <button class="buttonred" v-on:click="goStaff"> <span>员工管理</span> </button>
+        <button class="buttonred" v-on:click="goCustomer"> <span>客户管理</span> </button>
+        <button class="buttonred" v-on:click="go"> <span>账户管理</span> </button>
+        <button class="buttonred" v-on:click="go"> <span>贷款管理</span> </button>
+        <button class="buttonred" v-on:click="go"> <span>业务统计</span> </button>
         <br><br><br>
     </div>
 </template>
@@ -22,13 +22,16 @@ export default {
         },
         goStaff: function(){
           this.$router.push('/staff');
+        },
+        goCustomer: function(){
+          this.$router.push('/customer');
         }
     }
 }
 </script>
 
 <style>
-.button {
+.buttonred {
   display: inline-block;
   border-radius: 4px;
   background-color: #f4511e;
@@ -43,13 +46,13 @@ export default {
   margin: 5px;
 }
 
-.button span {
+.buttonred span {
   cursor: pointer;
   display: inline-block;
   position: relative;
   transition: 0.5s;
 }
-.button:hover span:after {
+.buttonred:hover span:after {
   opacity: 1;
   right: 0;
 }

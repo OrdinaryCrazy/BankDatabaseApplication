@@ -5,6 +5,7 @@ import register from '@/views/register.vue'
 import login from '@/views/login'
 import bank from '@/views/bank'
 import staff from '@/views/staff'
+import customer from '@/views/customer'
 
 const routers = [{
   path: '/register',
@@ -30,6 +31,11 @@ const routers = [{
   path: '/staff',
   name: 'Staff',
   component: staff
+},
+{
+  path: '/customer',
+  name: 'Customer',
+  component: customer
 }
 ]
 

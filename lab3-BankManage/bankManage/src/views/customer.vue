@@ -1,6 +1,6 @@
 <template>
   <div v-loading="loading">
-    <h1>员工管理</h1>
+    <h1>客户管理</h1>
     <p style="color: red;font-size: 24px;" align="left">条件筛选</p>
     <div align="left">
     身份证号
@@ -23,17 +23,7 @@
       style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;所在部门
-    <input 
-      type="text" 
-      placeholder="包含关键字" 
-      id="deptSearch"
-      v-model="deptSearch"
-      required=false
-      style=" width:300px;
-              font-family: 'Fira Code', '汉仪南宫体简';
-            "
-    >&emsp;电话号码
+    >&emsp;联系电话
     <input 
       type="text" 
       placeholder="包含关键字" 
@@ -43,7 +33,7 @@
       style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;<br>家庭住址
+    >&emsp;家庭住址
     <input 
       type="text" 
       placeholder="包含关键字" 
@@ -53,24 +43,34 @@
       style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;入职日期
+    >&emsp;<br>联系人姓名
     <input 
-      type="date" 
-      placeholder="下界" 
-      id="lowerBound"
-      v-model="lowerBound"
+      type="text" 
+      placeholder="包含关键字" 
+      id="linknameSearch"
+      v-model="linknameSearch"
       required=false
-      style=" width:200px;
+      style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >~~
+    >&emsp;联系人手机号
     <input 
-      type="date" 
-      placeholder="上界" 
-      id="upperBound"
-      v-model="upperBound"
+      type="text" 
+      placeholder="包含关键字" 
+      id="linktelSearch"
+      v-model="linktelSearch"
       required=false
-      style=" width:200px;
+      style=" width:300px;
+              font-family: 'Fira Code', '汉仪南宫体简';
+            "
+    >&emsp;联系人Email
+    <input 
+      type="text" 
+      placeholder="包含关键字" 
+      id="emailSearch"
+      v-model="emailSearch"
+      required=false
+      style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
     >&emsp;
@@ -96,27 +96,37 @@
       <elx-editable-column
         prop="ID"
         label="身份证号"
+        width="210"
         :edit-render="{name: 'ElInput'}"></elx-editable-column>
       <elx-editable-column
         prop="name"
         label="姓名"
         :edit-render="{name: 'ElInput'}"></elx-editable-column>
       <elx-editable-column
-        prop="dept"
-        label="所在部门"
-        :edit-render="{name: 'ElInput'}"></elx-editable-column>
-      <elx-editable-column
         prop="tel"
-        label="电话号码"
+        label="联系电话"
         :edit-render="{name: 'ElInput'}"></elx-editable-column>
       <elx-editable-column
         prop="addr"
         label="家庭住址"
         :edit-render="{name: 'ElInput'}"></elx-editable-column>
       <elx-editable-column
-        prop="date"
-        label="入职日期"
-        :edit-render="{name: 'ElDatePicker', props: {type: 'date', format: 'yyyy-MM-dd'}}"></elx-editable-column>
+        prop="name_link"
+        label="联系人姓名"
+        :edit-render="{name: 'ElInput'}"></elx-editable-column>
+      <elx-editable-column
+        prop="tel_link"
+        label="联系人手机号"
+        :edit-render="{name: 'ElInput'}"></elx-editable-column>
+      <elx-editable-column
+        prop="email_link"
+        label="联系人Email"
+        width="200"
+        :edit-render="{name: 'ElInput'}"></elx-editable-column>
+      <elx-editable-column
+        prop="relation"
+        label="联系人与客户关系"
+        :edit-render="{name: 'ElInput'}"></elx-editable-column>
       <elx-editable-column label="操作" width="160">
         <template v-slot="scope">
           <template v-if="$refs.elxEditable.hasActiveRow(scope.row)">
@@ -146,11 +156,11 @@ export default {
       isClearActiveFlag: true,
       nameSearch: "",
       idSearch: "",
-      deptSearch: "",
       telSearch:"",
       addrSearch:"",
-      lowerBound: "",
-      upperBound: "",
+      linknameSearch:"",
+      linktelSearch:"",
+      emailSearch:"",
       primary: null //全局变量，保存记录修改前的主键。当没有活跃的记录时为null，当新增记录时也为null
     }
   },
@@ -164,10 +174,12 @@ export default {
         {
           ID: "33122220001010001X",
           name: "张三",
-          dept: "人事处",
           tel: "13822100086",
           addr: "合肥浣纱路256号",
-          date: new Date("2018-2-2")
+          name_link: "张三丰",
+          tel_link: "11012345678",
+          email_link: "sfzhang@mail.ustc.edu.cn",
+          relation: "父子"
         }
       ];
       this.loading = false
@@ -190,10 +202,12 @@ export default {
         this.$refs.elxEditable.insert({
           ID: "new id",
           name: "",
-          dept: "",
           tel: "",
           addr: "",
-          date: null
+          name_link:"",
+          tel_link:"",
+          email_link:"",
+          relation:""
         }).then(({ row }) => {
           this.$refs.elxEditable.setActiveRow(row)
         })
@@ -311,7 +325,7 @@ export default {
     },
     //删除某一行
     removeEvent (row) {
-      this.$http.post('http://' + document.domain + ':5000/staff', {
+      this.$http.post('http://' + document.domain + ':5000/customer', {
         type: "Delete",
         primary: row.ID
       },{  
@@ -331,14 +345,16 @@ export default {
       this.$refs.elxEditable.validateRow(row, valid => {
         if (valid && this.$refs.elxEditable.hasRowChange(row)) {
           //数据发生了修改，需要反馈给服务器
-          this.$http.post('http://' + document.domain + ':5000/staff', {
+          this.$http.post('http://' + document.domain + ':5000/customer', {
             type: "Update",
             ID: row.ID,
             name: row.name,
-            dept: row.dept,
             tel:  row.tel,
             addr: row.addr,
-            date: row.date,
+            name_link: this.name_link,
+            tel_link: this.tel_link,
+            email_link: this.email_link,
+            relation: this.relation,
             old_primary: this.primary//null代表新增
           },{  
             emulateJSON:true  
@@ -367,15 +383,15 @@ export default {
     },
     //提交查询请求
     submit(){
-      this.$http.post('http://' + document.domain + ':5000/staff', {
+      this.$http.post('http://' + document.domain + ':5000/customer', {
         type: "Search",
         nameSearch: this.nameSearch,
         idSearch: this.idSearch,
-        deptSearch: this.deptSearch,
         telSearch: this.telSearch,
         addrSearch: this.addrSearch,
-        lowerBound: this.lowerBound,
-        upperBound: this.upperBound
+        linknameSearch: this.linknameSearch,
+        linktelSearch: this.linktelSearch,
+        emailSearch: this.emailSearch
       },{  
         emulateJSON:true  
       }).then(function (response) {
