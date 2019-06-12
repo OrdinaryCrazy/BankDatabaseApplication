@@ -1,450 +1,531 @@
 <template>
-  <div v-loading="loading">
-    <h1>贷款管理</h1>
-    <p style="color: red;font-size: 24px;" align="left">条件筛选</p>
-    <div align="left">
-    贷款号
-    <input 
-      type="text" 
-      placeholder="包含关键字" 
-      id="idSearch"
-      v-model="idSearch"
-      required=false
-      style=" width:300px;
+    <div v-loading="loading">
+        <h1>贷款管理</h1>
+        <p style="color: red;font-size: 24px;" align="left">条件筛选</p>
+        <div align="left">
+            贷款号
+            <input
+                type="text"
+                placeholder="包含关键字"
+                id="idSearch"
+                v-model="idSearch"
+                required="false"
+                style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;放款支行
-    <input 
-      type="text" 
-      placeholder="包含关键字" 
-      id="bankSearch"
-      v-model="bankSearch"
-      required=false
-      style=" width:300px;
+            />&emsp;放款支行
+            <input
+                type="text"
+                placeholder="包含关键字"
+                id="bankSearch"
+                v-model="bankSearch"
+                required="false"
+                style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;贷款人
-    <input 
-      type="text" 
-      placeholder="包含关键字" 
-      id="custSearch"
-      v-model="custSearch"
-      required=false
-      style=" width:300px;
+            />&emsp;贷款人
+            <input
+                type="text"
+                placeholder="包含关键字"
+                id="custSearch"
+                v-model="custSearch"
+                required="false"
+                style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;状态
-    <select v-model="statusSearch" id="statusSearch" placeholder="any">
-      <option value ="any" selected>任意</option>
-      <option value ="none">未开始发放</option>
-      <option value ="part">发放中</option> 
-      <option value="all">已全部发放</option>
-    </select><br><br>金额
-    <input 
-      type="number" 
-      min=0
-      placeholder="下界" 
-      id="lowerBound"
-      v-model="lowerBound"
-      required=false
-      style=" width:100px;
+            />&emsp;状态
+            <select v-model="statusSearch" id="statusSearch" placeholder="any">
+                <option value="any" selected>任意</option>
+                <option value="none">未开始发放</option>
+                <option value="part">发放中</option>
+                <option value="all">已全部发放</option> </select
+            ><br /><br />金额
+            <input
+                type="number"
+                min="0"
+                placeholder="下界"
+                id="lowerBound"
+                v-model="lowerBound"
+                required="false"
+                style=" width:100px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >~~
-    <input 
-      type="number" 
-      min=0
-      placeholder="上界" 
-      id="upperBound"
-      v-model="upperBound"
-      required=false
-      style=" width:100px;
+            />~~
+            <input
+                type="number"
+                min="0"
+                placeholder="上界"
+                id="upperBound"
+                v-model="upperBound"
+                required="false"
+                style=" width:100px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-    >&emsp;
+            />&emsp;
 
-
-    <el-button class="button" size="small" type="primary" @click="submit()">查询</el-button>
-    <el-button class="button" size="small" type="primary" @click="reset()">重置</el-button>
-
-    </div><br>
-    <div align="left" >
-      <el-button class="button" type="success" size="small" @click="exportCsvEvent()">导出</el-button>
-      <el-button class="button" type="success" size="small" @click="insertEvent()">发放贷款</el-button>     
+            <el-button
+                class="button"
+                size="small"
+                type="primary"
+                @click="submit()"
+                >查询</el-button
+            >
+            <el-button
+                class="button"
+                size="small"
+                type="primary"
+                @click="reset()"
+                >重置</el-button
+            >
+        </div>
+        <br />
+        <div align="left">
+            <el-button
+                class="button"
+                type="success"
+                size="small"
+                @click="exportCsvEvent()"
+                >导出</el-button
+            >
+            <el-button
+                class="button"
+                type="success"
+                size="small"
+                @click="insertEvent()"
+                >发放贷款</el-button
+            >
+        </div>
+        <br /><br />
+        <elx-editable
+            ref="elxEditable"
+            class="table"
+            border
+            :data.sync="list"
+            :edit-config="{ trigger: 'manual', mode: 'row', clearActiveMethod }"
+            style="width: 100%"
+        >
+            <elx-editable-column type="index" width="55"></elx-editable-column>
+            <elx-editable-column
+                prop="ID"
+                label="贷款号"
+                :edit-render="{ name: 'ElInput' }"
+            ></elx-editable-column>
+            <elx-editable-column
+                prop="bank"
+                label="放款支行"
+                :edit-render="{ name: 'ElInput' }"
+            ></elx-editable-column>
+            <elx-editable-column
+                prop="customer"
+                label="贷款人"
+                :edit-render="{ name: 'ElInput' }"
+            ></elx-editable-column>
+            <elx-editable-column
+                prop="amount"
+                label="金额"
+                :edit-render="{ name: 'ElInputNumber' }"
+            ></elx-editable-column>
+            <elx-editable-column
+                prop="status"
+                label="状态"
+                :edit-render="{ name: 'ElSelect', options: statusList }"
+            ></elx-editable-column>
+            <elx-editable-column label="操作" width="80">
+                <template v-slot="scope">
+                    <template v-if="$refs.elxEditable.hasActiveRow(scope.row)">
+                        <el-button
+                            size="small"
+                            type="success"
+                            @click="saveRowEvent(scope.row)"
+                            >保存</el-button
+                        >
+                        <el-button
+                            size="small"
+                            type="warning"
+                            @click="cancelRowEvent(scope.row)"
+                            >取消</el-button
+                        >
+                    </template>
+                    <template v-else>
+                        <el-button
+                            size="small"
+                            type="danger"
+                            @click="removeEvent(scope.row)"
+                            >删除</el-button
+                        >
+                    </template>
+                </template>
+            </elx-editable-column>
+        </elx-editable>
+        <div v-model="primary"></div>
     </div>
-    <br><br>
-    <elx-editable
-      ref="elxEditable"
-      class="table"
-      border
-      :data.sync="list"
-      :edit-config="{trigger: 'manual', mode: 'row', clearActiveMethod}"
-      style="width: 100%">
-      <elx-editable-column
-        type="index"
-        width="55"></elx-editable-column>
-      <elx-editable-column
-        prop="ID"
-        label="贷款号"
-        :edit-render="{name: 'ElInput'}"></elx-editable-column>
-      <elx-editable-column
-        prop="bank"
-        label="放款支行"
-        :edit-render="{name: 'ElInput'}"></elx-editable-column>
-      <elx-editable-column
-        prop="customer"
-        label="贷款人"
-        :edit-render="{name: 'ElInput'}"></elx-editable-column>
-      <elx-editable-column
-        prop="amount"
-        label="金额"
-        :edit-render="{name: 'ElInputNumber'}"></elx-editable-column>
-      <elx-editable-column
-        prop="status"
-        label="状态"
-        :edit-render="{name: 'ElSelect', options: statusList}"></elx-editable-column>
-      <elx-editable-column label="操作" width="80">
-        <template v-slot="scope">
-          <template v-if="$refs.elxEditable.hasActiveRow(scope.row)">
-            <el-button size="small" type="success" @click="saveRowEvent(scope.row)">保存</el-button>
-            <el-button size="small" type="warning" @click="cancelRowEvent(scope.row)">取消</el-button>
-          </template>
-          <template v-else>
-            <el-button size="small" type="danger" @click="removeEvent(scope.row)">删除</el-button>
-          </template>
-        </template>
-      </elx-editable-column>
-    </elx-editable>
-    <div v-model="primary"></div>
-  </div>
 </template>
 
 <script>
-import XEUtils from 'xe-utils'
-import XEAjax from 'xe-ajax'
-import { MessageBox, Message } from 'element-ui'
+import XEUtils from "xe-utils";
+import XEAjax from "xe-ajax";
+import { MessageBox, Message } from "element-ui";
 export default {
-  data () {
-    return {
-      loading: false,
-      list: [],
-      statusList:[
-        {
-          'label': '未开始发放',
-          'value': '0'
+    data() {
+        return {
+            loading: false,
+            list: [],
+            statusList: [
+                {
+                    label: "未开始发放",
+                    value: "0"
+                },
+                {
+                    label: "发放中",
+                    value: "1"
+                },
+                {
+                    label: "已全部发放",
+                    value: "2"
+                }
+            ],
+            isClearActiveFlag: true,
+            bankSearch: "",
+            idSearch: "",
+            statusSearch: "",
+            custSearch: "",
+            upperBound: "",
+            lowerBound: "",
+            primary: null //全局变量，保存记录修改前的主键。当没有活跃的记录时为null，当新增记录时也为null
+        };
+    },
+    created() {
+        this.findList();
+        this.statusSearch = "any";
+    },
+    methods: {
+        findList() {
+            this.loading = true;
+            this.list = [
+                {
+                    ID: "2019031145",
+                    bank: "合肥城南支行",
+                    customer: "王三云",
+                    amount: 500000,
+                    status: "1"
+                }
+            ];
+            this.loading = false;
         },
-        {
-          'label': '发放中',
-          'value': '1'
+        formatterDate(row, column, cellValue, index) {
+            return XEUtils.toDateString(cellValue, "yyyy-MM-dd HH:mm:ss");
         },
-        {
-          'label': '已全部发放',
-          'value': '2'
-        }
-      ],
-      isClearActiveFlag: true,
-      bankSearch: "",
-      idSearch: "",
-      statusSearch: "",
-      custSearch: "",
-      upperBound: "",
-      lowerBound: "",
-      primary: null //全局变量，保存记录修改前的主键。当没有活跃的记录时为null，当新增记录时也为null
-    }
-  },
-  created () {
-    this.findList();
-    this.statusSearch='any';
-  },
-  methods: {
-    findList () {
-      this.loading = true;
-      this.list=[
-        {
-          ID: "2019031145",
-          bank: "合肥城南支行",
-          customer: "王三云",
-          amount: 500000,
-          status: '1'
-        }
-      ];
-      this.loading = false
-
-    },
-    formatterDate (row, column, cellValue, index) {
-      return XEUtils.toDateString(cellValue, 'yyyy-MM-dd HH:mm:ss')
-    },
-    clearActiveMethod ({ type, row }) {
-      return this.isClearActiveFlag && type === 'out' ? this.checkOutSave(row) : this.isClearActiveFlag
-    },
-    //新增记录
-    insertEvent () {
-      console.log("insert");
-      let activeInfo = this.$refs.elxEditable.getActiveRow();
-      //let { insertRecords } = this.$refs.elxEditable.getAllRecords();
-      console.log(activeInfo);
-      //console.log(insertRecords);
-      if (!activeInfo) {
-        this.$refs.elxEditable.insert({
-          ID: "new id",
-          bank: "",
-          customer: "",
-          amount: 0,
-          status: '0'
-        }).then(({ row }) => {
-          this.$refs.elxEditable.setActiveRow(row)
-        })
-      }
-    },
-    // 点击表格外面处理
-    checkOutSave (row) {
-      if (!row.id && this.primary!=null) {
-        console.log("1");
-        this.isClearActiveFlag = false
-        MessageBox.confirm('该数据未保存，请确认操作?', '温馨提示', {
-          distinguishCancelAndClose: true,
-          confirmButtonText: '保存数据',
-          cancelButtonText: '取消修改',
-          type: 'warning'
-        }).then(action => {
-          this.$refs.elxEditable.clearActive()
-          this.saveRowEvent(row)
-        }).catch(action => {
-          if (action === 'cancel') {
-            this.$refs.elxEditable.revert(row);
-            this.$refs.elxEditable.clearActive();
-          }
-        }).then(() => {
-          this.isClearActiveFlag = true
-        })
-      } 
-      else if(!row.id && this.primary==null) {
-        this.isClearActiveFlag = false
-        MessageBox.confirm('该数据未保存，请确认操作?', '温馨提示', {
-          distinguishCancelAndClose: true,
-          confirmButtonText: '保存数据',
-          cancelButtonText: '删除数据',
-          type: 'warning'
-        }).then(action => {
-          this.$refs.elxEditable.clearActive()
-          this.saveRowEvent(row)
-        }).catch(action => {
-          if (action === 'cancel') {
-            this.$refs.elxEditable.remove(row);
-          }
-        }).then(() => {
-          this.isClearActiveFlag = true
-        })
-      }
-      return this.isClearActiveFlag
-    },
-    // 编辑处理
-    openActiveRowEvent (row) {
-      this.$nextTick(() => {
-        let activeInfo = this.$refs.elxEditable.getActiveRow()
-        if (activeInfo && activeInfo.isUpdate) {
-          this.isClearActiveFlag = false
-          MessageBox.confirm('检测到未保存的内容，请确认操作?', '温馨提示', {
-            distinguishCancelAndClose: true,
-            confirmButtonText: '保存数据',
-            cancelButtonText: '取消修改',
-            type: 'warning'
-          }).then(() => {
-            this.$refs.elxEditable.setActiveRow(row);
-            this.primary=row.ID;
-            //console.log(row.name);
-            this.saveRowEvent(activeInfo.row);
-          }).catch(action => {
-            if (action === 'cancel') {
-              this.$refs.elxEditable.revert(activeInfo.row)
-              this.$refs.elxEditable.setActiveRow(row)
+        clearActiveMethod({ type, row }) {
+            return this.isClearActiveFlag && type === "out"
+                ? this.checkOutSave(row)
+                : this.isClearActiveFlag;
+        },
+        //新增记录
+        insertEvent() {
+            console.log("insert");
+            let activeInfo = this.$refs.elxEditable.getActiveRow();
+            //let { insertRecords } = this.$refs.elxEditable.getAllRecords();
+            console.log(activeInfo);
+            //console.log(insertRecords);
+            if (!activeInfo) {
+                this.$refs.elxEditable
+                    .insert({
+                        ID: "new id",
+                        bank: "",
+                        customer: "",
+                        amount: 0,
+                        status: "0"
+                    })
+                    .then(({ row }) => {
+                        this.$refs.elxEditable.setActiveRow(row);
+                    });
             }
-          }).then(() => {
-            this.isClearActiveFlag = true
-          })
-        } else {
-          this.$refs.elxEditable.setActiveRow(row);
-          this.primary=row.ID;
-          console.log(row.ID);
-        }
-      })
-    },
-    // 取消处理
-    cancelRowEvent (row) {
-      if (!row.id) {
-        this.isClearActiveFlag = false
-        MessageBox.confirm('该数据未保存，是否移除?', '温馨提示', {
-          distinguishCancelAndClose: true,
-          confirmButtonText: '移除数据',
-          cancelButtonText: '返回继续',
-          type: 'warning'
-        }).then(action => {
-          if (action === 'confirm') {
-            this.$refs.elxEditable.remove(row)
-          }
-        }).catch(action => action).then(() => {
-          this.isClearActiveFlag = true
-        })
-      } else if (this.$refs.elxEditable.hasRowChange(row)) {
-        this.isClearActiveFlag = false
-        MessageBox.confirm('检测到未保存的内容，是否取消修改?', '温馨提示', {
-          distinguishCancelAndClose: true,
-          confirmButtonText: '取消修改',
-          cancelButtonText: '返回继续',
-          type: 'warning'
-        }).then(action => {
-          this.$refs.elxEditable.clearActive()
-          this.$refs.elxEditable.revert(row)
-        }).catch(action => {
-          if (action === 'cancel') {
-            this.$refs.elxEditable.setActiveRow(row)
-          }
-        }).then(() => {
-          this.isClearActiveFlag = true
-        })
-      } else {
-        this.$refs.elxEditable.clearActive()
-      }
-    },
-    //删除某一行
-    removeEvent (row) {
-      if (row.status=='1'){
-          window.alert("发放中的贷款不能删除");
-          return;
-      }
-      this.$http.post('http://' + document.domain + ':5000/loan', {
-        type: "Delete",
-        primary: row.ID
-      },{  
-        emulateJSON:true  
-      }).then(function (response) {
-        if (parseInt(response.body.code) === 200){
-          this.$refs.elxEditable.remove(row);
-          console.log("Delete");
-        }               
-        else {
-          window.alert("删除失败");
-        }
-      })     
-    },
-    //保存对某一行的修改
-    saveRowEvent (row) {
-      this.$refs.elxEditable.validateRow(row, valid => {
-        if (valid && this.$refs.elxEditable.hasRowChange(row)) {
-          //数据发生了修改，需要反馈给服务器
-          this.$http.post('http://' + document.domain + ':5000/loan', {
-            type: "Update",
-            ID: row.ID,
-            bank: row.bank,
-            customer: row.customer,
-            amount: row.amount,
-            status: row.status,
-            old_primary: this.primary//null代表新增
-          },{  
-            emulateJSON:true  
-          }).then(function (response) {
-            if (parseInt(response.body.code) === 200){
-              //更新合法
-              this.primary=null;
-              this.$refs.elxEditable.clearActive();
-              console.log("Update");
-            }               
-            else {
-              window.alert("更新非法");
+        },
+        // 点击表格外面处理
+        checkOutSave(row) {
+            if (!row.id && this.primary != null) {
+                console.log("1");
+                this.isClearActiveFlag = false;
+                MessageBox.confirm("该数据未保存，请确认操作?", "温馨提示", {
+                    distinguishCancelAndClose: true,
+                    confirmButtonText: "保存数据",
+                    cancelButtonText: "取消修改",
+                    type: "warning"
+                })
+                    .then(action => {
+                        this.$refs.elxEditable.clearActive();
+                        this.saveRowEvent(row);
+                    })
+                    .catch(action => {
+                        if (action === "cancel") {
+                            this.$refs.elxEditable.revert(row);
+                            this.$refs.elxEditable.clearActive();
+                        }
+                    })
+                    .then(() => {
+                        this.isClearActiveFlag = true;
+                    });
+            } else if (!row.id && this.primary == null) {
+                this.isClearActiveFlag = false;
+                MessageBox.confirm("该数据未保存，请确认操作?", "温馨提示", {
+                    distinguishCancelAndClose: true,
+                    confirmButtonText: "保存数据",
+                    cancelButtonText: "删除数据",
+                    type: "warning"
+                })
+                    .then(action => {
+                        this.$refs.elxEditable.clearActive();
+                        this.saveRowEvent(row);
+                    })
+                    .catch(action => {
+                        if (action === "cancel") {
+                            this.$refs.elxEditable.remove(row);
+                        }
+                    })
+                    .then(() => {
+                        this.isClearActiveFlag = true;
+                    });
             }
-          })
+            return this.isClearActiveFlag;
+        },
+        // 编辑处理
+        openActiveRowEvent(row) {
+            this.$nextTick(() => {
+                let activeInfo = this.$refs.elxEditable.getActiveRow();
+                if (activeInfo && activeInfo.isUpdate) {
+                    this.isClearActiveFlag = false;
+                    MessageBox.confirm(
+                        "检测到未保存的内容，请确认操作?",
+                        "温馨提示",
+                        {
+                            distinguishCancelAndClose: true,
+                            confirmButtonText: "保存数据",
+                            cancelButtonText: "取消修改",
+                            type: "warning"
+                        }
+                    )
+                        .then(() => {
+                            this.$refs.elxEditable.setActiveRow(row);
+                            this.primary = row.ID;
+                            //console.log(row.name);
+                            this.saveRowEvent(activeInfo.row);
+                        })
+                        .catch(action => {
+                            if (action === "cancel") {
+                                this.$refs.elxEditable.revert(activeInfo.row);
+                                this.$refs.elxEditable.setActiveRow(row);
+                            }
+                        })
+                        .then(() => {
+                            this.isClearActiveFlag = true;
+                        });
+                } else {
+                    this.$refs.elxEditable.setActiveRow(row);
+                    this.primary = row.ID;
+                    console.log(row.ID);
+                }
+            });
+        },
+        // 取消处理
+        cancelRowEvent(row) {
+            if (!row.id) {
+                this.isClearActiveFlag = false;
+                MessageBox.confirm("该数据未保存，是否移除?", "温馨提示", {
+                    distinguishCancelAndClose: true,
+                    confirmButtonText: "移除数据",
+                    cancelButtonText: "返回继续",
+                    type: "warning"
+                })
+                    .then(action => {
+                        if (action === "confirm") {
+                            this.$refs.elxEditable.remove(row);
+                        }
+                    })
+                    .catch(action => action)
+                    .then(() => {
+                        this.isClearActiveFlag = true;
+                    });
+            } else if (this.$refs.elxEditable.hasRowChange(row)) {
+                this.isClearActiveFlag = false;
+                MessageBox.confirm(
+                    "检测到未保存的内容，是否取消修改?",
+                    "温馨提示",
+                    {
+                        distinguishCancelAndClose: true,
+                        confirmButtonText: "取消修改",
+                        cancelButtonText: "返回继续",
+                        type: "warning"
+                    }
+                )
+                    .then(action => {
+                        this.$refs.elxEditable.clearActive();
+                        this.$refs.elxEditable.revert(row);
+                    })
+                    .catch(action => {
+                        if (action === "cancel") {
+                            this.$refs.elxEditable.setActiveRow(row);
+                        }
+                    })
+                    .then(() => {
+                        this.isClearActiveFlag = true;
+                    });
+            } else {
+                this.$refs.elxEditable.clearActive();
+            }
+        },
+        //删除某一行
+        removeEvent(row) {
+            if (row.status == "1") {
+                window.alert("发放中的贷款不能删除");
+                return;
+            }
+            this.$http
+                .post(
+                    "http://" + document.domain + ":5000/loan",
+                    {
+                        type: "Delete",
+                        primary: row.ID
+                    },
+                    {
+                        emulateJSON: true
+                    }
+                )
+                .then(function(response) {
+                    if (parseInt(response.body.code) === 200) {
+                        this.$refs.elxEditable.remove(row);
+                        console.log("Delete");
+                    } else {
+                        window.alert("删除失败");
+                    }
+                });
+        },
+        //保存对某一行的修改
+        saveRowEvent(row) {
+            this.$refs.elxEditable.validateRow(row, valid => {
+                if (valid && this.$refs.elxEditable.hasRowChange(row)) {
+                    //数据发生了修改，需要反馈给服务器
+                    this.$http
+                        .post(
+                            "http://" + document.domain + ":5000/loan",
+                            {
+                                type: "Update",
+                                ID: row.ID,
+                                bank: row.bank,
+                                customer: row.customer,
+                                amount: row.amount,
+                                status: row.status,
+                                old_primary: this.primary //null代表新增
+                            },
+                            {
+                                emulateJSON: true
+                            }
+                        )
+                        .then(function(response) {
+                            if (parseInt(response.body.code) === 200) {
+                                //更新合法
+                                this.primary = null;
+                                this.$refs.elxEditable.clearActive();
+                                console.log("Update");
+                            } else {
+                                window.alert("更新非法");
+                            }
+                        });
+                } else if (valid && !this.$refs.elxEditable.hasRowChange(row)) {
+                    //数据没有修改，不需要向服务器反馈
+                    this.primary = null;
+                    this.$refs.elxEditable.clearActive();
+                }
+            });
+        },
+        //导出CSV
+        exportCsvEvent() {
+            this.$refs.elxEditable.exportCsv();
+        },
+        //提交查询请求
+        submit() {
+            this.$http
+                .post(
+                    "http://" + document.domain + ":5000/loan",
+                    {
+                        type: "Search",
+                        idSearch: this.idSearch,
+                        bankSearch: this.bankSearch,
+                        statusSearch: this.statusSearch,
+                        custSearch: this.custSearch,
+                        upperBound: this.upperBound,
+                        lowerBound: this.lowerBound
+                    },
+                    {
+                        emulateJSON: true
+                    }
+                )
+                .then(function(response) {
+                    if (parseInt(response.body.code) === 200) {
+                        this.list = response.body.list;
+                    } else {
+                        window.alert("查询失败");
+                    }
+                });
+        },
+        //清空查询栏
+        reset() {
+            this.bankSearch = "";
+            this.idSearch = "";
+            this.statusSearch = "any";
+            this.custSearch = "";
+            this.upperBound = "";
+            this.lowerBound = "";
         }
-        else if (valid && !this.$refs.elxEditable.hasRowChange(row)){
-          //数据没有修改，不需要向服务器反馈
-          this.primary=null;
-          this.$refs.elxEditable.clearActive();
-        }
-      })
-    },
-    //导出CSV
-    exportCsvEvent () {
-      this.$refs.elxEditable.exportCsv()
-    },
-    //提交查询请求
-    submit(){
-      this.$http.post('http://' + document.domain + ':5000/loan', {
-        type: "Search",
-        idSearch: this.idSearch,
-        bankSearch: this.bankSearch,
-        statusSearch: this.statusSearch,
-        custSearch: this.custSearch,
-        upperBound: this.upperBound,
-        lowerBound: this.lowerBound
-      },{  
-        emulateJSON:true  
-      }).then(function (response) {
-        if (parseInt(response.body.code) === 200){
-          this.list=response.body.list;
-        }               
-        else {
-          window.alert("查询失败");
-        }
-      })
-    },
-    //清空查询栏
-    reset(){
-        this.bankSearch="";
-        this.idSearch="";
-        this.statusSearch="any";
-        this.custSearch="";
-        this.upperBound="";
-        this.lowerBound="";
     }
-  }
-}
+};
 </script>
 
 <style>
 .table {
     border: 2px solid #429fff; /* 表格边框 */
-    font-family: '汉仪南宫体简';
+    font-family: "汉仪南宫体简";
     font-size: 18px;
     border-collapse: collapse; /* 边框重叠 */
 }
 .table tr:hover {
-  background-color: #c4e4ff; /* 动态变色,IE6下无效！*/
+    background-color: #c4e4ff; /* 动态变色,IE6下无效！*/
 }
 .table caption {
-  padding-top: 3px;
-  padding-bottom: 2px;
-  font: bold 1.1em;
-  color: #ff00ff;
-  background-color: #f0f7ff;
-  border: 1px solid #429fff; /* 表格标题边框 */
+    padding-top: 3px;
+    padding-bottom: 2px;
+    font: bold 1.1em;
+    color: #ff00ff;
+    background-color: #f0f7ff;
+    border: 1px solid #429fff; /* 表格标题边框 */
 }
 .table th {
-  border: 1px solid #429fff; /* 行、列名称边框 */
-  background-color: #d2e8ff;
-  font-weight: bold;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 10px;
-  padding-right: 10px;
-  text-align: center;
+    border: 1px solid #429fff; /* 行、列名称边框 */
+    background-color: #d2e8ff;
+    font-weight: bold;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
 }
 .table td {
-  border: 1px solid #429fff; /* 单元格边框 */
-  text-align: center;
-  padding: 4px;
-  word-break: break-all;
+    border: 1px solid #429fff; /* 单元格边框 */
+    text-align: center;
+    padding: 4px;
+    word-break: break-all;
 }
 .button {
-  display: inline-block;
-  border-radius: 4px;
-  background-color: limegreen;
-  border: none;
-  color: #FFFFFF;
-  text-align: center;
-  font-size: 15px;
-  padding: 5px;
-  width: 80px;
-  transition: all 0.5s;
-  cursor: pointer;
-  margin: 5px;
+    display: inline-block;
+    border-radius: 4px;
+    background-color: limegreen;
+    border: none;
+    color: #ffffff;
+    text-align: center;
+    font-size: 15px;
+    padding: 5px;
+    width: 80px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
 }
 </style>
