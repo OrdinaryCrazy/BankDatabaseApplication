@@ -106,37 +106,13 @@
             "
             />&emsp;
 
-            <el-button
-                class="button"
-                size="small"
-                type="primary"
-                @click="submit()"
-                >查询</el-button
-            >
-            <el-button
-                class="button"
-                size="small"
-                type="primary"
-                @click="reset()"
-                >重置</el-button
-            >
+            <el-button class="button" size="small" type="primary" @click="submit()">查询</el-button>
+            <el-button class="button" size="small" type="primary" @click="reset()">重置</el-button>
         </div>
         <br />
         <div align="left">
-            <el-button
-                class="button"
-                type="success"
-                size="small"
-                @click="exportCsvEvent()"
-                >导出</el-button
-            >
-            <el-button
-                class="button"
-                type="success"
-                size="small"
-                @click="insertEvent()"
-                >开户</el-button
-            >
+            <el-button class="button" type="success" size="small" @click="exportCsvEvent()">导出</el-button>
+            <el-button class="button" type="success" size="small" @click="insertEvent()">开户</el-button>
         </div>
         <br /><br />
         <elx-editable
@@ -149,20 +125,9 @@
         >
             <elx-editable-column type="index" width="55"></elx-editable-column>
             <elx-editable-column prop="ID" label="账户号"></elx-editable-column>
-            <elx-editable-column
-                prop="owner"
-                label="户主"
-            ></elx-editable-column>
-            <elx-editable-column
-                prop="bank"
-                label="开户银行"
-                :edit-render="{ name: 'ElInput' }"
-            ></elx-editable-column>
-            <elx-editable-column
-                prop="money"
-                label="余额"
-                :edit-render="{ name: 'ElInputNumber' }"
-            ></elx-editable-column>
+            <elx-editable-column prop="owner" label="户主"></elx-editable-column>
+            <elx-editable-column prop="bank" label="开户银行" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+            <elx-editable-column prop="money" label="余额" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
             <elx-editable-column
                 prop="open_date"
                 label="开户日期"
@@ -179,61 +144,20 @@
                     props: { type: 'date', format: 'yyyy-MM-dd' }
                 }"
             ></elx-editable-column>
-            <elx-editable-column
-                prop="type"
-                label="账户类型"
-                :edit-render="{ name: 'ElSelect', options: typeList }"
-            ></elx-editable-column>
-            <elx-editable-column
-                prop="interest"
-                label="利率"
-                :edit-render="{ name: 'ElInputNumber' }"
-            ></elx-editable-column>
-            <elx-editable-column
-                prop="cashtype"
-                label="货币类型"
-                :edit-render="{ name: 'ElSelect', options: cashList }"
-            ></elx-editable-column>
-            <elx-editable-column
-                prop="overdraft"
-                label="透支额"
-                :edit-render="{ name: 'ElInputNumber' }"
-            ></elx-editable-column>
+            <elx-editable-column prop="type" label="账户类型" :edit-render="{ name: 'ElSelect', options: typeList }"></elx-editable-column>
+            <elx-editable-column prop="interest" label="利率" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
+            <elx-editable-column prop="cashtype" label="货币类型" :edit-render="{ name: 'ElSelect', options: cashList }"></elx-editable-column>
+            <elx-editable-column prop="overdraft" label="透支额" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
             <elx-editable-column label="操作" width="160">
                 <template v-slot="scope">
                     <template v-if="$refs.elxEditable.hasActiveRow(scope.row)">
-                        <el-button
-                            size="small"
-                            type="success"
-                            @click="saveRowEvent(scope.row)"
-                            >保存</el-button
-                        >
-                        <el-button
-                            size="small"
-                            type="warning"
-                            @click="cancelRowEvent(scope.row)"
-                            >取消</el-button
-                        >
+                        <el-button size="small" type="success" @click="saveRowEvent(scope.row)">保存</el-button>
+                        <el-button size="small" type="warning" @click="cancelRowEvent(scope.row)">取消</el-button>
                     </template>
                     <template v-else>
-                        <el-button
-                            size="small"
-                            type="primary"
-                            @click="openActiveRowEvent(scope.row)"
-                            >修改</el-button
-                        >
-                        <el-button
-                            size="small"
-                            type="danger"
-                            @click="removeEvent(scope.row)"
-                            >销户</el-button
-                        >
-                        <el-button
-                            size="small"
-                            type="primary"
-                            @click="updateOwner(scope.row)"
-                            >更改户主</el-button
-                        >
+                        <el-button size="small" type="primary" @click="openActiveRowEvent(scope.row)">修改</el-button>
+                        <el-button size="small" type="danger" @click="removeEvent(scope.row)">销户</el-button>
+                        <el-button size="small" type="primary" @click="updateOwner(scope.row)">更改户主</el-button>
                     </template>
                 </template>
             </elx-editable-column>
@@ -320,9 +244,7 @@ export default {
             return XEUtils.toDateString(cellValue, "yyyy-MM-dd HH:mm:ss");
         },
         clearActiveMethod({ type, row }) {
-            return this.isClearActiveFlag && type === "out"
-                ? this.checkOutSave(row)
-                : this.isClearActiveFlag;
+            return this.isClearActiveFlag && type === "out" ? this.checkOutSave(row) : this.isClearActiveFlag;
         },
         //新增记录
         insertEvent() {
@@ -403,16 +325,12 @@ export default {
                 let activeInfo = this.$refs.elxEditable.getActiveRow();
                 if (activeInfo && activeInfo.isUpdate) {
                     this.isClearActiveFlag = false;
-                    MessageBox.confirm(
-                        "检测到未保存的内容，请确认操作?",
-                        "温馨提示",
-                        {
-                            distinguishCancelAndClose: true,
-                            confirmButtonText: "保存数据",
-                            cancelButtonText: "取消修改",
-                            type: "warning"
-                        }
-                    )
+                    MessageBox.confirm("检测到未保存的内容，请确认操作?", "温馨提示", {
+                        distinguishCancelAndClose: true,
+                        confirmButtonText: "保存数据",
+                        cancelButtonText: "取消修改",
+                        type: "warning"
+                    })
                         .then(() => {
                             this.$refs.elxEditable.setActiveRow(row);
                             this.primary = row.ID;
@@ -456,16 +374,12 @@ export default {
                     });
             } else if (this.$refs.elxEditable.hasRowChange(row)) {
                 this.isClearActiveFlag = false;
-                MessageBox.confirm(
-                    "检测到未保存的内容，是否取消修改?",
-                    "温馨提示",
-                    {
-                        distinguishCancelAndClose: true,
-                        confirmButtonText: "取消修改",
-                        cancelButtonText: "返回继续",
-                        type: "warning"
-                    }
-                )
+                MessageBox.confirm("检测到未保存的内容，是否取消修改?", "温馨提示", {
+                    distinguishCancelAndClose: true,
+                    confirmButtonText: "取消修改",
+                    cancelButtonText: "返回继续",
+                    type: "warning"
+                })
                     .then(action => {
                         this.$refs.elxEditable.clearActive();
                         this.$refs.elxEditable.revert(row);
