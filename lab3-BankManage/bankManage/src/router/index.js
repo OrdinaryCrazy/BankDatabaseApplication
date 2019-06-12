@@ -10,20 +10,21 @@ import account from '@/views/account'
 import loan from '@/views/loan'
 import summary from '@/views/summary'
 
-const routers = [{
-  path: '/register',
-  name: 'Register',
-  component: register
+const routers = [
+{
+    path: '/register',
+    name: 'Register',
+    component: register
 },
 {
-  path: '/',
-  name: 'Login',
-  component: login
+    path: '/index',
+    name: 'Index',
+    component: index
 },
 {
-  path: '/index',
-  name: 'Index',
-  component: index
+    path: '/',
+    name: 'Login',
+    component: login
 },
 {
   path: '/bank',

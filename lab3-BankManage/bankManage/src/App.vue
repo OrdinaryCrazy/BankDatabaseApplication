@@ -7,16 +7,18 @@
 
 <template>
     <div id="app">
-        <router-view></Login></router-view>
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
 import Login from '@/views/login.vue'
+import Index from '@/views/index.vue'
 export default {
     name: 'App',
     components: {
-        Login
+        Login,
+        Index
     }
 }
 </script>

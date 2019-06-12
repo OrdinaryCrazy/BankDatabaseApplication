@@ -55,14 +55,14 @@
             "
     >&emsp;入职日期
     <input 
-      type="date" 
-      placeholder="下界" 
-      id="lowerBound"
-      v-model="lowerBound"
-      required=false
-      style=" width:200px;
-              font-family: 'Fira Code', '汉仪南宫体简';
-            "
+        type="date" 
+        placeholder="下界" 
+        id="lowerBound"
+        v-model="lowerBound"
+        required=false
+        style=  "   width:200px;
+                    font-family: 'Fira Code', '汉仪南宫体简';
+                "
     >~~
     <input 
       type="date" 

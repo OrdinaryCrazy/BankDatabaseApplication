@@ -5,61 +5,65 @@ from flask import make_response
 from flask_cors import *
 import json
 import time
-# import cx_Oracle
+import cx_Oracle
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
-
+#==============================================================================================
+# Oracle 数据字典化函数
 def makeDictFactory(cursor):
     columnNames = [d[0].lower() for d in cursor.description]
     def createRow(*args):
         return dict(zip(columnNames, args))
     return createRow
-
-
+#==============================================================================================
+# 登录 后台功能
 @app.route('/login', methods=['POST'])
 def login():
     username = request.form['username']
     password = request.form['password']
-    # print(username)
-    # print(password)
-    # connection = cx_Oracle.connect('System/db2019@localhost/ORCL')
-    # cursor = connection.cursor()
-    
-    # sqlcommand =    """
-                    # SELECT BANK_NAME AS username, BANK_PASS AS password 
-                    # FROM SUB_BANK
-                    # WHERE BANK_NAME = '""" + username + "'"
-    # print(sqlcommand)
-    # cursor.execute(sqlcommand)
-    # cursor.rowfactory = makeDictFactory(cursor)
-    # result = cursor.fetchone()
-    # print(result)
 
-    # cursor.close()
-    # connection.close()
-    if (1==1):
-    # if result and result['password'][:len(password)] == password:
+    connection = cx_Oracle.connect('System/db2019@localhost/ORCL')
+    cursor = connection.cursor()
+    
+    sqlcommand =    """
+                    SELECT BANK_NAME AS username, BANK_PASS AS password 
+                    FROM SUB_BANK
+                    WHERE BANK_NAME = '""" + username + "'"
+
+    cursor.execute(sqlcommand)
+    # 使读取的 Oracle 数据字典化
+    cursor.rowfactory = makeDictFactory(cursor)
+    result = cursor.fetchone()
+
+
+    cursor.close()
+    connection.close()
+    # 登录成功
+    if result and len(password) > 0 and result['password'][:len(password)] == password :
+        # print("登录成功")
         response = make_response(jsonify({    
                                             'code':200,
                                             'msg':'get',
                                             'token':username
                                         })
                                     )
-        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Origin']  = '*'
         response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
         response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
         return response
+    # 登陆失败
     response = make_response(jsonify({    
                                         'code':400,
                                         'msg':'error'
                                     })
                                 )
-    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Origin']  = '*'
     response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
     response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
     return response
-
+#==============================================================================================
+# 注册 后台功能
 @app.route('/register',methods=['POST','OPTIONS'])
 def register():
     username=request.form['username']

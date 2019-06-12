@@ -6,8 +6,6 @@ import Vue from 'vue'
 import App from './App'/* 引入组件 */
 import VueRouter from 'vue-router'
 import routers from './router/index.js'
-// import http from 'http'
-// Vue.prototype.$http = http
 import Elements from 'element-ui'
 import VueElementExtends from 'vue-element-extends'
 import 'vue-element-extends/lib/index.css'
