@@ -2,9 +2,9 @@
     <form validate onSubmit="return false">
         <h1>注册界面</h1>       
             <label > 账户类型 &nbsp;&nbsp;&nbsp;</label>
-            <input type="radio" name='type' v-model="type" value="管理" required=true>管理账户&emsp;
-            <input type="radio" name='type' v-model="type" value="支行" required=true>支行账户&emsp;
-            <input type="radio" name='type' v-model="type" value="客户" required=true>客户账户&nbsp;
+            <input type="radio" name='type' v-model="type" value="SUB_BANK" required=true>管理账户&emsp;
+            <input type="radio" name='type' v-model="type" value="EMPLOYEE" required=true>员工账户&emsp;
+            <input type="radio" name='type' v-model="type" value="CUSTOMER" required=true>客户账户&nbsp;
         <br/><br/>
         <label for="username">用&nbsp;&nbsp;户&nbsp;&nbsp;名&emsp;</label>
         <input 

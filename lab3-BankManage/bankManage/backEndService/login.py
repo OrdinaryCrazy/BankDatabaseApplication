@@ -7,7 +7,10 @@ import json
 import time
 import cx_Oracle
 
+from register import register_api
+
 app = Flask(__name__)
+app.register_blueprint(register_api)
 CORS(app, supports_credentials=True)
 #==============================================================================================
 # Oracle 数据字典化函数
@@ -22,15 +25,30 @@ def makeDictFactory(cursor):
 def login():
     username = request.form['username']
     password = request.form['password']
+    custype  = request.form['custype']
+    print(username)
+    print(password)
+    print(custype)
 
     connection = cx_Oracle.connect('System/db2019@localhost/ORCL')
     cursor = connection.cursor()
-    
-    sqlcommand =    """
-                    SELECT BANK_NAME AS username, BANK_PASS AS password 
-                    FROM SUB_BANK
-                    WHERE BANK_NAME = '""" + username + "'"
-
+    sqlcommand = ""
+    if custype == "SUB_BANK" :
+        sqlcommand =    """
+                        SELECT BANK_NAME AS username, BANK_PASS AS password 
+                        FROM SUB_BANK
+                        WHERE BANK_NAME = '""" + username + "'"
+    elif custype == "EMPLOYEE":
+        sqlcommand =    """
+                        SELECT EMPLOYEE_ID AS username, EMPLOYEE_PASS AS password 
+                        FROM EMPLOYEE
+                        WHERE EMPLOYEE_ID = '""" + username + "'"
+    else :
+        sqlcommand =    """
+                        SELECT CUSTOMER_ID AS username, CUSTOMER_PASS AS password 
+                        FROM CUSTOMER
+                        WHERE CUSTOMER_ID = '""" + username + "'"
+    print(sqlcommand)
     cursor.execute(sqlcommand)
     # 使读取的 Oracle 数据字典化
     cursor.rowfactory = makeDictFactory(cursor)
@@ -63,26 +81,7 @@ def login():
     response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
     return response
 #==============================================================================================
-# 注册 后台功能
-@app.route('/register',methods=['POST','OPTIONS'])
-def register():
-    username=request.form['username']
-    password=request.form['password']
-    account_type=request.form['type']
-    print(username)
-    print(password)
-    print(account_type)
-    # ToDo: 实现数据库操作,并丰富响应报文类型，如用户名已存在，或者其他错误
-    response = make_response(jsonify({    
-                                        'code':200,
-                                        'msg':'ok'
-                                    })
-                                )
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
-    response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
-    return response
-
+# 支行管理 后台功能
 @app.route('/bank',methods=['POST'])
 def bank():
     rstype=request.form['type']

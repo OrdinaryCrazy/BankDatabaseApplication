@@ -14,9 +14,9 @@ DROP TABLE EMPLOYEE_CUSTOMER        CASCADE CONSTRAINTS;
 CREATE TABLE SUB_BANK (
     BANK_NAME   CHAR(50)    CONSTRAINT BAMK_PK PRIMARY KEY,
     CITY        CHAR(50),
-    POSSESSION  FLOAT,
+    POSSESSION  FLOAT       DEFAULT 0.0,
 ------------------------------------------------
-    BANK_PASS   CHAR(6)
+    BANK_PASS   CHAR(10)
 );
 /*==============================================================*/
 /* 用户表 */
@@ -30,7 +30,7 @@ CREATE TABLE CUSTOMER (
     CUSTOMER_CONTACT_EMAIL      CHAR(64),
     CUSTOMER_CONTACT_RELATION   CHAR(32),
 ------------------------------------------------
-    CUSTOMER_PASS               CHAR(6)
+    CUSTOMER_PASS               CHAR(10)
 );
 /*==============================================================*/
 /* 用户表 */
@@ -43,7 +43,7 @@ CREATE TABLE EMPLOYEE (
     EMPLOYEE_ENTERDATE  DATE,
     EMPLOYEE_LEADER     NUMBER(6),  /* 不是领导就是NULL */
 ------------------------------------------------
-    EMPLOYEE_PASS       CHAR(6),
+    EMPLOYEE_PASS       CHAR(10),
 ------------------------------------------------
     CONSTRAINT LEADER_UQ    UNIQUE(EMPLOYEE_LEADER)
 );
@@ -56,7 +56,7 @@ CREATE TABLE CHECK_ACCOUNT (
     CHECK_ACCOUNT_INTERESTRATE  FLOAT,
     CHECK_ACCOUNT_CURRENCYTYPE  CHAR(16),
 ------------------------------------------------
-    CHECK_ACCOUNT_PASS          CHAR(6)
+    CHECK_ACCOUNT_PASS          CHAR(10)
 );
 /*==============================================================*/
 /* 存储账户表 */
@@ -67,7 +67,7 @@ CREATE TABLE DEPOSIT_ACCOUNT (
     DEPOSIT_ACCOUNT_INTERESTRATE    FLOAT,
     DEPOSIT_ACCOUNT_CURRENCYTYPE    CHAR(16),
 ------------------------------------------------
-    DEPOSIT_ACCOUNT_PASS            CHAR(6)
+    DEPOSIT_ACCOUNT_PASS            CHAR(10)
 );
 /*==============================================================*/
 /* 贷款表 */

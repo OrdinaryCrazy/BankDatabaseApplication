@@ -5,10 +5,10 @@
         <h1>登录界面</h1>
     <!--======================================================================-->
         <label for="custype"> 登录类型 </label>
-            <select id = "custype">
+            <select id = "custype" v-model="custype">
                 <option value="SUB_BANK"> 管理 </option>
                 <option value="EMPLOYEE"> 支行 </option>
-                <option value="CUSTOMER"> 员工 </option>
+                <!-- <option value="CUSTOMER"> 员工 </option> -->
                 <option value="CUSTOMER"> 客户 </option>
             </select>
     <!--======================================================================-->
