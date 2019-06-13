@@ -111,11 +111,14 @@
         </div>
         <br />
         <p style="color: red;font-size: 24px;" align="left">账户信息表</p>
+
         <div align="left">
             <el-button class="button" type="success" size="small" @click="exportCsvEvent()">导出</el-button>
             <el-button class="button" type="success" size="small" @click="insertEvent()">开户</el-button>
+            <font style="color: red" align="left">注：账户号不允许修改</font>
         </div>
-        <br /><br />
+        <br />
+
         <elx-editable
             ref="elxEditable"
             class="table"
@@ -127,7 +130,7 @@
         >
             <elx-editable-column type="index" width="55"></elx-editable-column>
             <elx-editable-column prop="ID" label="账户号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
-            <elx-editable-column prop="owner" label="户主"></elx-editable-column>
+            <!--<elx-editable-column prop="owner" label="户主"></elx-editable-column> -->
             <elx-editable-column prop="bank" label="开户银行" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="money" label="余额" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
             <elx-editable-column
@@ -159,46 +162,45 @@
                     <template v-else>
                         <el-button size="small" type="primary" @click="openActiveRowEvent(scope.row)">修改</el-button>
                         <el-button size="small" type="danger" @click="removeEvent(scope.row)">销户</el-button>
-                        <el-button size="small" type="primary" @click="updateOwner(scope.row)">更改户主</el-button>
+                        <el-button size="small" type="primary" @click="showDetail(scope.row)">查看户主</el-button>
                     </template>
                 </template>
             </elx-editable-column>
         </elx-editable>
         <div v-if="showlink">
-            <br />
             <p style="color: red;font-size: 24px;" align="left">
-                客户联系表
+                户主信息表
                 <el-button class="button" type="success" size="small" @click="showlink = false">关闭</el-button>
             </p>
             <div align="left">
-                <el-button class="button" type="success" size="small" @click="insertEvent('elxEditable2')">新增</el-button>
-                <el-button class="button" type="success" size="small" @click="exportCsvEvent('elxEditable2')">导出</el-button>
+                新增户主
+                <input
+                    type="text"
+                    min="0"
+                    placeholder="身份证号"
+                    id="newOwner"
+                    v-model="newOwner"
+                    required="false"
+                    style=" width:100px;font-family: 'Fira Code', '汉仪南宫体简';"
+                />
+                <el-button class="button" type="success" size="small" @click="addOwner()">提交</el-button>
             </div>
-            <br />
             <elx-editable
                 ref="elxEditable2"
                 class="table"
                 border
-                :data.sync="linklist"
+                :data.sync="ownerlist"
                 :edit-config="{ trigger: 'manual', mode: 'row', clearActiveMethod: clearActiveMethod2 }"
                 style="width: 100%"
             >
                 <elx-editable-column type="index" width="55"></elx-editable-column>
-                <elx-editable-column prop="staffID" label="员工身份证号"></elx-editable-column>
-                <elx-editable-column prop="staffName" label="员工姓名"></elx-editable-column>
-                <elx-editable-column prop="ID" label="客户身份证号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
-                <elx-editable-column prop="name" label="客户姓名"></elx-editable-column>
-                <elx-editable-column prop="type" label="与客户关系" :edit-render="{ name: 'ElSelect', options: serviceList }"></elx-editable-column>
+                <elx-editable-column prop="ID" label="账户号"></elx-editable-column>
+                <elx-editable-column prop="bank" label="开户银行"></elx-editable-column>
+                <elx-editable-column prop="ownerID" label="户主身份证号"></elx-editable-column>
+                <elx-editable-column prop="ownerName" label="户主姓名"></elx-editable-column>
                 <elx-editable-column label="操作" width="160">
-                    <template v-slot="newscope">
-                        <template v-if="$refs.elxEditable2.hasActiveRow(newscope.row)">
-                            <el-button size="small" type="success" @click="saveRowEvent('elxEditable2', newscope.row)">保存</el-button>
-                            <el-button size="small" type="warning" @click="cancelRowEvent('elxEditable2', newscope.row)">取消</el-button>
-                        </template>
-                        <template v-else>
-                            <el-button size="small" type="primary" @click="openActiveRowEvent('elxEditable2', newscope.row)">编辑</el-button>
-                            <el-button size="small" type="danger" @click="removeEvent('elxEditable2', newscope.row)">删除</el-button>
-                        </template>
+                    <template v-slot="scope">
+                        <el-button size="small" type="dangerous" @click="removeOwner(scope.row)">删除</el-button>
                     </template>
                 </elx-editable-column>
             </elx-editable>
@@ -214,6 +216,10 @@ export default {
     data() {
         return {
             loading: false,
+            showlink: false,
+            newOwner: "",
+            detail: "",
+            ownerlist: [],
             list: [],
             typeList: [
                 {
@@ -280,11 +286,14 @@ export default {
             ];
             this.loading = false;
         },
+        clearActiveMethod2({ type, row, rowIndex }) {
+            return false;
+        },
         formatterDate(row, column, cellValue, index) {
             return XEUtils.toDateString(cellValue, "yyyy-MM-dd HH:mm:ss");
         },
         clearActiveMethod({ type, row }) {
-            return this.isClearActiveFlag && type === "out" ? this.checkOutSave(row) : this.isClearActiveFlag;
+            return false;
         },
         //新增记录
         insertEvent() {
@@ -311,53 +320,6 @@ export default {
                         this.$refs.elxEditable.setActiveRow(row);
                     });
             }
-        },
-        // 点击表格外面处理
-        checkOutSave(row) {
-            if (!row.id && this.primary != null) {
-                console.log("1");
-                this.isClearActiveFlag = false;
-                MessageBox.confirm("该数据未保存，请确认操作?", "温馨提示", {
-                    distinguishCancelAndClose: true,
-                    confirmButtonText: "保存数据",
-                    cancelButtonText: "取消修改",
-                    type: "warning"
-                })
-                    .then(action => {
-                        this.$refs.elxEditable.clearActive();
-                        this.saveRowEvent(row);
-                    })
-                    .catch(action => {
-                        if (action === "cancel") {
-                            this.$refs.elxEditable.revert(row);
-                            this.$refs.elxEditable.clearActive();
-                        }
-                    })
-                    .then(() => {
-                        this.isClearActiveFlag = true;
-                    });
-            } else if (!row.id && this.primary == null) {
-                this.isClearActiveFlag = false;
-                MessageBox.confirm("该数据未保存，请确认操作?", "温馨提示", {
-                    distinguishCancelAndClose: true,
-                    confirmButtonText: "保存数据",
-                    cancelButtonText: "删除数据",
-                    type: "warning"
-                })
-                    .then(action => {
-                        this.$refs.elxEditable.clearActive();
-                        this.saveRowEvent(row);
-                    })
-                    .catch(action => {
-                        if (action === "cancel") {
-                            this.$refs.elxEditable.remove(row);
-                        }
-                    })
-                    .then(() => {
-                        this.isClearActiveFlag = true;
-                    });
-            }
-            return this.isClearActiveFlag;
         },
         // 编辑处理
         openActiveRowEvent(row) {
@@ -409,6 +371,7 @@ export default {
                         if (this.primary == null) {
                             this.$refs.elxEditable.remove(row);
                         }
+                        this.primary=null;
                     }
                 })
                 .catch(action => action)
@@ -540,7 +503,86 @@ export default {
             this.visit_lo = "";
             this.visit_up = "";
         },
-        updateOwner(row) {}
+
+        addOwner() {
+            if (this.newOwner == "") {
+                return;
+            }
+            this.$http
+                .post(
+                    "http://" + document.domain + ":5000/accountCustomer",
+                    {
+                        type: "Insert",
+                        accID: this.detail.ID,
+                        bank: this.detail.bank,
+                        ownerID: this.newOwner
+                    },
+                    {
+                        emulateJSON: true
+                    }
+                )
+                .then(function(response) {
+                    if (parseInt(response.body.code) === 200) {
+                        this.ownerlist.push(response.body.record);
+                    } else {
+                        window.alert("查询失败");
+                    }
+                });
+        },
+        removeOwner(row) {
+            this.$http
+                .post(
+                    "http://" + document.domain + ":5000/accountCustomer",
+                    {
+                        type: "Delete",
+                        accID: this.detail.ID,
+                        bank: this.detail.bank,
+                        ownerID: row.ownerID
+                    },
+                    {
+                        emulateJSON: true
+                    }
+                )
+                .then(function(response) {
+                    if (parseInt(response.body.code) === 200) {
+                        this.$refs.elxEditable2.remove(row);
+                    } else {
+                        window.alert("删除失败");
+                    }
+                });
+        },
+        searchOwner(row) {
+            this.$http
+                .post(
+                    "http://" + document.domain + ":5000/accountCustomer",
+                    {
+                        type: "Search",
+                        accID: this.detail.ID,
+                        bank: row.bank
+                    },
+                    {
+                        emulateJSON: true
+                    }
+                )
+                .then(function(response) {
+                    if (parseInt(response.body.code) === 200) {
+                        this.ownerlist = response.body.list;
+                        for (var i = 0; i < this.ownerlist.length; i++) {
+                            this.ownerlist[i].ID = row.ID;
+                            this.ownerlist[i].bank = row.bank;
+                        }
+                    } else {
+                        window.alert("查询失败");
+                    }
+                });
+        },
+        showDetail(row) {
+            this.showlink = true;
+            this.detail = row;
+            console.log("update");
+            console.log(row.ID);
+            this.searchOwner(row);
+        }
     }
 };
 </script>

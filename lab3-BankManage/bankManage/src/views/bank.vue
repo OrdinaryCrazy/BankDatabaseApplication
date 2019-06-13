@@ -116,7 +116,7 @@ export default {
             return XEUtils.toDateString(cellValue, "yyyy-MM-dd HH:mm:ss");
         },
         clearActiveMethod({ type, row }) {
-            return this.isClearActiveFlag && type === "out" ? this.checkOutSave(row) : this.isClearActiveFlag;
+            return false;
         },
         //新增记录
         insertEvent() {
@@ -136,53 +136,6 @@ export default {
                         this.$refs.elxEditable.setActiveRow(row);
                     });
             }
-        },
-        // 点击表格外面处理
-        checkOutSave(row) {
-            if (!row.id && this.primary != null) {
-                console.log("1");
-                this.isClearActiveFlag = false;
-                MessageBox.confirm("该数据未保存，请确认操作?", "温馨提示", {
-                    distinguishCancelAndClose: true,
-                    confirmButtonText: "保存数据",
-                    cancelButtonText: "取消修改",
-                    type: "warning"
-                })
-                    .then(action => {
-                        this.$refs.elxEditable.clearActive();
-                        this.saveRowEvent(row);
-                    })
-                    .catch(action => {
-                        if (action === "cancel") {
-                            this.$refs.elxEditable.revert(row);
-                            this.$refs.elxEditable.clearActive();
-                        }
-                    })
-                    .then(() => {
-                        this.isClearActiveFlag = true;
-                    });
-            } else if (!row.id && this.primary == null) {
-                this.isClearActiveFlag = false;
-                MessageBox.confirm("该数据未保存，请确认操作?", "温馨提示", {
-                    distinguishCancelAndClose: true,
-                    confirmButtonText: "保存数据",
-                    cancelButtonText: "删除数据",
-                    type: "warning"
-                })
-                    .then(action => {
-                        this.$refs.elxEditable.clearActive();
-                        this.saveRowEvent(row);
-                    })
-                    .catch(action => {
-                        if (action === "cancel") {
-                            this.$refs.elxEditable.remove(row);
-                        }
-                    })
-                    .then(() => {
-                        this.isClearActiveFlag = true;
-                    });
-            }
-            return this.isClearActiveFlag;
         },
         // 编辑处理
         openActiveRowEvent(row) {
@@ -220,46 +173,29 @@ export default {
         },
         // 取消处理
         cancelRowEvent(row) {
-            if (!row.id) {
-                this.isClearActiveFlag = false;
-                MessageBox.confirm("该数据未保存，是否移除?", "温馨提示", {
-                    distinguishCancelAndClose: true,
-                    confirmButtonText: "移除数据",
-                    cancelButtonText: "返回继续",
-                    type: "warning"
+            this.isClearActiveFlag = false;
+            MessageBox.confirm("检测到未保存的内容，是否取消修改?", "温馨提示", {
+                distinguishCancelAndClose: true,
+                confirmButtonText: "取消修改",
+                cancelButtonText: "返回继续",
+                type: "warning"
+            })
+                .then(action => {
+                    this.$refs.elxEditable.clearActive();
+                    this.$refs.elxEditable.revert(row);
+                    if (this.primary == null) {
+                        this.$refs.elxEditable.remove(row);
+                    }
+                    this.primary = null;
                 })
-                    .then(action => {
-                        if (action === "confirm") {
-                            this.$refs.elxEditable.remove(row);
-                        }
-                    })
-                    .catch(action => action)
-                    .then(() => {
-                        this.isClearActiveFlag = true;
-                    });
-            } else if (this.$refs.elxEditable.hasRowChange(row)) {
-                this.isClearActiveFlag = false;
-                MessageBox.confirm("检测到未保存的内容，是否取消修改?", "温馨提示", {
-                    distinguishCancelAndClose: true,
-                    confirmButtonText: "取消修改",
-                    cancelButtonText: "返回继续",
-                    type: "warning"
+                .catch(action => {
+                    if (action === "cancel") {
+                        this.$refs.elxEditable.setActiveRow(row);
+                    }
                 })
-                    .then(action => {
-                        this.$refs.elxEditable.clearActive();
-                        this.$refs.elxEditable.revert(row);
-                    })
-                    .catch(action => {
-                        if (action === "cancel") {
-                            this.$refs.elxEditable.setActiveRow(row);
-                        }
-                    })
-                    .then(() => {
-                        this.isClearActiveFlag = true;
-                    });
-            } else {
-                this.$refs.elxEditable.clearActive();
-            }
+                .then(() => {
+                    this.isClearActiveFlag = true;
+                });
         },
         //删除某一行
         removeEvent(row) {
@@ -365,6 +301,8 @@ export default {
     font-family: "汉仪南宫体简";
     font-size: 18px;
     border-collapse: collapse; /* 边框重叠 */
+    overflow-x: auto;
+    overflow-y: auto;
 }
 .table tr:hover {
     background-color: #c4e4ff; /* 动态变色,IE6下无效！*/

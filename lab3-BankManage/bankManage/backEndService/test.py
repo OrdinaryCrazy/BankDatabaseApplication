@@ -132,11 +132,11 @@ def staff():
 @app.route('/staffCustomer',methods=['POST'])
 def staffCustomer():
     rstype=request.form['type']
-    staffID=request.form['staffID'] # 员工身份证号，用于查询和修改、删除
-    custID=request.form['custID'] # 客户身份证号，用于修改、删除
-    serviceType=request.form['serviceType'] # 服务类型，用于修改
-    old_custID=request.form['old_custID'] # 旧的客户身份证号，用于修改，null代表新增
-    old_staffID=request.form['old_staffID'] # 旧的员工身份证号，用于修改
+    # staffID=request.form['staffID'] # 员工身份证号，用于查询和修改、删除
+    # custID=request.form['custID'] # 客户身份证号，用于修改、删除
+    # serviceType=request.form['serviceType'] # 服务类型，用于修改
+    # old_custID=request.form['old_custID'] # 旧的客户身份证号，用于修改，null代表新增
+    # old_staffID=request.form['old_staffID'] # 旧的员工身份证号，用于修改
     if (rstype=="Search"):
         # Todo: 实现数据库操作，返回查询的结果
         print('Search')
@@ -179,11 +179,10 @@ def staffCustomer():
 
 @app.route('/pay',methods=['POST'])
 def pay():
-    
     rstype=request.form['type']
-    id=request.form['loanID'] # 贷款号，用于查询和新增支付记录
-    date=request.form['date'] # 支付日期，用于新增记录
-    money=request.form['money'] # 支付金额，用于新增记录
+    # id=request.form['loanID'] # 贷款号，用于查询和新增支付记录
+    # date=request.form['date'] # 支付日期，用于新增记录
+    # money=request.form['money'] # 支付金额，用于新增记录
 
     if (rstype=="Search"):
         # Todo: 实现数据库操作，返回查询的结果
@@ -204,6 +203,57 @@ def pay():
     if (rstype=="Insert"):
         # Todo: 实现数据库操作，修改或新增记录
         print('Insert')
+        response = make_response(jsonify({    
+                                        'code':200,
+                                        'msg': 'ok'
+                                        })
+                                )
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+        return response
+
+@app.route('/accountCustomer',methods=['POST'])
+def accountCustomer():   
+    rstype=request.form['type']
+    # id=request.form['accID'] # 账户号，用于查询和新增户主
+    # bank=request.form['bank'] # 开户银行
+    # ownerID=request.form['ownerID'] # 户主身份证号，用于新增记录
+    print(rstype)
+    if (rstype=="Search"):
+        # Todo: 实现数据库操作，返回查询的结果
+        print('Search')
+        response = make_response(jsonify({    
+                                        'code':200,
+                                        'list':[
+                                            {'ownerID':'11111','ownerName':'柳树'},
+                                            {'ownerID':'11112','ownerName':'杨树'},
+                                            {'ownerID':'11222','ownerName':'柏树'}
+                                        ]
+                                    })
+                                )
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+        return response
+    if (rstype=="Insert"):
+        # Todo: 实现数据库操作，新增记录
+        print('Insert')
+        id=request.form['accID'] # 账户号，用于查询和新增户主
+        bank=request.form['bank'] # 开户银行
+        ownerID=request.form['ownerID'] # 户主身份证号，用于新增记录
+        response = make_response(jsonify({    
+                                        'code':200,
+                                        'record': {'ID':id,'bank':bank,'ownerID':ownerID,'ownerName':'王五'}
+                                        })
+                                )
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+        return response
+    if (rstype=="Delete"):
+        # Todo: 实现数据库操作，删除记录
+        print('Delete')
         response = make_response(jsonify({    
                                         'code':200,
                                         'msg': 'ok'
@@ -317,9 +367,9 @@ def loan():
         response = make_response(jsonify({    
                                         'code':200,
                                         'list':[
-                                            {'ID': "123000",'customer': "张三",'bank': "合肥支行",'amount':2563.00,'status':'1'},
-                                            {'ID': "123001",'customer': "李四",'bank': "合肥支行",'amount':252263.00,'status':'0'},
-                                            {'ID': "123023",'customer': "王五",'bank': "合肥支行",'amount':25.00,'status':'2'}
+                                            {'ID': "123000",'customer': "10000 张三",'bank': "合肥支行",'amount':2563.00,'status':'未开始发放'},
+                                            {'ID': "123001",'customer': "10001 李四",'bank': "合肥支行",'amount':252263.00,'status':'发放中'},
+                                            {'ID': "123023",'customer': "10002 王五",'bank': "合肥支行",'amount':25.00,'status':'已全部发放'}
                                         ]
                                     })
                                 )
@@ -328,11 +378,11 @@ def loan():
         response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
         return response
     if (rstype=="Update"):
-        # Todo: 实现数据库操作，修改或新增记录
+        # Todo: 实现数据库操作，新增记录，注意customer字段是所有贷款人的身份证号，使用英文逗号分隔，建议使用事务发放贷款
         print('Update')
         response = make_response(jsonify({    
                                         'code':200,
-                                        'msg': 'ok'
+                                        'customer': '10000 张三\n10001 李四\n10002 王五'
                                         })
                                 )
         response.headers['Access-Control-Allow-Origin'] = '*'

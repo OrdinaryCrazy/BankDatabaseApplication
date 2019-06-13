@@ -307,7 +307,7 @@ export default {
                         this.linklist = response.body.list;
                         for (var i = 0; i < this.linklist.length; i++) {
                             this.linklist[i].staffName = row.name;
-                            this.linklist[i].staffID=row.ID;
+                            this.linklist[i].staffID = row.ID;
                         }
                     } else {
                         window.alert("查询失败");
@@ -327,13 +327,13 @@ export default {
                     type: "warning"
                 })
                     .then(() => {
-                        this.$refs[name].clearActive();
                         this.saveRowEvent(name, row);
                     })
                     .catch(action => {
                         if (action === "cancel") {
                             this.$refs[name].revert(row);
                             this.$refs[name].clearActive();
+                            this.primary = null;
                             Message({ message: "放弃修改并离开当前行", type: "warning" });
                         } else {
                             this.$refs[name].setActiveRow(row);
@@ -344,6 +344,8 @@ export default {
                         this.isClearActiveFlag = true;
                     });
                 return false;
+            } else {
+                this.primary = null;
             }
             return this.isClearActiveFlag;
         },
@@ -482,7 +484,7 @@ export default {
                                     {
                                         type: "Update",
                                         custID: row.ID,
-                                        staffID: row.staffID,//该字段是不变的
+                                        staffID: row.staffID, //该字段是不变的
                                         serviceType: row.type,
                                         old_custID: this.primary, //null代表新增，这是旧的客户身份证号
                                         old_staffID: row.staffID
@@ -504,6 +506,9 @@ export default {
                                 });
                             break;
                     }
+                } else if (valid) {
+                    this.$refs[name].clearActive();
+                    this.primary = null;
                 }
             });
         },
@@ -521,9 +526,10 @@ export default {
                         if (action === "confirm") {
                             this.$refs[name].clearActive();
                             this.$refs[name].revert(row);
-                            if (this.primary==null){
+                            if (this.primary == null) {
                                 this.$refs[name].remove(row);
                             }
+                            this.primary = null;
                         } else {
                             this.$refs[name].setActiveRow(row);
                         }
@@ -534,6 +540,7 @@ export default {
                     });
             } else {
                 this.$refs[name].clearActive();
+                this.primary = null;
             }
         }
     }
@@ -546,6 +553,8 @@ export default {
     font-family: "汉仪南宫体简";
     font-size: 18px;
     max-height: 500px;
+    overflow-x: auto;
+    overflow-y: auto;
     border-collapse: collapse; /* 边框重叠 */
 }
 .table tr:hover {
