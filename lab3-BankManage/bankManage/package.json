@@ -14,8 +14,13 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+<<<<<<< HEAD
     "ajv": "^6.10.0",
     "element-ui": "^2.9.1",
+=======
+    "element-ui": "^2.9.1",
+    "style-loader": "^0.23.1",
+>>>>>>> bcd826c1ceb67dd461d1257f37759d2a038fe022
     "vue": "^2.5.2",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",

@@ -102,9 +102,9 @@
 </template>
 
 <script>
-import XEUtils from 'xe-utils'
-import XEAjax from 'xe-ajax'
-import { MessageBox, Message } from 'element-ui'
+import XEUtils from "xe-utils";
+import XEAjax from "xe-ajax";
+import { MessageBox, Message } from "element-ui";
 export default {
     data () {
         return {
