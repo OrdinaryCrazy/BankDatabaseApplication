@@ -74,37 +74,13 @@
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;
-            <el-button
-                class="button"
-                size="small"
-                type="primary"
-                @click="submit()"
-                >查询</el-button
-            >
-            <el-button
-                class="button"
-                size="small"
-                type="primary"
-                @click="reset()"
-                >重置</el-button
-            >
+            <el-button class="button" size="small" type="primary" @click="submit()">查询</el-button>
+            <el-button class="button" size="small" type="primary" @click="reset()">重置</el-button>
         </div>
         <br />
         <div align="left">
-            <el-button
-                class="button"
-                type="success"
-                size="small"
-                @click="insertEvent()"
-                >新增</el-button
-            >
-            <el-button
-                class="button"
-                type="success"
-                size="small"
-                @click="exportCsvEvent()"
-                >导出</el-button
-            >
+            <el-button class="button" type="success" size="small" @click="insertEvent()">新增</el-button>
+            <el-button class="button" type="success" size="small" @click="exportCsvEvent()">导出</el-button>
         </div>
         <br /><br />
         <elx-editable
@@ -116,77 +92,23 @@
             style="width: 100%"
         >
             <elx-editable-column type="index" width="55"></elx-editable-column>
-            <elx-editable-column
-                prop="ID"
-                label="身份证号"
-                width="210"
-                :edit-render="{ name: 'ElInput' }"
-            ></elx-editable-column>
-            <elx-editable-column
-                prop="name"
-                label="姓名"
-                :edit-render="{ name: 'ElInput' }"
-            ></elx-editable-column>
-            <elx-editable-column
-                prop="tel"
-                label="联系电话"
-                :edit-render="{ name: 'ElInput' }"
-            ></elx-editable-column>
-            <elx-editable-column
-                prop="addr"
-                label="家庭住址"
-                :edit-render="{ name: 'ElInput' }"
-            ></elx-editable-column>
-            <elx-editable-column
-                prop="name_link"
-                label="联系人姓名"
-                :edit-render="{ name: 'ElInput' }"
-            ></elx-editable-column>
-            <elx-editable-column
-                prop="tel_link"
-                label="联系人手机号"
-                :edit-render="{ name: 'ElInput' }"
-            ></elx-editable-column>
-            <elx-editable-column
-                prop="email_link"
-                label="联系人Email"
-                width="200"
-                :edit-render="{ name: 'ElInput' }"
-            ></elx-editable-column>
-            <elx-editable-column
-                prop="relation"
-                label="联系人与客户关系"
-                :edit-render="{ name: 'ElInput' }"
-            ></elx-editable-column>
+            <elx-editable-column prop="ID" label="身份证号" width="210" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+            <elx-editable-column prop="name" label="姓名" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+            <elx-editable-column prop="tel" label="联系电话" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+            <elx-editable-column prop="addr" label="家庭住址" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+            <elx-editable-column prop="name_link" label="联系人姓名" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+            <elx-editable-column prop="tel_link" label="联系人手机号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+            <elx-editable-column prop="email_link" label="联系人Email" width="200" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+            <elx-editable-column prop="relation" label="联系人与客户关系" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column label="操作" width="160">
                 <template v-slot="scope">
                     <template v-if="$refs.elxEditable.hasActiveRow(scope.row)">
-                        <el-button
-                            size="small"
-                            type="success"
-                            @click="saveRowEvent(scope.row)"
-                            >保存</el-button
-                        >
-                        <el-button
-                            size="small"
-                            type="warning"
-                            @click="cancelRowEvent(scope.row)"
-                            >取消</el-button
-                        >
+                        <el-button size="small" type="success" @click="saveRowEvent(scope.row)">保存</el-button>
+                        <el-button size="small" type="warning" @click="cancelRowEvent(scope.row)">取消</el-button>
                     </template>
                     <template v-else>
-                        <el-button
-                            size="small"
-                            type="primary"
-                            @click="openActiveRowEvent(scope.row)"
-                            >编辑</el-button
-                        >
-                        <el-button
-                            size="small"
-                            type="danger"
-                            @click="removeEvent(scope.row)"
-                            >删除</el-button
-                        >
+                        <el-button size="small" type="primary" @click="openActiveRowEvent(scope.row)">编辑</el-button>
+                        <el-button size="small" type="danger" @click="removeEvent(scope.row)">删除</el-button>
                     </template>
                 </template>
             </elx-editable-column>
@@ -239,9 +161,7 @@ export default {
             return XEUtils.toDateString(cellValue, "yyyy-MM-dd HH:mm:ss");
         },
         clearActiveMethod({ type, row }) {
-            return this.isClearActiveFlag && type === "out"
-                ? this.checkOutSave(row)
-                : this.isClearActiveFlag;
+            return this.isClearActiveFlag && type === "out" ? this.checkOutSave(row) : this.isClearActiveFlag;
         },
         //新增记录
         insertEvent() {
@@ -320,16 +240,12 @@ export default {
                 let activeInfo = this.$refs.elxEditable.getActiveRow();
                 if (activeInfo && activeInfo.isUpdate) {
                     this.isClearActiveFlag = false;
-                    MessageBox.confirm(
-                        "检测到未保存的内容，请确认操作?",
-                        "温馨提示",
-                        {
-                            distinguishCancelAndClose: true,
-                            confirmButtonText: "保存数据",
-                            cancelButtonText: "取消修改",
-                            type: "warning"
-                        }
-                    )
+                    MessageBox.confirm("检测到未保存的内容，请确认操作?", "温馨提示", {
+                        distinguishCancelAndClose: true,
+                        confirmButtonText: "保存数据",
+                        cancelButtonText: "取消修改",
+                        type: "warning"
+                    })
                         .then(() => {
                             this.$refs.elxEditable.setActiveRow(row);
                             this.primary = row.ID;
@@ -373,16 +289,12 @@ export default {
                     });
             } else if (this.$refs.elxEditable.hasRowChange(row)) {
                 this.isClearActiveFlag = false;
-                MessageBox.confirm(
-                    "检测到未保存的内容，是否取消修改?",
-                    "温馨提示",
-                    {
-                        distinguishCancelAndClose: true,
-                        confirmButtonText: "取消修改",
-                        cancelButtonText: "返回继续",
-                        type: "warning"
-                    }
-                )
+                MessageBox.confirm("检测到未保存的内容，是否取消修改?", "温馨提示", {
+                    distinguishCancelAndClose: true,
+                    confirmButtonText: "取消修改",
+                    cancelButtonText: "返回继续",
+                    type: "warning"
+                })
                     .then(action => {
                         this.$refs.elxEditable.clearActive();
                         this.$refs.elxEditable.revert(row);
@@ -450,6 +362,7 @@ export default {
                                 //更新合法
                                 this.primary = null;
                                 this.$refs.elxEditable.clearActive();
+                                this.$refs.elxEditable.reloadRow(row);
                                 console.log("Update");
                             } else {
                                 window.alert("更新非法");
@@ -513,6 +426,8 @@ export default {
     font-family: "汉仪南宫体简";
     font-size: 18px;
     border-collapse: collapse; /* 边框重叠 */
+    overflow-x: auto;
+    overflow-y: auto;
 }
 .table tr:hover {
     background-color: #c4e4ff; /* 动态变色,IE6下无效！*/

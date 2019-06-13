@@ -454,6 +454,7 @@ export default {
                                 }
                                 this.primary = null;
                                 this.$refs.elxEditable.clearActive();
+                                this.$refs.elxEditable.reloadRow(row);
                                 console.log("Update");
                             } else {
                                 window.alert("更新非法");

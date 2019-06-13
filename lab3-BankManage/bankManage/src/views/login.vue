@@ -6,10 +6,10 @@
             <!--======================================================================-->
             <label for="custype"> 登录类型 </label>
             <select id="custype" v-model="custype">
-                <option value="SUB_BANK"> 管理 </option>
-                <option value="EMPLOYEE"> 支行 </option>
+                <option value="SUB_BANK"> 支行账户 </option>
+                <option value="EMPLOYEE"> 员工账户 </option>
                 <!-- <option value="CUSTOMER"> 员工 </option> -->
-                <option value="CUSTOMER"> 客户 </option>
+                <option value="CUSTOMER"> 客户账户 </option>
             </select>
             <!--======================================================================-->
             <label for="username">用户名</label>
@@ -55,6 +55,9 @@ export default {
             password: "",
             custype: ""
         };
+    },
+    created() {
+        this.custype="SUB_BANK";
     },
     methods: {
         login: function() {
