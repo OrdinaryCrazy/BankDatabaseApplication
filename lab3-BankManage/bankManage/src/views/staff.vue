@@ -423,8 +423,8 @@ export default {
                             "http://" + document.domain + ":5000/staffCustomer",
                             {
                                 type: "Delete",
-                                primary: row.ID,
-                                primary2: row.staffID
+                                custID: row.ID,
+                                staffID: row.staffID
                             },
                             {
                                 emulateJSON: true
@@ -481,10 +481,11 @@ export default {
                                     "http://" + document.domain + ":5000/staffCustomer",
                                     {
                                         type: "Update",
-                                        ID: row.ID,
+                                        custID: row.ID,
                                         staffID: row.staffID,//该字段是不变的
                                         serviceType: row.type,
-                                        old_primary: this.primary //null代表新增，这是旧的客户身份证号
+                                        old_custID: this.primary, //null代表新增，这是旧的客户身份证号
+                                        old_staffID: row.staffID
                                     },
                                     {
                                         emulateJSON: true

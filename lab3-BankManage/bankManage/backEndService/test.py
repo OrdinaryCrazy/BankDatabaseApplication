@@ -132,14 +132,19 @@ def staff():
 @app.route('/staffCustomer',methods=['POST'])
 def staffCustomer():
     rstype=request.form['type']
+    staffID=request.form['staffID'] # 员工身份证号，用于查询和修改、删除
+    custID=request.form['custID'] # 客户身份证号，用于修改、删除
+    serviceType=request.form['serviceType'] # 服务类型，用于修改
+    old_custID=request.form['old_custID'] # 旧的客户身份证号，用于修改，null代表新增
+    old_staffID=request.form['old_staffID'] # 旧的员工身份证号，用于修改
     if (rstype=="Search"):
         # Todo: 实现数据库操作，返回查询的结果
         print('Search')
         response = make_response(jsonify({    
                                         'code':200,
                                         'list':[
-                                            {'ID':'331002199802021545','staffID': '张三','type':'1'},
-                                            {'ID':'331002195602021545','staffID': '李四','type':'0'},
+                                            {'ID':'331002199802021545','name': '张三','type':'1'},
+                                            {'ID':'331002195602021545','name': '李四','type':'0'},
                                         ]
                                     })
                                 )
@@ -162,6 +167,43 @@ def staffCustomer():
     if (rstype=="Delete"):
         # Todo: 实现数据库操作，删除记录
         print('Delete')
+        response = make_response(jsonify({    
+                                        'code':200,
+                                        'msg': 'ok'
+                                        })
+                                )
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+        return response
+
+@app.route('/pay',methods=['POST'])
+def pay():
+    
+    rstype=request.form['type']
+    id=request.form['loanID'] # 贷款号，用于查询和新增支付记录
+    date=request.form['date'] # 支付日期，用于新增记录
+    money=request.form['money'] # 支付金额，用于新增记录
+
+    if (rstype=="Search"):
+        # Todo: 实现数据库操作，返回查询的结果
+        print('Search')
+        response = make_response(jsonify({    
+                                        'code':200,
+                                        'list':[
+                                            {'date':'2019-05-03','money':2500},
+                                            {'date':'2019-05-04','money':2000},
+                                            {'date':'2019-05-05','money':3000}
+                                        ]
+                                    })
+                                )
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+        return response
+    if (rstype=="Insert"):
+        # Todo: 实现数据库操作，修改或新增记录
+        print('Insert')
         response = make_response(jsonify({    
                                         'code':200,
                                         'msg': 'ok'
