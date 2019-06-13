@@ -1,82 +1,84 @@
  <template>
-    <div>
+  <div>
     <form onSubmit="return false">
-        <h1>注册界面</h1>
-        <table align="center" class="emptytable">
+      <h1>注册界面</h1>
+      <table align="center" class="emptytable">
         <tr>
-            <td>&emsp;&emsp;&emsp;&emsp;<font color="red">*</font> 账户类型</td>
-             <td>
-                <input
-                    type="radio"
-                    name="type"
-                    v-model="type"
-                    value="ROOT"
-                    required="true"
-                />管理账户
-                <input
-                    type="radio"
-                    name="type"
-                    v-model="type"
-                    value="SUB_BANK"
-                    required="true"
-                />支行账户
-                <input
-                    type="radio"
-                    name="type"
-                    v-model="type"
-                    value="CUSTOMER"
-                    required="true"
-                />客户账户
-                <input
-                    type="radio"
-                    name="type"
-                    v-model="type"
-                    value="EMPLOYEE"
-                    required="true"
-                />员工账户
-            </td>
+          <td>&emsp;&emsp;&emsp;&emsp;<font color="red">*</font> 账户类型</td>
+          <td>
+            <input
+              type="radio"
+              name="type"
+              v-model="type"
+              value="管理"
+              required="true"
+            />管理账户
+            <input
+              type="radio"
+              name="type"
+              v-model="type"
+              value="支行"
+              required="true"
+            />支行账户
+            <input
+              type="radio"
+              name="type"
+              v-model="type"
+              value="客户"
+              required="true"
+            />客户账户
+            <input
+              type="radio"
+              name="type"
+              v-model="type"
+              value="员工"
+              required="true"
+            />员工账户
+          </td>
         </tr>
         <tr>
-            <td v-if="type === 'SUB_BANK'">                         <font color="red">*</font> 支行名称 </td>
-            <td v-if="type === 'ROOT'">                             <font color="red">*</font> 用户名   </td>
-            <td v-if="type === 'EMPLOYEE' || type === 'CUSTOMER'">  <font color="red">*</font> 身份证号 </td>
-            <td>
-                        <input
-                             v-if="type === 'ROOT'"
-                            type="text"
-                            placeholder="Please enter your username"
-                            id="username"
-                            v-model="username"
-                            required="true"
-                            style=" width:345px;
-                                    font-family: 'Fira Code', '汉仪南宫体简';
-                                    "
+          <td v-if="type === '支行'"><font color="red">*</font> 支行名称</td>
+          <td v-if="type === '管理'"><font color="red">*</font> 用户名</td>
+          <td v-if="type === '员工' || type === '客户'">
+            <font color="red">*</font> 身份证号
+          </td>
+          <td>
+            <input
+              v-if="type === '管理'"
+              type="text"
+              placeholder="Please enter your username"
+              id="username"
+              v-model="username"
+              required="true"
+              style=" width:345px;
+                    font-family: 'Fira Code', '汉仪南宫体简';
+                    "
                         />
                         <input
-                            v-if="type === 'SUB_BANK'"
+                            v-if="type === '支行'"
                             type="text"
                             placeholder="Please enter the name of bank"
                             id="username"
                             v-model="username"
                             required="true"
                             style=" width:345px;
-                                    font-family: 'Fira Code', '汉仪南宫体简';
-                                    "
+                    font-family: 'Fira Code', '汉仪南宫体简';
+                    "
                         />
                         <input
-                            v-if="type === 'EMPLOYEE' || type === 'CUSTOMER'"
+                            v-if="type === '员工' || type === '客户'"
                             type="text"
                             placeholder="Please enter the ID"
                             id="username"
                             v-model="username"
                             required="true"
                             style=" width:345px;
-                                    font-family: 'Fira Code', '汉仪南宫体简';
-                                    "
+                    font-family: 'Fira Code', '汉仪南宫体简';
+                    "
                         />
                     </td>
                 </tr>
-                <tr v-if="type === 'SUB_BANK'">
+                <tr v-if="type === '支行'">
                     <td>所在城市</td>
                     <td>
                         <input
@@ -86,12 +88,12 @@
                             v-model="city"
                             required="false"
                             style=" width:345px;
-                                    font-family: 'Fira Code', '汉仪南宫体简';
-                                    "
+                        font-family: 'Fira Code', '汉仪南宫体简';
+                        "
                         />
                     </td>
                 </tr>
-                <tr v-if="type === 'SUB_BANK'">
+                <tr v-if="type === '支行'">
                     <td>资产总额</td>
                     <td>
                         <input
@@ -101,12 +103,12 @@
                             v-model="money"
                             required="false"
                             style=" width:345px;
-                                                font-family: 'Fira Code', '汉仪南宫体简';
-                                                "
+                        font-family: 'Fira Code', '汉仪南宫体简';
+                        "
                         />
                     </td>
                 </tr>
-                <tr v-if="type === 'CUSTOMER'">
+                <tr v-if="type === '客户'">
                     <td>姓名</td>
                     <td>
                         <input
@@ -116,12 +118,12 @@
                             v-model="name"
                             required="false"
                             style=" width:345px;
-                                                font-family: 'Fira Code', '汉仪南宫体简';
-                                                "
+                        font-family: 'Fira Code', '汉仪南宫体简';
+                        "
                         />
                     </td>
                 </tr>
-                <tr v-if="type === 'CUSTOMER'">
+                <tr v-if="type === '客户'">
                     <td>联系电话</td>
                     <td>
                         <input
@@ -131,12 +133,12 @@
                             v-model="tel"
                             required="false"
                             style=" width:345px;
-                                                font-family: 'Fira Code', '汉仪南宫体简';
-                                                "
+                        font-family: 'Fira Code', '汉仪南宫体简';
+                        "
                         />
                     </td>
                 </tr>
-                <tr v-if="type === 'CUSTOMER'">
+                <tr v-if="type === '客户'">
                     <td>家庭住址</td>
                     <td>
                         <input
@@ -146,12 +148,12 @@
                             v-model="addr"
                             required="false"
                             style=" width:345px;
-                                                font-family: 'Fira Code', '汉仪南宫体简';
-                                                "
+                        font-family: 'Fira Code', '汉仪南宫体简';
+                        "
                         />
                     </td>
                 </tr>
-                <tr v-if="type === 'CUSTOMER'">
+                <tr v-if="type === '客户'">
                     <td>联系人姓名</td>
                     <td>
                         <input
@@ -161,12 +163,12 @@
                             v-model="name_link"
                             required="false"
                             style=" width:345px;
-                                                font-family: 'Fira Code', '汉仪南宫体简';
-                                                "
+                        font-family: 'Fira Code', '汉仪南宫体简';
+                        "
                         />
                     </td>
                 </tr>
-                <tr v-if="type === 'CUSTOMER'">
+                <tr v-if="type === '客户'">
                     <td>联系人手机号</td>
                     <td>
                         <input
@@ -176,12 +178,12 @@
                             v-model="tel_link"
                             required="false"
                             style=" width:345px;
-                                                font-family: 'Fira Code', '汉仪南宫体简';
-                                                "
+                        font-family: 'Fira Code', '汉仪南宫体简';
+                        "
                         />
                     </td>
                 </tr>
-                <tr v-if="type === 'CUSTOMER'">
+                <tr v-if="type === '客户'">
                     <td>联系人Email</td>
                     <td>
                         <input
@@ -191,12 +193,12 @@
                             v-model="email_link"
                             required="false"
                             style=" width:345px;
-                                                font-family: 'Fira Code', '汉仪南宫体简';
-                                                "
+                        font-family: 'Fira Code', '汉仪南宫体简';
+                        "
                         />
                     </td>
                 </tr>
-                <tr v-if="type === 'CUSTOMER'">
+                <tr v-if="type === '客户'">
                     <td>联系人与客户关系</td>
                     <td>
                         <input
@@ -206,12 +208,12 @@
                             v-model="relation"
                             required="false"
                             style=" width:345px;
-                                                font-family: 'Fira Code', '汉仪南宫体简';
-                                                "
+                        font-family: 'Fira Code', '汉仪南宫体简';
+                        "
                         />
                     </td>
                 </tr>
-                <tr v-if="type === 'EMPLOYEE'">
+                <tr v-if="type === '员工'">
                     <td>姓名</td>
                     <td>
                         <input
@@ -221,12 +223,12 @@
                             v-model="name"
                             required="false"
                             style=" width:345px;
-                                                font-family: 'Fira Code', '汉仪南宫体简';
-                                                "
+                        font-family: 'Fira Code', '汉仪南宫体简';
+                        "
                         />
                     </td>
                 </tr>
-                <tr v-if="type === 'EMPLOYEE'">
+                <tr v-if="type === '员工'">
                     <td>所在部门</td>
                     <td>
                         <input
@@ -236,12 +238,12 @@
                             v-model="dept"
                             required="false"
                             style=" width:345px;
-                                                font-family: 'Fira Code', '汉仪南宫体简';
-                                                "
+                        font-family: 'Fira Code', '汉仪南宫体简';
+                        "
                         />
                     </td>
                 </tr>
-                <tr v-if="type === 'EMPLOYEE'">
+                <tr v-if="type === '员工'">
                     <td>电话号码</td>
                     <td>
                         <input
@@ -251,12 +253,12 @@
                             v-model="tel"
                             required="false"
                             style=" width:345px;
-                                                font-family: 'Fira Code', '汉仪南宫体简';
-                                                "
+                        font-family: 'Fira Code', '汉仪南宫体简';
+                        "
                         />
                     </td>
                 </tr>
-                <tr v-if="type === 'EMPLOYEE'">
+                <tr v-if="type === '员工'">
                     <td>家庭住址</td>
                     <td>
                         <input
@@ -266,12 +268,12 @@
                             v-model="addr"
                             required="false"
                             style=" width:345px;
-                                                font-family: 'Fira Code', '汉仪南宫体简';
-                                                "
+                        font-family: 'Fira Code', '汉仪南宫体简';
+                        "
                         />
                     </td>
                 </tr>
-                <tr v-if="type === 'EMPLOYEE'">
+                <tr v-if="type === '员工'">
                     <td>入职时间</td>
                     <td>
                         <input
@@ -281,8 +283,8 @@
                             v-model="date"
                             required="false"
                             style=" width:345px;
-                                                font-family: 'Fira Code', '汉仪南宫体简';
-                                                "
+                        font-family: 'Fira Code', '汉仪南宫体简';
+                        "
                         />
                     </td>
                 </tr>
@@ -296,8 +298,8 @@
                             v-model="password"
                             required="true"
                             style=" width:345px;
-                                        font-family: 'Fira Code', '汉仪南宫体简';
-                                        "
+                    font-family: 'Fira Code', '汉仪南宫体简';
+                    "
                         />
                     </td>
                 </tr>
@@ -311,8 +313,8 @@
                             v-model="password2"
                             required="true"
                             style=" width:345px;
-                                        font-family: 'Fira Code', '汉仪南宫体简';
-                                        "
+                    font-family: 'Fira Code', '汉仪南宫体简';
+                    "
                         />
                     </td>
                 </tr>
@@ -350,7 +352,7 @@ export default {
         };
     },
     created() {
-        this.type = "SUB_BANK";
+        this.type = "管理";
     },
     methods: {
         submit: function() {
@@ -467,3 +469,4 @@ export default {
     right: 0;
 }
 </style>
+

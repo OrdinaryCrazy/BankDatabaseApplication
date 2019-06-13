@@ -67,6 +67,7 @@
             <el-button class="button" size="small" type="primary" @click="reset()">重置</el-button>
         </div>
         <br />
+        <p style="color: red;font-size: 24px;" align="left">贷款信息表</p>
         <div align="left">
             <el-button class="button" type="success" size="small" @click="exportCsvEvent()">导出</el-button>
             <el-button class="button" type="success" size="small" @click="insertEvent()">发放贷款</el-button>
@@ -86,7 +87,7 @@
             <elx-editable-column prop="customer" label="贷款人" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="amount" label="金额" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
             <elx-editable-column prop="status" label="状态" :edit-render="{ name: 'ElSelect', options: statusList }"></elx-editable-column>
-            <elx-editable-column label="操作" width="80">
+            <elx-editable-column label="操作" width="160">
                 <template v-slot="scope">
                     <template v-if="$refs.elxEditable.hasActiveRow(scope.row)">
                         <el-button size="small" type="success" @click="saveRowEvent(scope.row)">保存</el-button>
@@ -94,11 +95,36 @@
                     </template>
                     <template v-else>
                         <el-button size="small" type="danger" @click="removeEvent(scope.row)">删除</el-button>
+                        <el-button size="small" type="success" @click="showDetail(scope.row)">详情</el-button>
                     </template>
                 </template>
             </elx-editable-column>
         </elx-editable>
-        <div v-model="primary"></div>
+        <div v-if="showlink">
+            <p style="color: red;font-size: 24px;" align="left">
+                支付信息表
+                <el-button class="button" type="success" size="small" @click="showlink = false">关闭</el-button>
+            </p>
+            <div align="left">
+                进行支付&emsp;
+                <input
+                    type="number"
+                    min="0"
+                    placeholder="金额"
+                    id="payAmount"
+                    v-model="payAmount"
+                    required="false"
+                    style=" width:100px;font-family: 'Fira Code', '汉仪南宫体简';"
+                />
+                <el-button class="button" type="success" size="small" @click="newpay()">支付</el-button>
+            </div>
+            <elx-table ref="elxTable" border size="small" :data.sync="paylist" style="width: 100%" class="table">
+                <elx-table-column type="index" width="55"></elx-table-column>
+                <elx-table-column prop="id" label="贷款号"></elx-table-column>
+                <elx-table-column prop="date" label="支付日期" :formatter="formatterDate"></elx-table-column>
+                <elx-table-column prop="money" label="支付金额"></elx-table-column>
+            </elx-table>
+        </div>
     </div>
 </template>
 
@@ -125,6 +151,9 @@ export default {
                     value: "2"
                 }
             ],
+            paylist: [],
+            showlink: false,
+            showpay: false,
             isClearActiveFlag: true,
             bankSearch: "",
             idSearch: "",
@@ -132,6 +161,8 @@ export default {
             custSearch: "",
             upperBound: "",
             lowerBound: "",
+            detail: "",
+            payAmount:"",
             primary: null //全局变量，保存记录修改前的主键。当没有活跃的记录时为null，当新增记录时也为null
         };
     },
@@ -154,10 +185,60 @@ export default {
             this.loading = false;
         },
         formatterDate(row, column, cellValue, index) {
-            return XEUtils.toDateString(cellValue, "yyyy-MM-dd HH:mm:ss");
+            return XEUtils.toDateString(cellValue, "yyyy-MM-dd");
         },
         clearActiveMethod({ type, row }) {
             return this.isClearActiveFlag && type === "out" ? this.checkOutSave(row) : this.isClearActiveFlag;
+        },
+        showDetail(row) {
+            this.showlink = true;
+            this.detail = row;
+            this.$http
+                .post(
+                    "http://" + document.domain + ":5000/pay",
+                    {
+                        type: "Search",
+                        loanID: row.ID
+                    },
+                    {
+                        emulateJSON: true
+                    }
+                )
+                .then(function(response) {
+                    if (parseInt(response.body.code) === 200) {
+                        this.paylist = response.body.list;
+                        for (var i = 0; i < this.paylist.length; i++) {
+                            this.paylist[i].id = row.ID;
+                        }
+                    } else {
+                        window.alert("查询失败");
+                    }
+                });
+        },
+        newpay() {
+            if (this.payAmount==""){
+                return;
+            }
+            this.$http
+                .post(
+                    "http://" + document.domain + ":5000/pay",
+                    {
+                        type: "Insert",
+                        loanID: this.detail.ID,
+                        date: new Date(),
+                        money: this.payAmount
+                    },
+                    {
+                        emulateJSON: true
+                    }
+                )
+                .then(function(response) {
+                    if (parseInt(response.body.code) === 200) {
+                        this.paylist.push({ id: this.detail.ID, date: new Date(), money: this.payAmount });
+                    } else {
+                        window.alert("查询失败");
+                    }
+                });
         },
         //新增记录
         insertEvent() {
@@ -356,6 +437,7 @@ export default {
                                 //更新合法
                                 this.primary = null;
                                 this.$refs.elxEditable.clearActive();
+                                this.$refs.elxEditable.reloadRow(row);
                                 console.log("Update");
                             } else {
                                 window.alert("更新非法");

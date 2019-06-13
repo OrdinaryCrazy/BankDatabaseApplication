@@ -110,6 +110,7 @@
             <el-button class="button" size="small" type="primary" @click="reset()">重置</el-button>
         </div>
         <br />
+        <p style="color: red;font-size: 24px;" align="left">账户信息表</p>
         <div align="left">
             <el-button class="button" type="success" size="small" @click="exportCsvEvent()">导出</el-button>
             <el-button class="button" type="success" size="small" @click="insertEvent()">开户</el-button>
@@ -118,13 +119,14 @@
         <elx-editable
             ref="elxEditable"
             class="table"
+            size="mini"
             border
             :data.sync="list"
             :edit-config="{ trigger: 'manual', mode: 'row', clearActiveMethod }"
             style="width: 100%"
         >
             <elx-editable-column type="index" width="55"></elx-editable-column>
-            <elx-editable-column prop="ID" label="账户号"></elx-editable-column>
+            <elx-editable-column prop="ID" label="账户号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="owner" label="户主"></elx-editable-column>
             <elx-editable-column prop="bank" label="开户银行" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="money" label="余额" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
@@ -162,7 +164,45 @@
                 </template>
             </elx-editable-column>
         </elx-editable>
-        <div v-model="primary"></div>
+        <div v-if="showlink">
+            <br />
+            <p style="color: red;font-size: 24px;" align="left">
+                客户联系表
+                <el-button class="button" type="success" size="small" @click="showlink = false">关闭</el-button>
+            </p>
+            <div align="left">
+                <el-button class="button" type="success" size="small" @click="insertEvent('elxEditable2')">新增</el-button>
+                <el-button class="button" type="success" size="small" @click="exportCsvEvent('elxEditable2')">导出</el-button>
+            </div>
+            <br />
+            <elx-editable
+                ref="elxEditable2"
+                class="table"
+                border
+                :data.sync="linklist"
+                :edit-config="{ trigger: 'manual', mode: 'row', clearActiveMethod: clearActiveMethod2 }"
+                style="width: 100%"
+            >
+                <elx-editable-column type="index" width="55"></elx-editable-column>
+                <elx-editable-column prop="staffID" label="员工身份证号"></elx-editable-column>
+                <elx-editable-column prop="staffName" label="员工姓名"></elx-editable-column>
+                <elx-editable-column prop="ID" label="客户身份证号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+                <elx-editable-column prop="name" label="客户姓名"></elx-editable-column>
+                <elx-editable-column prop="type" label="与客户关系" :edit-render="{ name: 'ElSelect', options: serviceList }"></elx-editable-column>
+                <elx-editable-column label="操作" width="160">
+                    <template v-slot="newscope">
+                        <template v-if="$refs.elxEditable2.hasActiveRow(newscope.row)">
+                            <el-button size="small" type="success" @click="saveRowEvent('elxEditable2', newscope.row)">保存</el-button>
+                            <el-button size="small" type="warning" @click="cancelRowEvent('elxEditable2', newscope.row)">取消</el-button>
+                        </template>
+                        <template v-else>
+                            <el-button size="small" type="primary" @click="openActiveRowEvent('elxEditable2', newscope.row)">编辑</el-button>
+                            <el-button size="small" type="danger" @click="removeEvent('elxEditable2', newscope.row)">删除</el-button>
+                        </template>
+                    </template>
+                </elx-editable-column>
+            </elx-editable>
+        </div>
     </div>
 </template>
 
@@ -355,46 +395,26 @@ export default {
         },
         // 取消处理
         cancelRowEvent(row) {
-            if (!row.id) {
-                this.isClearActiveFlag = false;
-                MessageBox.confirm("该数据未保存，是否移除?", "温馨提示", {
-                    distinguishCancelAndClose: true,
-                    confirmButtonText: "移除数据",
-                    cancelButtonText: "返回继续",
-                    type: "warning"
-                })
-                    .then(action => {
-                        if (action === "confirm") {
-                            this.$refs.elxEditable.remove(row);
-                        }
-                    })
-                    .catch(action => action)
-                    .then(() => {
-                        this.isClearActiveFlag = true;
-                    });
-            } else if (this.$refs.elxEditable.hasRowChange(row)) {
-                this.isClearActiveFlag = false;
-                MessageBox.confirm("检测到未保存的内容，是否取消修改?", "温馨提示", {
-                    distinguishCancelAndClose: true,
-                    confirmButtonText: "取消修改",
-                    cancelButtonText: "返回继续",
-                    type: "warning"
-                })
-                    .then(action => {
+            this.isClearActiveFlag = false;
+            MessageBox.confirm("该数据未保存，是否移除?", "温馨提示", {
+                distinguishCancelAndClose: true,
+                confirmButtonText: "放弃修改",
+                cancelButtonText: "返回继续",
+                type: "warning"
+            })
+                .then(action => {
+                    if (action === "confirm") {
                         this.$refs.elxEditable.clearActive();
                         this.$refs.elxEditable.revert(row);
-                    })
-                    .catch(action => {
-                        if (action === "cancel") {
-                            this.$refs.elxEditable.setActiveRow(row);
+                        if (this.primary == null) {
+                            this.$refs.elxEditable.remove(row);
                         }
-                    })
-                    .then(() => {
-                        this.isClearActiveFlag = true;
-                    });
-            } else {
-                this.$refs.elxEditable.clearActive();
-            }
+                    }
+                })
+                .catch(action => action)
+                .then(() => {
+                    this.isClearActiveFlag = true;
+                });
         },
         //删除某一行
         removeEvent(row) {
@@ -423,6 +443,11 @@ export default {
             this.$refs.elxEditable.validateRow(row, valid => {
                 if (valid && this.$refs.elxEditable.hasRowChange(row)) {
                     //数据发生了修改，需要反馈给服务器
+                    console.log(this.primary);
+                    if (this.primary != null) {
+                        row.ID = this.primary; //禁止修改主键
+                    }
+
                     this.$http
                         .post(
                             "http://" + document.domain + ":5000/account",
@@ -452,8 +477,10 @@ export default {
                                     row.cashtype = null;
                                     row.interest = null;
                                 }
+
                                 this.primary = null;
                                 this.$refs.elxEditable.clearActive();
+                                this.$refs.elxEditable.reloadRow(row);
                                 console.log("Update");
                             } else {
                                 window.alert("更新非法");
@@ -524,6 +551,8 @@ export default {
     font-family: "汉仪南宫体简";
     font-size: 18px;
     border-collapse: collapse; /* 边框重叠 */
+    overflow-x: auto;
+    overflow-y: auto;
 }
 .table tr:hover {
     background-color: #c4e4ff; /* 动态变色,IE6下无效！*/
@@ -540,6 +569,7 @@ export default {
     border: 1px solid #429fff; /* 行、列名称边框 */
     background-color: #d2e8ff;
     font-weight: bold;
+    /* min-width: 200px;*/
     padding-top: 4px;
     padding-bottom: 4px;
     padding-left: 10px;
@@ -550,7 +580,11 @@ export default {
     border: 1px solid #429fff; /* 单元格边框 */
     text-align: center;
     padding: 4px;
+    /*  min-width: 200px;*/
     word-break: break-all;
+}
+.table .ElInput {
+    min-width: 10px;
 }
 .button {
     display: inline-block;

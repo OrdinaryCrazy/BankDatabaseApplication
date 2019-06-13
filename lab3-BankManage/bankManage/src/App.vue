@@ -3,17 +3,20 @@
 
 <template>
     <div id="app">
-        <router-view></router-view>
+        <div class="body">
+            <router-view></router-view>
+        </div>
         <br />
         <br />
         <br />
-        <address>
+        <footer class="footer">
+            <hr />
             <p>
                 中国科学技术大学 计算机科学与技术学院<br />
                 2019年春季学期 数据库系统及应用课程实验<br />
                 &copy;张劲暾 王浩宇 吴雨菲
             </p>
-        </address>
+        </footer>
     </div>
 </template>
 
@@ -37,5 +40,30 @@ export default {
     text-align: center;
     color: #1070cf;
     margin-top: 60px;
+    min-height: 600px;
+}
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-image: url("../static/background3.jpg");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: repeat-x;
+    background-attachment: scroll;
+}
+.body {
+    display: flex;
+    flex-flow: column;
+    min-height: 70vh;
+}
+
+.footer {
+    font-family: "Fira Code", "汉仪南宫体简";
+    font-size: 14px;
+    color: grey;
+    text-align: center;
+    height: 40px;
+    width: 100%; /*展开footer宽度*/
 }
 </style>

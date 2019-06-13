@@ -143,6 +143,7 @@
                 <elx-editable-column prop="staffID" label="员工身份证号"></elx-editable-column>
                 <elx-editable-column prop="staffName" label="员工姓名"></elx-editable-column>
                 <elx-editable-column prop="ID" label="客户身份证号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+                <elx-editable-column prop="name" label="客户姓名"></elx-editable-column>
                 <elx-editable-column prop="type" label="与客户关系" :edit-render="{ name: 'ElSelect', options: serviceList }"></elx-editable-column>
                 <elx-editable-column label="操作" width="160">
                     <template v-slot="newscope">
@@ -190,7 +191,7 @@ export default {
             lowerBound: "",
             upperBound: "",
             showlink: false,
-            detailID: "",
+            detail: "",
             detailName: "",
             primary: null //全局变量，保存记录修改前的主键。当没有活跃的记录时为null，当新增记录时也为null
         };
@@ -215,6 +216,8 @@ export default {
                 {
                     ID: "33122212121210001X",
                     name: "吴邪",
+                    staffID: "33122220001010001X",
+                    staffName: "张三",
                     type: "1"
                 }
             ];
@@ -232,14 +235,13 @@ export default {
         //新增记录
         insertEvent(name) {
             let activeInfo = this.$refs[name].getActiveRow();
-            let { insertRecords } = this.$refs[name].getAllRecords();
-            if (!activeInfo && !insertRecords.length) {
+            if (!activeInfo) {
                 if (name === "elxEditable1") {
                     this.$refs[name].insert().then(({ row }) => {
                         this.$refs[name].setActiveRow(row);
                     });
                 } else {
-                    this.$refs[name].insert({ staffID: this.detailID, staffName: this.detailName }).then(({ row }) => {
+                    this.$refs[name].insert({ staffID: this.detail.ID, staffName: this.detail.name }).then(({ row }) => {
                         this.$refs[name].setActiveRow(row);
                     });
                 }
@@ -288,8 +290,7 @@ export default {
         },
         showDetail(row) {
             this.showlink = true;
-            this.detailID = row.ID;
-            this.detailName = row.name;
+            this.detail = row;
             this.$http
                 .post(
                     "http://" + document.domain + ":5000/staffCustomer",
@@ -306,6 +307,7 @@ export default {
                         this.linklist = response.body.list;
                         for (var i = 0; i < this.linklist.length; i++) {
                             this.linklist[i].staffName = row.name;
+                            this.linklist[i].staffID=row.ID;
                         }
                     } else {
                         window.alert("查询失败");
@@ -421,8 +423,8 @@ export default {
                             "http://" + document.domain + ":5000/staffCustomer",
                             {
                                 type: "Delete",
-                                primary: row.ID,
-                                primary2: row.staffID
+                                custID: row.ID,
+                                staffID: row.staffID
                             },
                             {
                                 emulateJSON: true
@@ -479,10 +481,11 @@ export default {
                                     "http://" + document.domain + ":5000/staffCustomer",
                                     {
                                         type: "Update",
-                                        ID: row.ID,
-                                        staffID: row.staffID,
+                                        custID: row.ID,
+                                        staffID: row.staffID,//该字段是不变的
                                         serviceType: row.type,
-                                        old_primary: this.primary //null代表新增
+                                        old_custID: this.primary, //null代表新增，这是旧的客户身份证号
+                                        old_staffID: row.staffID
                                     },
                                     {
                                         emulateJSON: true
@@ -518,6 +521,9 @@ export default {
                         if (action === "confirm") {
                             this.$refs[name].clearActive();
                             this.$refs[name].revert(row);
+                            if (this.primary==null){
+                                this.$refs[name].remove(row);
+                            }
                         } else {
                             this.$refs[name].setActiveRow(row);
                         }
