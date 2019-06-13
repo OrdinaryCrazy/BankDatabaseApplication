@@ -2,12 +2,16 @@ CREATE OR REPLACE PROCEDURE CHANGE_BANK_NAME(
     oldBankName IN  CHAR,
     newBankName IN  CHAR,
     result      OUT NUMBER
+    -- debugnew    OUT CHAR,
+    -- debugold    OUT CHAR
 )
 AS
     tempCount number;
 BEGIN
     -- dbms_output.put_line(newBankName);
     -- dbms_output.put_line(oldBankName);
+    -- debugnew := newBankName;
+    -- debugold := oldBankName;
     SELECT COUNT(*) INTO tempCount 
     FROM DUAL 
     WHERE EXISTS(SELECT NULL FROM SUB_BANK WHERE BANK_NAME = newBankName);

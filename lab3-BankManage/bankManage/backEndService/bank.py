@@ -140,7 +140,9 @@ def bank():
                 # changeNameSQL = changeNameSQL + ");"
                 # cursor.execute(changeNameSQL)
                 result = cursor.var(cx_Oracle.NUMBER)
-                cursor.callproc('CHANGE_BANK_NAME',[ "'" + old_primary + "'", "'" + name + "'", result])
+                # debugold = cursor.var(cx_Oracle.FIXED_CHAR)
+                # debugnew = cursor.var(cx_Oracle.FIXED_CHAR)
+                cursor.callproc('CHANGE_BANK_NAME',[ ("'" + old_primary + "'"), ("'" + name + "'"), result ])
                 print(result.getvalue())
                 print("'" + old_primary + "'")
                 print("'" + name + "'")
