@@ -7,10 +7,13 @@ import json
 import time
 import cx_Oracle
 
-from register import register_api
+from register   import register_api
+from bank       import bank_api
 
 app = Flask(__name__)
 app.register_blueprint(register_api)
+app.register_blueprint(bank_api)
+
 CORS(app, supports_credentials=True)
 #==============================================================================================
 # Oracle 数据字典化函数
@@ -80,48 +83,6 @@ def login():
     response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
     response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
     return response
-#==============================================================================================
-# 支行管理 后台功能
-@app.route('/bank',methods=['POST'])
-def bank():
-    rstype=request.form['type']
-    if (rstype=="Search"):
-        # Todo: 实现数据库操作，返回查询的结果
-        response = make_response(jsonify({    
-                                        'code':200,
-                                        'list':[
-                                            {'name': '合肥城南支行','city': '合肥','money': 100000000},
-                                            {'name': '南京城北支行','city': '南京','money': 102500000},
-                                            {'name': '无锡城北支行','city': '无锡','money': 1000}
-                                        ]
-                                    })
-                                )
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
-        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
-        return response
-    if (rstype=="Update"):
-        # Todo: 实现数据库操作，修改或新增记录
-        response = make_response(jsonify({    
-                                        'code':200,
-                                        'msg': 'ok'
-                                        })
-                                )
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
-        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
-        return response
-    if (rstype=="Delete"):
-        # Todo: 实现数据库操作，删除记录
-        response = make_response(jsonify({    
-                                        'code':200,
-                                        'msg': 'ok'
-                                        })
-                                )
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
-        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
-        return response
 
 
 @app.route('/staff',methods=['POST'])

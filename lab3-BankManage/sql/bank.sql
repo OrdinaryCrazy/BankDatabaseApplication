@@ -16,7 +16,7 @@ CREATE TABLE SUB_BANK (
     CITY        CHAR(50),
     POSSESSION  FLOAT       DEFAULT 0.0,
 ------------------------------------------------
-    BANK_PASS   CHAR(10)
+    BANK_PASS   CHAR(6)     DEFAULT '123456'
 );
 /*==============================================================*/
 /* 用户表 */
@@ -30,20 +30,21 @@ CREATE TABLE CUSTOMER (
     CUSTOMER_CONTACT_EMAIL      CHAR(64),
     CUSTOMER_CONTACT_RELATION   CHAR(32),
 ------------------------------------------------
-    CUSTOMER_PASS               CHAR(10)
+    CUSTOMER_PASS               CHAR(6) DEFAULT '123456'
 );
 /*==============================================================*/
 /* 用户表 */
 CREATE TABLE EMPLOYEE (
     EMPLOYEE_ID         DECIMAL(16) CONSTRAINT EMPLOYEE_PK PRIMARY KEY,
     EMPLOYEE_DEPART_ID  NUMBER(6),
+    EMPLOYEE_BANK_NAME  CHAR(50),
     EMPLOYEE_NAME       CHAR(32),
     EMPLOYEE_PHONE      DECIMAL(12),
     EMPLOYEE_ADDRESS    CHAR(128),
     EMPLOYEE_ENTERDATE  DATE,
     EMPLOYEE_LEADER     NUMBER(6),  /* 不是领导就是NULL */
 ------------------------------------------------
-    EMPLOYEE_PASS       CHAR(10),
+    EMPLOYEE_PASS       CHAR(6)     DEFAULT '123456',
 ------------------------------------------------
     CONSTRAINT LEADER_UQ    UNIQUE(EMPLOYEE_LEADER)
 );
@@ -56,7 +57,7 @@ CREATE TABLE CHECK_ACCOUNT (
     CHECK_ACCOUNT_INTERESTRATE  FLOAT,
     CHECK_ACCOUNT_CURRENCYTYPE  CHAR(16),
 ------------------------------------------------
-    CHECK_ACCOUNT_PASS          CHAR(10)
+    CHECK_ACCOUNT_PASS          CHAR(6) DEFAULT '123456'
 );
 /*==============================================================*/
 /* 存储账户表 */
@@ -67,7 +68,7 @@ CREATE TABLE DEPOSIT_ACCOUNT (
     DEPOSIT_ACCOUNT_INTERESTRATE    FLOAT,
     DEPOSIT_ACCOUNT_CURRENCYTYPE    CHAR(16),
 ------------------------------------------------
-    DEPOSIT_ACCOUNT_PASS            CHAR(10)
+    DEPOSIT_ACCOUNT_PASS            CHAR(6) DEFAULT '123456'
 );
 /*==============================================================*/
 /* 贷款表 */

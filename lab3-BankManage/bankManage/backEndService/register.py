@@ -48,10 +48,11 @@ def register():
     try :
         cursor.execute(sqlcommand)
     except :
+        print("数据库操作失败")
         cursor.close()
         connection.close()
         response = make_response(jsonify({    
-                                            'code':500, 
+                                            'code':400, 
                                             # 数据库操作失败
                                             'msg':'ok'
                                         })
