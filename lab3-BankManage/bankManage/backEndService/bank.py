@@ -3,7 +3,6 @@ from flask                  import request
 from flask                  import jsonify
 from flask                  import make_response
 from flask_cors             import *
-# from flask.ext.sqlalchemy   import SQLAlchemy
 import json
 import time
 import cx_Oracle
