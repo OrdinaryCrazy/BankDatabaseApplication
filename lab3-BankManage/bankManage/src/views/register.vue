@@ -6,9 +6,9 @@
                 <tr>
                     <td>&emsp;&emsp;&emsp;&emsp;<font color="red">*</font> 账户类型</td>
                     <td>
-                        <input type="radio" name="type" v-model="type" value="支行" required="true" />支行账户&emsp;
-                        <input type="radio" name="type" v-model="type" value="客户" required="true" />客户账户&emsp;
-                        <input type="radio" name="type" v-model="type" value="员工" required="true" />员工账户&emsp;&emsp;&emsp;&ensp;
+                        <input type="radio" name="type" v-model="type" value="SUB_BANK" required="true" />支行账户&emsp;
+                        <input type="radio" name="type" v-model="type" value="EMPLOYEE" required="true" />客户账户&emsp;
+                        <input type="radio" name="type" v-model="type" value="CUSTOMER" required="true" />员工账户&emsp;&emsp;&emsp;&ensp;
                     </td>
                 </tr>
                 <tr>

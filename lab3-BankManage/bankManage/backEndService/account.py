@@ -57,8 +57,8 @@ def account():
         if typeSearch == "any" or typeSearch == "saving" :
             sqlcommand = sqlcommand + " DEPOSIT_ACCOUNT,"
             sqlcommand = sqlcommand + " CUSTOMER_DEPOSIT_ACCOUNT,"
-            
-        sqlcommand = sqlcommand + " CUSTOMER_DEPOSIT_ACCOUNT,"
+
+        sqlcommand = sqlcommand + " CUSTOMER,"
         
 
         print(sqlcommand)
