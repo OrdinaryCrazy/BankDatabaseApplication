@@ -237,7 +237,7 @@ export default {
             this.loading = false;
         },
         formatterDate(row, column, cellValue, index) {
-            return XEUtils.toDateString(cellValue, "yyyy-MM-dd HH:mm:ss");
+            return XEUtils.toDateString(cellValue, "yyyy-MM-dd");
         },
         clearActiveMethod1({ type, row, rowIndex }) {
             return this.isClearActiveFlag && type === "out" ? this.checkSaveData("elxEditable1", row) : this.isClearActiveFlag;
@@ -471,6 +471,7 @@ export default {
                         return;
                     }
             }
+            console.log(row);
             this.$refs[name].validateRow(row, valid => {
                 if (valid && this.$refs[name].hasRowChange(row)) {
                     switch (name) {
@@ -486,7 +487,7 @@ export default {
                                         dept: row.dept,
                                         tel: row.tel,
                                         addr: row.addr,
-                                        date_s: row.date_s,
+                                        date_s: XEUtils.toDateString(row.date_s, "yyyy-MM-dd"),
                                         old_primary: this.primary //null代表新增
                                     },
                                     {
