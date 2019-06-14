@@ -215,24 +215,24 @@ export default {
         findList() {
             this.loading = true;
             this.list = [
-                {
-                    ID: "33122220001010001X",
-                    name: "张三",
-                    bank: "合肥城南支行",
-                    dept: "人事处",
-                    tel: "13822100086",
-                    addr: "合肥浣纱路256号",
-                    date: new Date("2018-2-2")
-                }
+                // {
+                //     ID: "33122220001010001X",
+                //     name: "张三",
+                //     bank: "合肥城南支行",
+                //     dept: "人事处",
+                //     tel: "13822100086",
+                //     addr: "合肥浣纱路256号",
+                //     date: new Date("2018-2-2")
+                // }
             ];
             this.linklist = [
-                {
-                    ID: "33122212121210001X",
-                    name: "吴邪",
-                    staffID: "33122220001010001X",
-                    staffName: "张三",
-                    type: "1"
-                }
+                // {
+                //     ID: "33122212121210001X",
+                //     name: "吴邪",
+                //     staffID: "33122220001010001X",
+                //     staffName: "张三",
+                //     type: "1"
+                // }
             ];
             this.loading = false;
         },
@@ -486,7 +486,7 @@ export default {
                                         dept: row.dept,
                                         tel: row.tel,
                                         addr: row.addr,
-                                        date: row.date,
+                                        date_s: row.date,
                                         old_primary: this.primary //null代表新增
                                     },
                                     {

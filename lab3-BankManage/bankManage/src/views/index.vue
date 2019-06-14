@@ -54,15 +54,16 @@ export default {
 
 <style>
 .buttonred {
+    font-family: "Fira Code", "汉仪南宫体简";
     display: inline-block;
     border-radius: 4px;
     background-color: #f4511e;
     border: none;
     color: #ffffff;
     text-align: center;
-    font-size: 12px;
+    font-size: 18px;
     padding: 20px;
-    width: 100px;
+    width: 150px;
     transition: all 0.5s;
     cursor: pointer;
     margin: 5px;
@@ -74,6 +75,23 @@ export default {
     position: relative;
     transition: 0.5s;
 }
+.buttonred:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+.buttonred span:after {
+    content: "»";
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.buttonred:hover span {
+    padding-right: 25px;
+}
+
 .buttonred:hover span:after {
     opacity: 1;
     right: 0;

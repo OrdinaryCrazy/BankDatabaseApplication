@@ -18,6 +18,11 @@ from account    import account_api
 app = Flask(__name__)
 app.register_blueprint(register_api)
 app.register_blueprint(bank_api)
+app.register_blueprint(staff_api)
+app.register_blueprint(summary_api)
+app.register_blueprint(loan_api)
+app.register_blueprint(customer_api)
+app.register_blueprint(account_api)
 
 CORS(app, supports_credentials=True)
 #==============================================================================================
