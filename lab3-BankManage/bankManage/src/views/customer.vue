@@ -93,7 +93,7 @@
             style="width: 100%"
         >
             <elx-editable-column type="index" width="55"></elx-editable-column>
-            <elx-editable-column prop="ID" label="身份证号" width="210" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+            <elx-editable-column prop="id" label="身份证号" width="210" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="name" label="姓名" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="tel" label="联系电话" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="addr" label="家庭住址" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
@@ -135,7 +135,7 @@
                 style="width: 100%"
             >
                 <elx-editable-column type="index" width="55"></elx-editable-column>
-                <elx-editable-column prop="ID" label="客户身份证号"></elx-editable-column>
+                <elx-editable-column prop="id" label="客户身份证号"></elx-editable-column>
                 <elx-editable-column prop="name" label="客户姓名"></elx-editable-column>
                 <elx-editable-column prop="staffID" label="员工身份证号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
                 <elx-editable-column prop="staffName" label="员工姓名"></elx-editable-column>
@@ -199,7 +199,7 @@ export default {
             this.loading = true;
             this.list = [
                 {
-                    ID: "33122220001010001X",
+                    id: "33122220001010001X",
                     name: "张三",
                     tel: "13822100086",
                     addr: "合肥浣纱路256号",
@@ -260,7 +260,7 @@ export default {
                     "http://" + document.domain + ":5000/staffCustomer",
                     {
                         type: "SearchByCustomer",
-                        custID: row.ID
+                        custID: row.id
                     },
                     {
                         emulateJSON: true
@@ -271,7 +271,7 @@ export default {
                         this.linklist = response.body.list;
                         for (var i = 0; i < this.linklist.length; i++) {
                             this.linklist[i].name = row.name;
-                            this.linklist[i].ID = row.ID;
+                            this.linklist[i].id = row.id;
                         }
                     } else {
                         window.alert("查询失败");
@@ -293,7 +293,7 @@ export default {
                         this.$refs[name].setActiveRow(row);
                     });
                 } else {
-                    this.$refs[name].insert({ ID: this.detail.ID, name: this.detail.name }).then(({ row }) => {
+                    this.$refs[name].insert({ id: this.detail.id, name: this.detail.name }).then(({ row }) => {
                         this.$refs[name].setActiveRow(row);
                     });
                 }
@@ -353,8 +353,8 @@ export default {
                             })
                                 .then(() => {
                                     this.$refs[name].setActiveRow(row);
-                                    this.primary = row.ID;
-                                    console.log(row.ID);
+                                    this.primary = row.id;
+                                    console.log(row.id);
                                     this.saveRowEvent(name, activeInfo.row);
                                 })
                                 .catch(action => {
@@ -371,14 +371,14 @@ export default {
                                 });
                         } else {
                             this.$refs[name].setActiveRow(row);
-                            this.primary = row.ID;
-                            console.log(row.ID);
+                            this.primary = row.id;
+                            console.log(row.id);
                         }
                     }
                 } else {
                     this.$refs[name].setActiveRow(row);
-                    this.primary = row.ID;
-                    console.log(row.ID);
+                    this.primary = row.id;
+                    console.log(row.id);
                 }
             });
         },
@@ -390,7 +390,7 @@ export default {
                             "http://" + document.domain + ":5000/customer",
                             {
                                 type: "Delete",
-                                primary: row.ID
+                                primary: row.id
                             },
                             {
                                 emulateJSON: true
@@ -412,7 +412,7 @@ export default {
                             "http://" + document.domain + ":5000/staffCustomer",
                             {
                                 type: "Delete",
-                                custID: row.ID,
+                                custID: row.id,
                                 staffID: row.staffID
                             },
                             {
@@ -437,7 +437,7 @@ export default {
                         return;
                     }
                 case "elxEditable1":
-                    if (row.ID == null || row.ID == "") {
+                    if (row.id == null || row.id == "") {
                         return;
                     }
             }
@@ -450,7 +450,7 @@ export default {
                                     "http://" + document.domain + ":5000/customer",
                                     {
                                         type: "Update",
-                                        ID: row.ID,
+                                        id: row.id,
                                         name: row.name,
                                         tel: row.tel,
                                         addr: row.addr,
@@ -477,7 +477,7 @@ export default {
                                 });
                             break;
                         case "elxEditable2":
-                            if (row.ID == "" || row.staffID == "") {
+                            if (row.id == "" || row.staffID == "") {
                                 return;
                             }
                             this.$http
@@ -485,10 +485,10 @@ export default {
                                     "http://" + document.domain + ":5000/staffCustomer",
                                     {
                                         type: "Update",
-                                        custID: row.ID,
+                                        custID: row.id,
                                         staffID: row.staffID, //该字段是不变的
                                         serviceType: row.type,
-                                        old_custID: row.ID,
+                                        old_custID: row.id,
                                         old_staffID: this.primary //null代表新增，这是旧的员工身份证号
                                     },
                                     {

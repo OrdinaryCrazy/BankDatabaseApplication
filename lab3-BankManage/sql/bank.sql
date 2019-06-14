@@ -36,13 +36,13 @@ CREATE TABLE CUSTOMER (
 /* 用户表 */
 CREATE TABLE EMPLOYEE (
     EMPLOYEE_ID         NUMBER(16) CONSTRAINT EMPLOYEE_PK PRIMARY KEY,
-    EMPLOYEE_DEPART_ID  NUMBER(6),
+    EMPLOYEE_DEPART_ID  CHAR(10),
     EMPLOYEE_BANK_NAME  CHAR(50),
     EMPLOYEE_NAME       CHAR(32),
     EMPLOYEE_PHONE      NUMBER(12),
     EMPLOYEE_ADDRESS    CHAR(128),
     EMPLOYEE_ENTERDATE  DATE,
-    EMPLOYEE_LEADER     NUMBER(6),  /* 不是领导就是NULL */
+    EMPLOYEE_LEADER     CHAR(10),  /* 不是领导就是NULL */
 ------------------------------------------------
     EMPLOYEE_PASS       CHAR(6)     DEFAULT '123456',
 ------------------------------------------------

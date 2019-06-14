@@ -18,16 +18,63 @@ def customer():
     if (rstype=="Search"):
         # Todo: 实现数据库操作，返回查询的结果
         print('Search')
+
+        connection = cx_Oracle.connect('System/db2019@localhost/ORCL')
+        cursor = connection.cursor()
+
+        nameSearch      = request.form['nameSearch']
+        nameSearch      = nameSearch.rstrip()
+        idSearch        = request.form['idSearch']
+        idSearch        = idSearch.rstrip()
+        telSearch       = request.form['telSearch']
+        telSearch       = telSearch.rstrip()
+        addrSearch      = request.form['addrSearch']
+        addrSearch      = addrSearch.rstrip()
+        linknameSearch  = request.form['linknameSearch']
+        linknameSearch  = linknameSearch.rstrip()
+        linktelSearch   = request.form['linktelSearch']
+        linktelSearch   = linktelSearch.rstrip()
+        emailSearch     = request.form['emailSearch']
+        emailSearch     = emailSearch.rstrip()
+
+        sqlcommand = ""
+        sqlcommand = sqlcommand + " SELECT"
+        sqlcommand = sqlcommand + " CUSTOMER_ID                 AS id"          + ','
+        sqlcommand = sqlcommand + " CUSTOMER_NAME               AS name "       + ','
+        sqlcommand = sqlcommand + " CUSTOMER_PHONE              AS tel"         + ','
+        sqlcommand = sqlcommand + " CUSTOMER_ADDRESS            AS addr"        + ','
+        sqlcommand = sqlcommand + " CUSTOMER_CONTACT_NAME       AS name_link"   + ','
+        sqlcommand = sqlcommand + " CUSTOMER_CONTACT_PHONE      AS tel_link"    + ','
+        sqlcommand = sqlcommand + " CUSTOMER_CONTACT_EMAIL      AS email_link"  + ','
+        sqlcommand = sqlcommand + " CUSTOMER_CONTACT_RELATION   AS relation"
+        sqlcommand = sqlcommand + " FROM"
+        sqlcommand = sqlcommand + " CUSTOMER"
+        sqlcommand = sqlcommand + " WHERE"
+        sqlcommand = sqlcommand + " CUSTOMER_ID IS NOT NULL"
+        if (len(nameSearch) > 0) :
+            sqlcommand = sqlcommand + " AND CUSTOMER_ID LIKE '%"        + nameSearch + "%'"
+        if (len(idSearch) > 0) :
+            sqlcommand = sqlcommand + " AND CUSTOMER_NAME LIKE '%"      + idSearch + "%'"
+        if (len(telSearch) > 0) :
+            sqlcommand = sqlcommand + " AND CUSTOMER_PHONE LIKE '%"     + telSearch + "%'"
+        if (len(addrSearch) > 0) :
+            sqlcommand = sqlcommand + " AND CUSTOMER_ADDRESS LIKE '%"   + addrSearch + "%'"
+        if (len(linknameSearch) > 0) :
+            sqlcommand = sqlcommand + " AND CUSTOMER_CONTACT_NAME LIKE '%"  + linknameSearch + "%'"
+        if (len(linktelSearch) > 0) :
+            sqlcommand = sqlcommand + " AND CUSTOMER_CONTACT_PHONE LIKE '%" + linktelSearch + "%'"
+        if (len(emailSearch) > 0) :
+            sqlcommand = sqlcommand + " AND CUSTOMER_CONTACT_EMAIL LIKE '%" + emailSearch + "%'"
+ 
+        print(sqlcommand)
+        cursor.execute(sqlcommand)
+        # 使读取的 Oracle 数据字典化
+        cursor.rowfactory = makeDictFactory(cursor)
+        result = cursor.fetchall()
+
         response = make_response(jsonify({    
                                         'code':200,
-                                        'list':[
-                                            {'ID':'331002199802021545','name': '张三','tel':'10086','addr':'黄山路',
-                                            'name_link':'张三丰','tel_link':'112','email_link':'4323@qq.com','relation':'父子'},
-                                            {'ID':'331002195602021545','name': '李四','tel':'10086','addr':'黄山路',
-                                            'name_link':'张三丰','tel_link':'112','email_link':'4323@qq.com','relation':'父子'},
-                                            {'ID':'331002199802021555','name': '王五','tel':'10086','addr':'黄山路',
-                                            'name_link':'张三丰','tel_link':'112','email_link':'4323@qq.com','relation':'父子'}
-                                        ]
+                                        'list':result
                                     })
                                 )
         response.headers['Access-Control-Allow-Origin'] = '*'
