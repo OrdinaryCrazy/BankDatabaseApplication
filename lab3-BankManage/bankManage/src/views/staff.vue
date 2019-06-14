@@ -110,7 +110,7 @@
             <elx-editable-column prop="tel" label="电话号码" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="addr" label="家庭住址" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column
-                prop="date"
+                prop="date_s"
                 label="入职日期"
                 :edit-render="{
                     name: 'ElDatePicker',
@@ -486,7 +486,7 @@ export default {
                                         dept: row.dept,
                                         tel: row.tel,
                                         addr: row.addr,
-                                        date_s: row.date,
+                                        date_s: row.date_s,
                                         old_primary: this.primary //null代表新增
                                     },
                                     {
