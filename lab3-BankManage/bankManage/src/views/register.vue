@@ -7,16 +7,16 @@
                     <td>&emsp;&emsp;&emsp;&emsp;<font color="red">*</font> 账户类型</td>
                     <td>
                         <input type="radio" name="type" v-model="type" value="SUB_BANK" required="true" />支行账户&emsp;
-                        <input type="radio" name="type" v-model="type" value="EMPLOYEE" required="true" />客户账户&emsp;
-                        <input type="radio" name="type" v-model="type" value="CUSTOMER" required="true" />员工账户&emsp;&emsp;&emsp;&ensp;
+                        <input type="radio" name="type" v-model="type" value="CUSTOMER" required="true" />客户账户&emsp;
+                        <input type="radio" name="type" v-model="type" value="EMPLOYEE" required="true" />员工账户&emsp;&emsp;&emsp;&ensp;
                     </td>
                 </tr>
                 <tr>
-                    <td v-if="type === '支行'"><font color="red">*</font> 支行名称</td>
+                    <td v-if="type === 'SUB_BANK'"><font color="red">*</font> 支行名称</td>
                     <td v-else><font color="red">*</font> 身份证号</td>
                     <td>
                         <input
-                            v-if="type === '支行'"
+                            v-if="type === 'SUB_BANK'"
                             type="text"
                             placeholder="Please enter the name of bank"
                             id="username"
@@ -35,7 +35,7 @@
                         />
                     </td>
                 </tr>
-                <tr v-if="type === '支行'">
+                <tr v-if="type === 'SUB_BANK'">
                     <td>所在城市</td>
                     <td>
                         <input
@@ -48,7 +48,7 @@
                         />
                     </td>
                 </tr>
-                <tr v-if="type === '支行'">
+                <tr v-if="type === 'SUB_BANK'">
                     <td>资产总额</td>
                     <td>
                         <input
@@ -61,7 +61,7 @@
                         />
                     </td>
                 </tr>
-                <tr v-if="type === '客户'">
+                <tr v-if="type === 'CUSTOMER'">
                     <td>姓名</td>
                     <td>
                         <input
@@ -74,7 +74,7 @@
                         />
                     </td>
                 </tr>
-                <tr v-if="type === '客户'">
+                <tr v-if="type === 'CUSTOMER'">
                     <td>联系电话</td>
                     <td>
                         <input
@@ -87,7 +87,7 @@
                         />
                     </td>
                 </tr>
-                <tr v-if="type === '客户'">
+                <tr v-if="type === 'CUSTOMER'">
                     <td>家庭住址</td>
                     <td>
                         <input
@@ -102,7 +102,7 @@
                         />
                     </td>
                 </tr>
-                <tr v-if="type === '客户'">
+                <tr v-if="type === 'CUSTOMER'">
                     <td>联系人姓名</td>
                     <td>
                         <input
@@ -117,7 +117,7 @@
                         />
                     </td>
                 </tr>
-                <tr v-if="type === '客户'">
+                <tr v-if="type === 'CUSTOMER'">
                     <td>联系人手机号</td>
                     <td>
                         <input
@@ -132,7 +132,7 @@
                         />
                     </td>
                 </tr>
-                <tr v-if="type === '客户'">
+                <tr v-if="type === 'CUSTOMER'">
                     <td>联系人Email</td>
                     <td>
                         <input
@@ -147,7 +147,7 @@
                         />
                     </td>
                 </tr>
-                <tr v-if="type === '客户'">
+                <tr v-if="type === 'CUSTOMER'">
                     <td>联系人与客户关系</td>
                     <td>
                         <input
@@ -162,7 +162,7 @@
                         />
                     </td>
                 </tr>
-                <tr v-if="type === '员工'">
+                <tr v-if="type === 'EMPLOYEE'">
                     <td>姓名</td>
                     <td>
                         <input
@@ -177,7 +177,7 @@
                         />
                     </td>
                 </tr>
-                <tr v-if="type === '员工'">
+                <tr v-if="type === 'EMPLOYEE'">
                     <td>所在部门</td>
                     <td>
                         <input
@@ -192,7 +192,7 @@
                         />
                     </td>
                 </tr>
-                <tr v-if="type === '员工'">
+                <tr v-if="type === 'EMPLOYEE'">
                     <td>电话号码</td>
                     <td>
                         <input
@@ -207,7 +207,7 @@
                         />
                     </td>
                 </tr>
-                <tr v-if="type === '员工'">
+                <tr v-if="type === 'EMPLOYEE'">
                     <td>家庭住址</td>
                     <td>
                         <input
@@ -222,7 +222,7 @@
                         />
                     </td>
                 </tr>
-                <tr v-if="type === '员工'">
+                <tr v-if="type === 'EMPLOYEE'">
                     <td>入职时间</td>
                     <td>
                         <input
@@ -301,7 +301,7 @@ export default {
         };
     },
     created() {
-        this.type = "支行";
+        this.type = "SUB_BANK";
     },
     methods: {
         submit: function() {

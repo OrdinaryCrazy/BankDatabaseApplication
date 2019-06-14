@@ -43,30 +43,44 @@ def account():
         visit_up    = visit_up.form['visit_up']
         visit_up    = visit_up.rstrip()
 
-        sqlcommand = ""
-        sqlcommand = sqlcommand + " SELECT"
-        sqlcommand = sqlcommand + " "
-        sqlcommand = sqlcommand + " "
-        sqlcommand = sqlcommand + " "
-        sqlcommand = sqlcommand + " FROM"
+        checkresult = []
+        depositresult = []
 
         if typeSearch == "any" or typeSearch == "check" :
+            sqlcommand = ""
+            sqlcommand = sqlcommand + " SELECT"
+            sqlcommand = sqlcommand + " AS id"
+            sqlcommand = sqlcommand + " AS owner"
+            sqlcommand = sqlcommand + " AS bank"
+            sqlcommand = sqlcommand + " AS money"
+            sqlcommand = sqlcommand + " AS open_date"
+            sqlcommand = sqlcommand + " AS visit_date"
+            sqlcommand = sqlcommand + " FROM"
             sqlcommand = sqlcommand + " CHECK_ACCOUNT,"
             sqlcommand = sqlcommand + " CUSTOMER_CHECK_ACCOUNT,"
+            sqlcommand = sqlcommand + " CUSTOMER,"
+            print(sqlcommand)
+            cursor.execute(sqlcommand)
+            cursor.rowfactory = makeDictFactory(cursor)
+            checkresult = cursor.fetchall()
+            for line in 
 
         if typeSearch == "any" or typeSearch == "saving" :
+            sqlcommand = ""
+            sqlcommand = sqlcommand + " SELECT"
+            sqlcommand = sqlcommand + " "
+            sqlcommand = sqlcommand + " "
+            sqlcommand = sqlcommand + " "
+            sqlcommand = sqlcommand + " FROM"
             sqlcommand = sqlcommand + " DEPOSIT_ACCOUNT,"
             sqlcommand = sqlcommand + " CUSTOMER_DEPOSIT_ACCOUNT,"
+            sqlcommand = sqlcommand + " CUSTOMER,"
+            print(sqlcommand)
+            cursor.execute(sqlcommand)
+            cursor.rowfactory = makeDictFactory(cursor)
+            depositresult = cursor.fetchall()
 
-        sqlcommand = sqlcommand + " CUSTOMER,"
-        
-
-        print(sqlcommand)
-        cursor.execute(sqlcommand)
-        # 使读取的 Oracle 数据字典化
-        cursor.rowfactory = makeDictFactory(cursor)
-        result = cursor.fetchall()
-        # print(result)
+        result = checkresult + depositresult
 
         if result :
             response = make_response(jsonify({    

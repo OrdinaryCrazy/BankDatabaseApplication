@@ -52,6 +52,18 @@ INTO    CUSTOMER(   CUSTOMER_ID,            CUSTOMER_NAME,  CUSTOMER_PHONE,
                     CUSTOMER_CONTACT_PHONE, CUSTOMER_CONTACT_EMAIL,
                     CUSTOMER_CONTACT_RELATION
                     )
+VALUES          (   '3310021988020215',     '刘强东',         '10086',
+                    '黄山路',               '张三丰',
+                    '112',                 '4323@qq.com',
+                    '父子'
+                    );
+--------------------------------------------------------------------------------------
+INSERT
+INTO    CUSTOMER(   CUSTOMER_ID,            CUSTOMER_NAME,  CUSTOMER_PHONE,
+                    CUSTOMER_ADDRESS,       CUSTOMER_CONTACT_NAME,
+                    CUSTOMER_CONTACT_PHONE, CUSTOMER_CONTACT_EMAIL,
+                    CUSTOMER_CONTACT_RELATION
+                    )
 VALUES          (   '3310021956020245',     '李四',         '10086',
                     '黄山路',               '张三丰',
                     '112',                  '4323@qq.com',
@@ -79,14 +91,28 @@ INTO    EMPLOYEE_CUSTOMER(CUSTOMER_ID, EMPLOYEE_ID, SERVICETYPE)
 VALUES  ('3310021998020255', '3310022000100200', '账户经理');
 --------------------------------------------------------------------------------------
 INSERT
-INTO
-VALUES
-{'ID': "123000",'owner': "张三，李四，王五，马云，刘强东",'bank': "合肥支行",'money':2563.00,
-'open_date': '2016-2-20','visit_date': '2018-5-6','type': '0','interest': 0.043,'cashtype': '1'},
-{'ID': "123020",'owner': "刘强东",'bank': "合肥支行",'money':23563.00,
-'open_date': '2016-2-20','visit_date': '2018-5-6','type': '1','overdraft': 25000000}
+INTO    DEPOSIT_ACCOUNT(DEPOSIT_ACCOUNT_ID,             DEPOSIT_ACCOUNT_MONEY, DEPOSIT_ACCOUNT_REGDATE, 
+                        DEPOSIT_ACCOUNT_INTERESTRATE,   DEPOSIT_ACCOUNT_CURRENCYTYPE)
+VALUES  ('123000', 2563.00, TO_DATE('2016-02-20','YYYY-MM-DD'), 0.043, 1);
+
+INSERT
+INTO    CUSTOMER_DEPOSIT_ACCOUNT(BANK_NAME, CUSTOMER_ID, DEPOSIT_ACCOUNT_ID, LAST_VIEW)
+VALUES  ('合肥城南支行测试', '3310021998020215', '123000', TO_DATE('2018-05-06','YYYY-MM-DD'));
+INSERT
+INTO    CUSTOMER_DEPOSIT_ACCOUNT(BANK_NAME, CUSTOMER_ID, DEPOSIT_ACCOUNT_ID, LAST_VIEW)
+VALUES  ('合肥城南支行测试', '3310021988020215', '123000', TO_DATE('2018-05-06','YYYY-MM-DD'));
+INSERT
+INTO    CUSTOMER_DEPOSIT_ACCOUNT(BANK_NAME, CUSTOMER_ID, DEPOSIT_ACCOUNT_ID, LAST_VIEW)
+VALUES  ('合肥城南支行测试', '3310021956020245', '123000', TO_DATE('2018-05-06','YYYY-MM-DD'));
+INSERT
+INTO    CUSTOMER_DEPOSIT_ACCOUNT(BANK_NAME, CUSTOMER_ID, DEPOSIT_ACCOUNT_ID, LAST_VIEW)
+VALUES  ('合肥城南支行测试', '3310021998020255', '123000', TO_DATE('2018-05-06','YYYY-MM-DD'));
 --------------------------------------------------------------------------------------
 INSERT
-INTO
-VALUES
+INTO    CHECK_ACCOUNT(CHECK_ACCOUNT_ID, CHECK_ACCOUNT_MONEY, CHECK_ACCOUNT_REGDATE, CHECK_ACCOUNT_OVERDRAFT)
+VALUES  ('123020', 23563.00, TO_DATE('2016-02-20','YYYY-MM-DD'), 25000000);
+
+INSERT
+INTO    CUSTOMER_CHECK_ACCOUNT(BANK_NAME, CUSTOMER_ID, CHECK_ACCOUNT_ID, LAST_VIEW)
+VALUES  ('合肥城南支行测试', '3310021988020215', '123020', TO_DATE('2018-05-06','YYYY-MM-DD') );
 --------------------------------------------------------------------------------------

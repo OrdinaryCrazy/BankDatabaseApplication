@@ -277,18 +277,18 @@ export default {
         findList() {
             this.loading = true;
             this.list = [
-                {
-                    id: "123000",
-                    owner: "张三，李四，王五，马云，刘强东",
-                    bank: "合肥支行",
-                    money: 2563.0,
-                    open_date: new Date("2016-2-20"),
-                    visit_date: new Date(),
-                    type: "0",
-                    interest: 0.023,
-                    cashtype: "0",
-                    overdraft: null
-                }
+                // {
+                //     id: "123000",
+                //     owner: "张三，李四，王五，马云，刘强东",
+                //     bank: "合肥支行",
+                //     money: 2563.0,
+                //     open_date: new Date("2016-2-20"),
+                //     visit_date: new Date(),
+                //     type: "0",
+                //     interest: 0.023,
+                //     cashtype: "0",
+                //     overdraft: null
+                // }
             ];
             this.loading = false;
         },
