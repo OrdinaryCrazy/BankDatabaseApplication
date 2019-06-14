@@ -419,8 +419,8 @@ export default {
                                 ID: row.ID,
                                 bank: row.bank,
                                 money: row.money,
-                                open_date: row.open_date,
-                                visit_date: row.visit_date,
+                                open_date: XEUtils.toDateString(row.open_date, "yyyy-MM-dd"),
+                                visit_date: XEUtils.toDateString(row.visit_date, "yyyy-MM-dd"),
                                 acctype: row.type,
                                 interest: row.interest,
                                 cashtype: row.cashtype,
@@ -473,10 +473,10 @@ export default {
                         typeSearch: this.typeSearch,
                         money_lo: this.money_lo,
                         money_up: this.money_up,
-                        open_lo: this.open_lo,
-                        open_up: this.open_up,
-                        visit_lo: this.visit_lo,
-                        visit_up: this.visit_up
+                        open_lo: XEUtils.toDateString(this.open_lo, "yyyy-MM-dd"),
+                        open_up: XEUtils.toDateString(this.open_up, "yyyy-MM-dd"),
+                        visit_lo: XEUtils.toDateString(this.visit_lo, "yyyy-MM-dd"),
+                        visit_up: XEUtils.toDateString(this.visit_up, "yyyy-MM-dd"),
                     },
                     {
                         emulateJSON: true

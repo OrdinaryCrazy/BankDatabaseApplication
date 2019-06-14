@@ -92,6 +92,8 @@
 </template>
 
 <script>
+import XEUtils from "xe-utils";
+import XEAjax from "xe-ajax";
 export default {
     data() {
         return {
@@ -159,8 +161,8 @@ export default {
                 .post(
                     "http://" + document.domain + ":5000/summary",
                     {
-                        upperBound: this.upperBound,
-                        lowerBound: this.lowerBound,
+                        upperBound: XEUtils.toDateString(this.upperBound, "yyyy-MM-dd"),
+                        lowerBound: XEUtils.toDateString(this.lowerBound, "yyyy-MM-dd"),
                         timegrain: this.timegrain,
                         sumtype: this.sumtype,
                         datatype: this.datatype,

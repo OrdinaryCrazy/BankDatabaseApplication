@@ -277,8 +277,8 @@ export default {
                         deptSearch: this.deptSearch,
                         telSearch: this.telSearch,
                         addrSearch: this.addrSearch,
-                        lowerBound: this.lowerBound,
-                        upperBound: this.upperBound
+                        lowerBound: XEUtils.toDateString(this.lowerBound, "yyyy-MM-dd"),
+                        upperBound: XEUtils.toDateString(this.upperBound, "yyyy-MM-dd")
                     },
                     {
                         emulateJSON: true
