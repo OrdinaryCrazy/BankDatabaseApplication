@@ -114,7 +114,7 @@
 
         <div align="left">
             <el-button class="button" type="success" size="small" @click="exportCsvEvent()">导出</el-button>
-            <el-button class="button" type="success" size="small" @click="insertEvent()">开户</el-button>
+            <el-button class="button" type="success" size="small" @click="newaccount()">开户</el-button>
             <font style="color: red" align="left">注：账户号不允许修改</font>
         </div>
         <br />
@@ -261,12 +261,13 @@ export default {
             visit_lo: "",
             visit_up: "",
             permission: "",
+            newownerid: "",
             primary: null //全局变量，保存记录修改前的主键。当没有活跃的记录时为null，当新增记录时也为null
         };
     },
     created() {
         this.permission = localStorage.getItem("type");
-        if (type != "EMPLOYEE" && type != "SUB_BANK" && type != "CUSTOMER") {
+        if (this.permission != "EMPLOYEE" && this.permission != "SUB_BANK" && this.permission != "CUSTOMER") {
             this.$router.push("/404");
         }
         this.findList();
@@ -301,6 +302,25 @@ export default {
             return false;
         },
         //新增记录
+        newaccount() {
+            if (this.primary == null) {
+                this.$prompt("请输入开户者的身份证号", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消"
+                })
+                    .then(({ value }) => {
+                        this.newownerid = value;
+                        this.insertEvent();
+                    })
+                    .catch(() => {
+                        this.$message({
+                            type: "info",
+                            message: "取消输入"
+                        });
+                    });
+            }
+        },
+
         insertEvent() {
             console.log("insert");
             let activeInfo = this.$refs.elxEditable.getActiveRow();
@@ -415,28 +435,6 @@ export default {
                     if (this.primary != null) {
                         row.id = this.primary; //禁止修改主键
                     }
-                    if (this.primary == null) {
-                        MessageBox.confirm("该数据未保存，是否移除?", "温馨提示", {
-                            distinguishCancelAndClose: true,
-                            confirmButtonText: "放弃修改",
-                            cancelButtonText: "返回继续",
-                            type: "warning"
-                        })
-                            .then(action => {
-                                if (action === "confirm") {
-                                    this.$refs.elxEditable.clearActive();
-                                    this.$refs.elxEditable.revert(row);
-                                    if (this.primary == null) {
-                                        this.$refs.elxEditable.remove(row);
-                                    }
-                                    this.primary = null;
-                                }
-                            })
-                            .catch(action => action)
-                            .then(() => {
-                                this.isClearActiveFlag = true;
-                            });
-                    }
 
                     this.$http
                         .post(
@@ -446,6 +444,7 @@ export default {
                                 id: row.id,
                                 bank: row.bank,
                                 money: row.money,
+                                ownerid: this.newownerid,
                                 open_date: XEUtils.toDateString(row.open_date, "yyyy-MM-dd"),
                                 visit_date: XEUtils.toDateString(row.visit_date, "yyyy-MM-dd"),
                                 acctype: row.type,

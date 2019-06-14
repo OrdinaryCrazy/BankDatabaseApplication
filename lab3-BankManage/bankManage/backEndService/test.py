@@ -370,6 +370,8 @@ def account():
     if (rstype=="Update"):
         # Todo: 实现数据库操作，修改或新增记录
         print('Update')
+        ownerid=request.form['ownerid']
+        print(ownerid)
         response = make_response(jsonify({    
                                         'code':200,
                                         'msg': 'ok'
