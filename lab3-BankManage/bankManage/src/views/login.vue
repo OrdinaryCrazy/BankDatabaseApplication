@@ -12,9 +12,9 @@
                 <option value="CUSTOMER"> 客户账户 </option>
             </select>
             <!--======================================================================-->
-            <label v-if="type === 'SUB_BANK'"><font color="red">*</font> 支行名称</label>
-            <label v-else><font color="red">*</font> 身份证号</label>
-            <label for="username">用户名</label>
+            <label v-if="custype == 'SUB_BANK'">支行名称</label>
+            <label v-else>身份证号</label>
+            
             <input
                 type="text"
                 placeholder="Please enter your username"

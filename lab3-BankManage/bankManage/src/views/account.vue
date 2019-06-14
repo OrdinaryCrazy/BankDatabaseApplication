@@ -260,13 +260,13 @@ export default {
             open_up: "",
             visit_lo: "",
             visit_up: "",
-            permission:"",
+            permission: "",
             primary: null //全局变量，保存记录修改前的主键。当没有活跃的记录时为null，当新增记录时也为null
         };
     },
     created() {
         this.permission = localStorage.getItem("type");
-        if (type != 'EMPLOYEE' && type != 'SUB_BANK' && type != 'CUSTOMER') {
+        if (type != "EMPLOYEE" && type != "SUB_BANK" && type != "CUSTOMER") {
             this.$router.push("/404");
         }
         this.findList();
@@ -414,6 +414,28 @@ export default {
                     console.log(this.primary);
                     if (this.primary != null) {
                         row.id = this.primary; //禁止修改主键
+                    }
+                    if (this.primary == null) {
+                        MessageBox.confirm("该数据未保存，是否移除?", "温馨提示", {
+                            distinguishCancelAndClose: true,
+                            confirmButtonText: "放弃修改",
+                            cancelButtonText: "返回继续",
+                            type: "warning"
+                        })
+                            .then(action => {
+                                if (action === "confirm") {
+                                    this.$refs.elxEditable.clearActive();
+                                    this.$refs.elxEditable.revert(row);
+                                    if (this.primary == null) {
+                                        this.$refs.elxEditable.remove(row);
+                                    }
+                                    this.primary = null;
+                                }
+                            })
+                            .catch(action => action)
+                            .then(() => {
+                                this.isClearActiveFlag = true;
+                            });
                     }
 
                     this.$http
