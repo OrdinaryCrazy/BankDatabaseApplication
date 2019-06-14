@@ -227,7 +227,7 @@ export default {
                     {
                         type: "Insert",
                         loanID: this.detail.ID,
-                        date: new Date(),
+                        date: XEUtils.toDateString(new Date(), "yyyy-MM-dd"),
                         money: this.payAmount
                     },
                     {
