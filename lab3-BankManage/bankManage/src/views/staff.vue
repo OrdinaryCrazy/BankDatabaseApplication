@@ -103,14 +103,14 @@
             style="width: 100%"
         >
             <elx-editable-column type="index" width="55"></elx-editable-column>
-            <elx-editable-column prop="ID" label="身份证号" min-width="100" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+            <elx-editable-column prop="id" label="身份证号" min-width="100" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="name" label="姓名" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="bank" label="所属支行" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="dept" label="所在部门" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="tel" label="电话号码" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="addr" label="家庭住址" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column
-                prop="date"
+                prop="date_s"
                 label="入职日期"
                 :edit-render="{
                     name: 'ElDatePicker',
@@ -153,7 +153,7 @@
                 <elx-editable-column type="index" width="55"></elx-editable-column>
                 <elx-editable-column prop="staffID" label="员工身份证号"></elx-editable-column>
                 <elx-editable-column prop="staffName" label="员工姓名"></elx-editable-column>
-                <elx-editable-column prop="ID" label="客户身份证号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+                <elx-editable-column prop="id" label="客户身份证号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
                 <elx-editable-column prop="name" label="客户姓名"></elx-editable-column>
                 <elx-editable-column prop="type" label="与客户关系" :edit-render="{ name: 'ElSelect', options: serviceList }"></elx-editable-column>
                 <elx-editable-column label="操作" width="160">
@@ -216,7 +216,7 @@ export default {
             this.loading = true;
             this.list = [
                 // {
-                //     ID: "33122220001010001X",
+                //     id: "33122220001010001X",
                 //     name: "张三",
                 //     bank: "合肥城南支行",
                 //     dept: "人事处",
@@ -227,7 +227,7 @@ export default {
             ];
             this.linklist = [
                 // {
-                //     ID: "33122212121210001X",
+                //     id: "33122212121210001X",
                 //     name: "吴邪",
                 //     staffID: "33122220001010001X",
                 //     staffName: "张三",
@@ -254,7 +254,7 @@ export default {
                         this.$refs[name].setActiveRow(row);
                     });
                 } else {
-                    this.$refs[name].insert({ staffID: this.detail.ID, staffName: this.detail.name }).then(({ row }) => {
+                    this.$refs[name].insert({ staffID: this.detail.id, staffName: this.detail.name }).then(({ row }) => {
                         this.$refs[name].setActiveRow(row);
                     });
                 }
@@ -310,7 +310,7 @@ export default {
                     "http://" + document.domain + ":5000/staffCustomer",
                     {
                         type: "SearchByStaff",
-                        staffID: row.ID
+                        staffID: row.id
                     },
                     {
                         emulateJSON: true
@@ -321,7 +321,7 @@ export default {
                         this.linklist = response.body.list;
                         for (var i = 0; i < this.linklist.length; i++) {
                             this.linklist[i].staffName = row.name;
-                            this.linklist[i].staffID = row.ID;
+                            this.linklist[i].staffID = row.id;
                         }
                     } else {
                         window.alert("查询失败");
@@ -383,8 +383,8 @@ export default {
                             })
                                 .then(() => {
                                     this.$refs[name].setActiveRow(row);
-                                    this.primary = row.ID;
-                                    console.log(row.ID);
+                                    this.primary = row.id;
+                                    console.log(row.id);
                                     this.saveRowEvent(name, activeInfo.row);
                                 })
                                 .catch(action => {
@@ -401,14 +401,14 @@ export default {
                                 });
                         } else {
                             this.$refs[name].setActiveRow(row);
-                            this.primary = row.ID;
-                            console.log(row.ID);
+                            this.primary = row.id;
+                            console.log(row.id);
                         }
                     }
                 } else {
                     this.$refs[name].setActiveRow(row);
-                    this.primary = row.ID;
-                    console.log(row.ID);
+                    this.primary = row.id;
+                    console.log(row.id);
                 }
             });
         },
@@ -420,7 +420,7 @@ export default {
                             "http://" + document.domain + ":5000/staff",
                             {
                                 type: "Delete",
-                                primary: row.ID
+                                primary: row.id
                             },
                             {
                                 emulateJSON: true
@@ -442,7 +442,7 @@ export default {
                             "http://" + document.domain + ":5000/staffCustomer",
                             {
                                 type: "Delete",
-                                custID: row.ID,
+                                custID: row.id,
                                 staffID: row.staffID
                             },
                             {
@@ -467,7 +467,7 @@ export default {
                         return;
                     }
                 case "elxEditable1":
-                    if (row.ID == null || row.ID == "") {
+                    if (row.id == null || row.id == "") {
                         return;
                     }
             }
@@ -480,13 +480,13 @@ export default {
                                     "http://" + document.domain + ":5000/staff",
                                     {
                                         type: "Update",
-                                        ID: row.ID,
+                                        id: row.id,
                                         name: row.name,
                                         bank: row.bank,
                                         dept: row.dept,
                                         tel: row.tel,
                                         addr: row.addr,
-                                        date_s: row.date,
+                                        date_s: row.date_s,
                                         old_primary: this.primary //null代表新增
                                     },
                                     {
@@ -511,7 +511,7 @@ export default {
                                     "http://" + document.domain + ":5000/staffCustomer",
                                     {
                                         type: "Update",
-                                        custID: row.ID,
+                                        custID: row.id,
                                         staffID: row.staffID, //该字段是不变的
                                         serviceType: row.type,
                                         old_custID: this.primary, //null代表新增，这是旧的客户身份证号
