@@ -467,7 +467,7 @@ export default {
                     "http://" + document.domain + ":5000/account",
                     {
                         type: "Search",
-                        nameSearch: this.nameSearch,
+                        bankSearch: this.bankSearch,
                         idSearch: this.idSearch,
                         ownerSearch: this.ownerSearch,
                         typeSearch: this.typeSearch,

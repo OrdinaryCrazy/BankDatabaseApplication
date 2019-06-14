@@ -318,6 +318,60 @@ def staffCustomer():
         response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
         return response
 
+    if (rstype=='SearchByCustomer'):
+        # Todo: 实现数据库操作，返回查询的结果
+        custID = request.form['custid'] # 客户身份证号，查找所有关于该客户的员工联系
+        custID = custID.rstrip()
+        print('SearchByCustomer')
+        print(custID)
+
+        connection = cx_Oracle.connect('System/db2019@localhost/ORCL')
+        cursor = connection.cursor()
+
+        sqlcommand = ""
+        sqlcommand = sqlcommand + " SELECT"
+        sqlcommand = sqlcommand + " EMPLOYEE_CUSTOMER.EMPLOYEE_ID AS staffid"    + ','
+        sqlcommand = sqlcommand + " EMPLOYEE.EMPLOYEE_NAME AS staffname"      + ','
+        sqlcommand = sqlcommand + " EMPLOYEE_CUSTOMER.SERVICETYPE AS type"
+        sqlcommand = sqlcommand + " FROM"
+        sqlcommand = sqlcommand + " EMPLOYEE_CUSTOMER, EMPLOYEE"
+        sqlcommand = sqlcommand + " WHERE"
+        sqlcommand = sqlcommand + " EMPLOYEE_CUSTOMER.EMPLOYEE_ID = EMPLOYEE.EMPLOYEE_ID AND"
+        sqlcommand = sqlcommand + " EMPLOYEE_CUSTOMER.CUSTOMER_ID = '" + custID + "'"
+
+        print(sqlcommand)
+        cursor.execute(sqlcommand)
+        # 使读取的 Oracle 数据字典化
+        cursor.rowfactory = makeDictFactory(cursor)
+        result = cursor.fetchall()
+        # print(result)
+        for line in result:
+            line['staffid'] = str(line['staffid'])
+        # print(result)
+
+        if result :
+            response = make_response(jsonify({    
+                                            'code':200,
+                                            'list':result
+                                        })
+                                    )
+            response.headers['Access-Control-Allow-Origin']  = '*'
+            response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+            response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+            return response
+
+        response = make_response(
+            jsonify(
+                {
+                    'code': 400
+                }
+            )
+        )
+        response.headers['Access-Control-Allow-Origin']  = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+        return response
+
     if (rstype=="Update"):
         # Todo: 实现数据库操作，修改或新增记录
         print('Update')
@@ -336,8 +390,9 @@ def staffCustomer():
         old_staffID = old_staffID.rstrip()
 
         sqlcommand = ""
-        if len(old_custID) > 0 : # 改 #
-            
+        # if      len(old_custID)  > 0 and len(old_staffID) == 0  \
+        #     or  len(old_staffID) > 0 and len(old_custID)  == 0 : # 改 #
+        if len(old_custID) > 0 and len(old_staffID) > 0 :
             sqlcommand = sqlcommand + " UPDATE EMPLOYEE_CUSTOMER SET   "
             if len(custID) > 0 :
                 sqlcommand = sqlcommand + " CUSTOMER_ID = '" + custID + "',"

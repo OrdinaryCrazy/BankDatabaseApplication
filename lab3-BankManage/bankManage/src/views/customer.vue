@@ -140,7 +140,8 @@
                 <elx-editable-column prop="staffid" label="员工身份证号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
                 <elx-editable-column prop="staffname" label="员工姓名"></elx-editable-column>
 
-                <elx-editable-column prop="type" label="与客户关系" :edit-render="{ name: 'ElSelect', options: serviceList }"></elx-editable-column>
+                <elx-editable-column prop="type" label="与客户关系" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+                <!-- <elx-editable-column prop="type" label="与客户关系" :edit-render="{ name: 'ElSelect', options: serviceList }"></elx-editable-column> -->
                 <elx-editable-column label="操作" width="160">
                     <template v-slot="newscope">
                         <template v-if="$refs.elxEditable2.hasActiveRow(newscope.row)">
@@ -198,16 +199,16 @@ export default {
         findList() {
             this.loading = true;
             this.list = [
-                {
-                    id: "33122220001010001X",
-                    name: "张三",
-                    tel: "13822100086",
-                    addr: "合肥浣纱路256号",
-                    name_link: "张三丰",
-                    tel_link: "11012345678",
-                    email_link: "sfzhang@mail.ustc.edu.cn",
-                    relation: "父子"
-                }
+                // {
+                //     id: "33122220001010001X",
+                //     name: "张三",
+                //     tel: "13822100086",
+                //     addr: "合肥浣纱路256号",
+                //     name_link: "张三丰",
+                //     tel_link: "11012345678",
+                //     email_link: "sfzhang@mail.ustc.edu.cn",
+                //     relation: "父子"
+                // }
             ];
             this.loading = false;
         },
@@ -353,7 +354,8 @@ export default {
                             })
                                 .then(() => {
                                     this.$refs[name].setActiveRow(row);
-                                    this.primary = row.id;
+                                    // this.primary = row.id;
+                                    this.primary = row.staffid;
                                     console.log(row.id);
                                     this.saveRowEvent(name, activeInfo.row);
                                 })
@@ -371,13 +373,15 @@ export default {
                                 });
                         } else {
                             this.$refs[name].setActiveRow(row);
-                            this.primary = row.id;
+                            // this.primary = row.id;
+                            this.primary = row.staffid;
                             console.log(row.id);
                         }
                     }
                 } else {
                     this.$refs[name].setActiveRow(row);
-                    this.primary = row.id;
+                    // this.primary = row.id;
+                    this.primary = row.staffid;
                     console.log(row.id);
                 }
             });
@@ -412,8 +416,8 @@ export default {
                             "http://" + document.domain + ":5000/staffCustomer",
                             {
                                 type: "Delete",
-                                custid: row.id,
-                                staffid: row.staffid
+                                custID: row.id,
+                                staffID: row.staffid
                             },
                             {
                                 emulateJSON: true
@@ -485,11 +489,11 @@ export default {
                                     "http://" + document.domain + ":5000/staffCustomer",
                                     {
                                         type: "Update",
-                                        custid: row.id,
-                                        staffid: row.staffid, //该字段是不变的
+                                        custID: row.id,
+                                        staffID: row.staffid, //该字段是不变的
                                         serviceType: row.type,
-                                        old_custid: row.id,
-                                        old_staffid: this.primary //null代表新增，这是旧的员工身份证号
+                                        old_custID: row.id,
+                                        old_staffID: this.primary //null代表新增，这是旧的员工身份证号
                                     },
                                     {
                                         emulateJSON: true
