@@ -23,6 +23,16 @@
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
+            />&emsp;所属支行
+            <input
+                type="text"
+                placeholder="包含关键字"
+                id="bankSearch"
+                v-model="bankSearch"
+                required="false"
+                style=" width:300px;
+              font-family: 'Fira Code', '汉仪南宫体简';
+            "
             />&emsp;所在部门
             <input
                 type="text"
@@ -30,10 +40,10 @@
                 id="deptSearch"
                 v-model="deptSearch"
                 required="false"
-                style=" width:300px;
+                style=" width:280px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-            />&emsp;电话号码
+            />&emsp;<br />电话号码
             <input
                 type="text"
                 placeholder="包含关键字"
@@ -43,7 +53,7 @@
                 style=" width:280px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-            />&emsp;<br />家庭住址
+            />&emsp;家庭住址
             <input
                 type="text"
                 placeholder="包含关键字"
@@ -93,8 +103,9 @@
             style="width: 100%"
         >
             <elx-editable-column type="index" width="55"></elx-editable-column>
-            <elx-editable-column prop="ID" label="身份证号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+            <elx-editable-column prop="ID" label="身份证号" min-width="100" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="name" label="姓名" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+            <elx-editable-column prop="bank" label="所属支行" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="dept" label="所在部门" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="tel" label="电话号码" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="addr" label="家庭住址" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
@@ -185,6 +196,7 @@ export default {
             isClearActiveFlag: true,
             nameSearch: "",
             idSearch: "",
+            bankSearch: "",
             deptSearch: "",
             telSearch: "",
             addrSearch: "",
@@ -206,6 +218,7 @@ export default {
                 {
                     ID: "33122220001010001X",
                     name: "张三",
+                    bank: "合肥城南支行",
                     dept: "人事处",
                     tel: "13822100086",
                     addr: "合肥浣纱路256号",
@@ -260,6 +273,7 @@ export default {
                         type: "Search",
                         nameSearch: this.nameSearch,
                         idSearch: this.idSearch,
+                        bankSearch: this.bankSearch,
                         deptSearch: this.deptSearch,
                         telSearch: this.telSearch,
                         addrSearch: this.addrSearch,
@@ -295,7 +309,7 @@ export default {
                 .post(
                     "http://" + document.domain + ":5000/staffCustomer",
                     {
-                        type: "Search",
+                        type: "SearchByStaff",
                         staffID: row.ID
                     },
                     {
@@ -333,6 +347,9 @@ export default {
                         if (action === "cancel") {
                             this.$refs[name].revert(row);
                             this.$refs[name].clearActive();
+                            if (this.primary==null){
+                                this.$refs[name].remove(row);
+                            }
                             this.primary = null;
                             Message({ message: "放弃修改并离开当前行", type: "warning" });
                         } else {
@@ -444,6 +461,16 @@ export default {
             }
         },
         saveRowEvent(name, row) {
+            switch (name) {
+                case "elxEditable2":
+                    if (row.staffID == null || row.staffID == "") {
+                        return;
+                    }
+                case "elxEditable1":
+                    if (row.ID == null || row.ID == "") {
+                        return;
+                    }
+            }
             this.$refs[name].validateRow(row, valid => {
                 if (valid && this.$refs[name].hasRowChange(row)) {
                     switch (name) {
@@ -455,6 +482,7 @@ export default {
                                         type: "Update",
                                         ID: row.ID,
                                         name: row.name,
+                                        bank: row.bank,
                                         dept: row.dept,
                                         tel: row.tel,
                                         addr: row.addr,
@@ -498,6 +526,7 @@ export default {
                                         //更新合法
                                         this.primary = null;
                                         this.$refs.elxEditable2.clearActive();
+                                        row = response.body.record;
                                         this.$refs.elxEditable2.reloadRow(row);
                                         console.log("Update");
                                     } else {

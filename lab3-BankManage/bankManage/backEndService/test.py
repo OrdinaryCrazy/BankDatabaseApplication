@@ -137,9 +137,11 @@ def staffCustomer():
     # serviceType=request.form['serviceType'] # 服务类型，用于修改
     # old_custID=request.form['old_custID'] # 旧的客户身份证号，用于修改，null代表新增
     # old_staffID=request.form['old_staffID'] # 旧的员工身份证号，用于修改
-    if (rstype=="Search"):
+    if (rstype=="SearchByStaff"):
         # Todo: 实现数据库操作，返回查询的结果
-        print('Search')
+        staffID=request.form['staffID'] # 员工身份证号，查找所有关于该员工的客户联系
+        print('SearchByStaff')
+        print(staffID)
         response = make_response(jsonify({    
                                         'code':200,
                                         'list':[
@@ -152,12 +154,38 @@ def staffCustomer():
         response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
         response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
         return response
-    if (rstype=="Update"):
-        # Todo: 实现数据库操作，修改或新增记录
-        print('Update')
+    if (rstype=='SearchByCustomer'):
+        # Todo: 实现数据库操作，返回查询的结果
+        custID=request.form['custID'] # 客户身份证号，查找所有关于该客户的员工联系
+        print('SearchByCustomer')
+        print(custID)
         response = make_response(jsonify({    
                                         'code':200,
-                                        'msg': 'ok'
+                                        'list':[
+                                            {'staffID':'331002199802021545','staffName': '张三','type':'1'},
+                                            {'staffID':'331002195602021545','staffName': '李四','type':'0'},
+                                        ]
+                                    })
+                                )
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+        response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+        return response
+    if (rstype=="Update"):
+        # Todo: 实现数据库操作，修改或新增记录（建议使用视图）
+        # 并将修改或新增的记录返回给前端（前端需要的主要是名字，但是为了兼容性，应该将整条记录都返回）
+        print('Update')
+        staffID=request.form['staffID'] # 员工身份证号，用于查询和修改、删除
+        custID=request.form['custID'] # 客户身份证号，用于修改、删除
+        serviceType=request.form['serviceType'] # 服务类型，用于修改
+        old_custID=request.form['old_custID'] # 旧的客户身份证号，用于修改
+        old_staffID=request.form['old_staffID'] # 旧的员工身份证号，用于修改
+        # 当两个旧的值中有一个为空时，说明是新增
+        print(len(old_custID))
+        print(len(old_staffID))
+        response = make_response(jsonify({    
+                                        'code':200,
+                                        'record': {'ID':'331002199802021545','name': '张三','staffID':'331002199802021545','staffName': '张三','type':'1'}
                                         })
                                 )
         response.headers['Access-Control-Allow-Origin'] = '*'
@@ -167,6 +195,10 @@ def staffCustomer():
     if (rstype=="Delete"):
         # Todo: 实现数据库操作，删除记录
         print('Delete')
+        staffID=request.form['staffID'] # 员工身份证号
+        custID=request.form['custID'] # 客户身份证号，这两个主键可以用于删除联系
+        print(staffID)
+        print(custID)
         response = make_response(jsonify({    
                                         'code':200,
                                         'msg': 'ok'
