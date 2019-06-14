@@ -336,7 +336,6 @@ export default {
                         bank: "",
                         money: 0,
                         open_date: new Date(),
-                        visit_date: new Date(),
                         type: "0",
                         interest: null,
                         cashtype: null,
@@ -447,7 +446,6 @@ export default {
                                 money: row.money,
                                 ownerid: this.newownerid,
                                 open_date: XEUtils.toDateString(row.open_date, "yyyy-MM-dd"),
-                                visit_date: XEUtils.toDateString(row.visit_date, "yyyy-MM-dd"),
                                 acctype: row.type,
                                 interest: row.interest,
                                 cashtype: row.cashtype,
@@ -542,6 +540,7 @@ export default {
                         type: "Insert",
                         accid: this.detail.id,
                         bank: this.detail.bank,
+                        visit_date:  XEUtils.toDateString(new Date(), "yyyy-MM-dd"),
                         ownerid: this.newOwner
                     },
                     {
