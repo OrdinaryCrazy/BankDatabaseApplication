@@ -95,9 +95,9 @@ def staff():
         response = make_response(jsonify({    
                                         'code':200,
                                         'list':[
-                                            {'ID':'331002199802021545','name': '张三','dept':'人事处','tel':'10086','addr':'黄山路','date':'2010-12-30'},
-                                            {'ID':'33100220001002002X','name': '李四','dept':'财务处','tel':'10010','addr':'合作化路','date':'2011-02-00'},
-                                            {'ID':'331002199011110010','name': '王五','dept':'前台','tel':'10000','addr':'肥西路','date':'2019-04-30'}                                        ]
+                                            {'ID':'331002199802021545','name': '张三','dept':'人事处','tel':'10086','addr':'黄山路','date_s':'2010-12-30'},
+                                            {'ID':'33100220001002002X','name': '李四','dept':'财务处','tel':'10010','addr':'合作化路','date_s':'2011-02-00'},
+                                            {'ID':'331002199011110010','name': '王五','dept':'前台','tel':'10000','addr':'肥西路','date_s':'2019-04-30'}                                        ]
                                     })
                                 )
         response.headers['Access-Control-Allow-Origin'] = '*'
@@ -107,6 +107,8 @@ def staff():
     if (rstype=="Update"):
         # Todo: 实现数据库操作，修改或新增记录
         print('Update')
+        date_s=request.form['date_s']
+        print(date_s)
         response = make_response(jsonify({    
                                         'code':200,
                                         'msg': 'ok'
