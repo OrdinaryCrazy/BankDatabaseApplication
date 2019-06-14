@@ -137,8 +137,8 @@
                 <elx-editable-column type="index" width="55"></elx-editable-column>
                 <elx-editable-column prop="id" label="客户身份证号"></elx-editable-column>
                 <elx-editable-column prop="name" label="客户姓名"></elx-editable-column>
-                <elx-editable-column prop="staffID" label="员工身份证号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
-                <elx-editable-column prop="staffName" label="员工姓名"></elx-editable-column>
+                <elx-editable-column prop="staffid" label="员工身份证号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+                <elx-editable-column prop="staffname" label="员工姓名"></elx-editable-column>
 
                 <elx-editable-column prop="type" label="与客户关系" :edit-render="{ name: 'ElSelect', options: serviceList }"></elx-editable-column>
                 <elx-editable-column label="操作" width="160">
@@ -260,7 +260,7 @@ export default {
                     "http://" + document.domain + ":5000/staffCustomer",
                     {
                         type: "SearchByCustomer",
-                        custID: row.id
+                        custid: row.id
                     },
                     {
                         emulateJSON: true
@@ -412,8 +412,8 @@ export default {
                             "http://" + document.domain + ":5000/staffCustomer",
                             {
                                 type: "Delete",
-                                custID: row.id,
-                                staffID: row.staffID
+                                custid: row.id,
+                                staffid: row.staffid
                             },
                             {
                                 emulateJSON: true
@@ -433,7 +433,7 @@ export default {
         saveRowEvent(name, row) {
             switch (name) {
                 case "elxEditable2":
-                    if (row.staffID == null || row.staffID == "") {
+                    if (row.staffid == null || row.staffid == "") {
                         return;
                     }
                 case "elxEditable1":
@@ -477,7 +477,7 @@ export default {
                                 });
                             break;
                         case "elxEditable2":
-                            if (row.id == "" || row.staffID == "") {
+                            if (row.id == "" || row.staffid == "") {
                                 return;
                             }
                             this.$http
@@ -485,11 +485,11 @@ export default {
                                     "http://" + document.domain + ":5000/staffCustomer",
                                     {
                                         type: "Update",
-                                        custID: row.id,
-                                        staffID: row.staffID, //该字段是不变的
+                                        custid: row.id,
+                                        staffid: row.staffid, //该字段是不变的
                                         serviceType: row.type,
-                                        old_custID: row.id,
-                                        old_staffID: this.primary //null代表新增，这是旧的员工身份证号
+                                        old_custid: row.id,
+                                        old_staffid: this.primary //null代表新增，这是旧的员工身份证号
                                     },
                                     {
                                         emulateJSON: true

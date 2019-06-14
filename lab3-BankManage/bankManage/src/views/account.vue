@@ -129,7 +129,7 @@
             style="width: 100%"
         >
             <elx-editable-column type="index" width="55"></elx-editable-column>
-            <elx-editable-column prop="ID" label="账户号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+            <elx-editable-column prop="id" label="账户号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <!--<elx-editable-column prop="owner" label="户主"></elx-editable-column> -->
             <elx-editable-column prop="bank" label="开户银行" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="money" label="余额" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
@@ -194,10 +194,10 @@
                 style="width: 100%"
             >
                 <elx-editable-column type="index" width="55"></elx-editable-column>
-                <elx-editable-column prop="ID" label="账户号"></elx-editable-column>
+                <elx-editable-column prop="id" label="账户号"></elx-editable-column>
                 <elx-editable-column prop="bank" label="开户银行"></elx-editable-column>
-                <elx-editable-column prop="ownerID" label="户主身份证号"></elx-editable-column>
-                <elx-editable-column prop="ownerName" label="户主姓名"></elx-editable-column>
+                <elx-editable-column prop="ownerid" label="户主身份证号"></elx-editable-column>
+                <elx-editable-column prop="ownername" label="户主姓名"></elx-editable-column>
                 <elx-editable-column label="操作" width="160">
                     <template v-slot="scope">
                         <el-button size="small" type="dangerous" @click="removeOwner(scope.row)">删除</el-button>
@@ -272,7 +272,7 @@ export default {
             this.loading = true;
             this.list = [
                 {
-                    ID: "123000",
+                    id: "123000",
                     owner: "张三，李四，王五，马云，刘强东",
                     bank: "合肥支行",
                     money: 2563.0,
@@ -305,7 +305,7 @@ export default {
             if (!activeInfo) {
                 this.$refs.elxEditable
                     .insert({
-                        ID: "new id",
+                        id: "new id",
                         owner: "",
                         bank: "",
                         money: 0,
@@ -335,7 +335,7 @@ export default {
                     })
                         .then(() => {
                             this.$refs.elxEditable.setActiveRow(row);
-                            this.primary = row.ID;
+                            this.primary = row.id;
                             //console.log(row.name);
                             this.saveRowEvent(activeInfo.row);
                         })
@@ -350,8 +350,8 @@ export default {
                         });
                 } else {
                     this.$refs.elxEditable.setActiveRow(row);
-                    this.primary = row.ID;
-                    console.log(row.ID);
+                    this.primary = row.id;
+                    console.log(row.id);
                 }
             });
         },
@@ -386,7 +386,7 @@ export default {
                     "http://" + document.domain + ":5000/account",
                     {
                         type: "Delete",
-                        primary: row.ID
+                        primary: row.id
                     },
                     {
                         emulateJSON: true
@@ -408,7 +408,7 @@ export default {
                     //数据发生了修改，需要反馈给服务器
                     console.log(this.primary);
                     if (this.primary != null) {
-                        row.ID = this.primary; //禁止修改主键
+                        row.id = this.primary; //禁止修改主键
                     }
 
                     this.$http
@@ -416,7 +416,7 @@ export default {
                             "http://" + document.domain + ":5000/account",
                             {
                                 type: "Update",
-                                ID: row.ID,
+                                id: row.id,
                                 bank: row.bank,
                                 money: row.money,
                                 open_date: XEUtils.toDateString(row.open_date, "yyyy-MM-dd"),
@@ -513,9 +513,9 @@ export default {
                     "http://" + document.domain + ":5000/accountCustomer",
                     {
                         type: "Insert",
-                        accID: this.detail.ID,
+                        accid: this.detail.id,
                         bank: this.detail.bank,
-                        ownerID: this.newOwner
+                        ownerid: this.newOwner
                     },
                     {
                         emulateJSON: true
@@ -535,9 +535,9 @@ export default {
                     "http://" + document.domain + ":5000/accountCustomer",
                     {
                         type: "Delete",
-                        accID: this.detail.ID,
+                        accid: this.detail.id,
                         bank: this.detail.bank,
-                        ownerID: row.ownerID
+                        ownerid: row.ownerid
                     },
                     {
                         emulateJSON: true
@@ -557,7 +557,7 @@ export default {
                     "http://" + document.domain + ":5000/accountCustomer",
                     {
                         type: "Search",
-                        accID: this.detail.ID,
+                        accid: this.detail.id,
                         bank: row.bank
                     },
                     {
@@ -568,7 +568,7 @@ export default {
                     if (parseInt(response.body.code) === 200) {
                         this.ownerlist = response.body.list;
                         for (var i = 0; i < this.ownerlist.length; i++) {
-                            this.ownerlist[i].ID = row.ID;
+                            this.ownerlist[i].id = row.id;
                             this.ownerlist[i].bank = row.bank;
                         }
                     } else {
@@ -580,7 +580,7 @@ export default {
             this.showlink = true;
             this.detail = row;
             console.log("update");
-            console.log(row.ID);
+            console.log(row.id);
             this.searchOwner(row);
         }
     }

@@ -83,7 +83,7 @@
             style="width: 100%"
         >
             <elx-editable-column type="index" width="55"></elx-editable-column>
-            <elx-editable-column prop="ID" label="贷款号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+            <elx-editable-column prop="id" label="贷款号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="bank" label="放款支行" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="customer" label="贷款人" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="amount" label="金额" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
@@ -177,7 +177,7 @@ export default {
             this.loading = true;
             this.list = [
                 {
-                    ID: "2019031145",
+                    id: "2019031145",
                     bank: "合肥城南支行",
                     customer: "10002 王三云\n10005 张无忌",
                     amount: 500000,
@@ -200,7 +200,7 @@ export default {
                     "http://" + document.domain + ":5000/pay",
                     {
                         type: "Search",
-                        loanID: row.ID
+                        loanid: row.id
                     },
                     {
                         emulateJSON: true
@@ -210,7 +210,7 @@ export default {
                     if (parseInt(response.body.code) === 200) {
                         this.paylist = response.body.list;
                         for (var i = 0; i < this.paylist.length; i++) {
-                            this.paylist[i].id = row.ID;
+                            this.paylist[i].id = row.id;
                         }
                     } else {
                         window.alert("查询失败");
@@ -226,7 +226,7 @@ export default {
                     "http://" + document.domain + ":5000/pay",
                     {
                         type: "Insert",
-                        loanID: this.detail.ID,
+                        loanid: this.detail.id,
                         date: XEUtils.toDateString(new Date(), "yyyy-MM-dd"),
                         money: this.payAmount
                     },
@@ -236,7 +236,7 @@ export default {
                 )
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
-                        this.paylist.push({ id: this.detail.ID, date: new Date(), money: this.payAmount });
+                        this.paylist.push({ id: this.detail.id, date: new Date(), money: this.payAmount });
                     } else {
                         window.alert("查询失败");
                     }
@@ -253,7 +253,7 @@ export default {
             if (!activeInfo) {
                 this.$refs.elxEditable
                     .insert({
-                        ID: "new id",
+                        id: "new id",
                         bank: "",
                         customer: "",
                         amount: 0,
@@ -278,7 +278,7 @@ export default {
                     })
                         .then(() => {
                             this.$refs.elxEditable.setActiveRow(row);
-                            this.primary = row.ID;
+                            this.primary = row.id;
                             //console.log(row.name);
                             this.saveRowEvent(activeInfo.row);
                         })
@@ -293,8 +293,8 @@ export default {
                         });
                 } else {
                     this.$refs.elxEditable.setActiveRow(row);
-                    this.primary = row.ID;
-                    console.log(row.ID);
+                    this.primary = row.id;
+                    console.log(row.id);
                 }
             });
         },
@@ -354,7 +354,7 @@ export default {
                     "http://" + document.domain + ":5000/loan",
                     {
                         type: "Delete",
-                        primary: row.ID
+                        primary: row.id
                     },
                     {
                         emulateJSON: true
@@ -373,7 +373,7 @@ export default {
         saveRowEvent(row) {
             console.log("save");
             console.log(row);
-            if (row.ID == "" || row.bank == "" || row.customer == "" || row.amount < 0) {
+            if (row.id == "" || row.bank == "" || row.customer == "" || row.amount < 0) {
                 return;
             }
             this.messageshow = false;
@@ -385,7 +385,7 @@ export default {
                             "http://" + document.domain + ":5000/loan",
                             {
                                 type: "Update",
-                                ID: row.ID,
+                                id: row.id,
                                 bank: row.bank,
                                 customer: row.customer,
                                 amount: row.amount,
