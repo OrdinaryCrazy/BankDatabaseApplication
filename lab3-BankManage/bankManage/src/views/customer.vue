@@ -189,10 +189,15 @@ export default {
             linktelSearch: "",
             emailSearch: "",
             detail: "",
+            permission: "",
             primary: null //全局变量，保存记录修改前的主键。当没有活跃的记录时为null，当新增记录时也为null
         };
     },
     created() {
+        this.permission = localStorage.getItem("type");
+        if (this.permission != "SUB_BANK" && this.permission != "CUSTOMER") {
+            this.$router.push("/404");
+        }
         this.findList();
     },
     methods: {

@@ -165,10 +165,15 @@ export default {
             detail: "",
             payAmount: "",
             messageshow: false,
+            permission: "",
             primary: null //全局变量，保存记录修改前的主键。当没有活跃的记录时为null，当新增记录时也为null
         };
     },
     created() {
+        this.permission = localStorage.getItem("type");
+        if (type != "EMPLOYEE" && type != "SUB_BANK" && type != "CUSTOMER") {
+            this.$router.push("/404");
+        }
         this.findList();
         this.statusSearch = "any";
     },

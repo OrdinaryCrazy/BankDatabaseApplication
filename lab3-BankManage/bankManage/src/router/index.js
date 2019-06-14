@@ -9,6 +9,7 @@ import customer from '@/views/customer'
 import account from '@/views/account'  
 import loan from '@/views/loan'
 import summary from '@/views/summary'
+import error from '@/views/error'
 
 const routers = [
 {
@@ -55,6 +56,11 @@ const routers = [
   path: '/summary',
   name: 'Summary',
   component: summary
+},
+{
+  path: '*',
+  name: 'Error',
+  component: error
 }
 ]
 

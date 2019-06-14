@@ -260,10 +260,15 @@ export default {
             open_up: "",
             visit_lo: "",
             visit_up: "",
+            permission:"",
             primary: null //全局变量，保存记录修改前的主键。当没有活跃的记录时为null，当新增记录时也为null
         };
     },
     created() {
+        this.permission = localStorage.getItem("type");
+        if (type != 'EMPLOYEE' && type != 'SUB_BANK' && type != 'CUSTOMER') {
+            this.$router.push("/404");
+        }
         this.findList();
         this.typeSearch = "any";
     },
@@ -371,7 +376,7 @@ export default {
                         if (this.primary == null) {
                             this.$refs.elxEditable.remove(row);
                         }
-                        this.primary=null;
+                        this.primary = null;
                     }
                 })
                 .catch(action => action)
@@ -476,7 +481,7 @@ export default {
                         open_lo: XEUtils.toDateString(this.open_lo, "yyyy-MM-dd"),
                         open_up: XEUtils.toDateString(this.open_up, "yyyy-MM-dd"),
                         visit_lo: XEUtils.toDateString(this.visit_lo, "yyyy-MM-dd"),
-                        visit_up: XEUtils.toDateString(this.visit_up, "yyyy-MM-dd"),
+                        visit_up: XEUtils.toDateString(this.visit_up, "yyyy-MM-dd")
                     },
                     {
                         emulateJSON: true

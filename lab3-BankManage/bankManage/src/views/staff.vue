@@ -206,10 +206,15 @@ export default {
             showlink: false,
             detail: "",
             detailName: "",
+            permission: "",
             primary: null //全局变量，保存记录修改前的主键。当没有活跃的记录时为null，当新增记录时也为null
         };
     },
     created() {
+        this.permission = localStorage.getItem("type");
+        if (this.permission != "SUB_BANK" && this.permission != "EMPLOYEE") {
+            this.$router.push("/404");
+        }
         this.findList();
     },
     methods: {
@@ -348,7 +353,7 @@ export default {
                         if (action === "cancel") {
                             this.$refs[name].revert(row);
                             this.$refs[name].clearActive();
-                            if (this.primary==null){
+                            if (this.primary == null) {
                                 this.$refs[name].remove(row);
                             }
                             this.primary = null;

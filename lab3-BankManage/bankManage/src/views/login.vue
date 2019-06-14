@@ -12,6 +12,8 @@
                 <option value="CUSTOMER"> 客户账户 </option>
             </select>
             <!--======================================================================-->
+            <label v-if="type === 'SUB_BANK'"><font color="red">*</font> 支行名称</label>
+            <label v-else><font color="red">*</font> 身份证号</label>
             <label for="username">用户名</label>
             <input
                 type="text"
@@ -39,8 +41,8 @@
             <div id="demo"></div>
         </form>
         <!--=================================================================================-->
-        <button class="button" v-on:click="login"><span>登录</span></button>
-        <button class="button" v-on:click="register"><span>注册</span></button>
+        <button class="buttonred" v-on:click="login"><span>登录</span></button>
+        <button class="buttonred" v-on:click="register"><span>注册</span></button>
         <!--=================================================================================-->
     </html>
 </template>
@@ -57,10 +59,18 @@ export default {
         };
     },
     created() {
-        this.custype="SUB_BANK";
+        var permission = localStorage.getItem("type");
+        if (permission == "SUB_BANK" || permission == "EMPLOYEE" || permission == "CUSTOMER") {
+            this.$router.push("/index");
+        }
+        this.custype = "SUB_BANK";
     },
     methods: {
         login: function() {
+            if (this.username == "" || this.password == "") {
+                window.alert("用户名和密码不能为空");
+                return;
+            }
             var _this = this;
             /* 向后台发送用户名和密码 */
             _this.$http
@@ -93,7 +103,9 @@ export default {
                     } else if (parseInt(response.data.code) === 200) {
                         window.alert("登录成功");
                         // 存token
-                        sessionStorage.setItem("token", response.data.token);
+                        localStorage.setItem("type", _this.custype);
+                        localStorage.setItem("username", _this.username);
+                        //sessionStorage.setItem();
                         // 登录成功,跳转到index
                         _this.$router.push({ path: "/index" });
                         // 在这里就不行 会变成 http://localhost:8080/?
@@ -114,7 +126,7 @@ export default {
 </script>
 
 <style>
-.button {
+.buttonred {
     display: inline-block;
     border-radius: 4px;
     background-color: #f4511e;
@@ -131,14 +143,14 @@ export default {
     font-size: 20px;
 }
 
-.button span {
+.buttonred span {
     cursor: pointer;
     display: inline-block;
     position: relative;
     transition: 0.5s;
 }
 
-.button span:after {
+.buttonred span:after {
     content: "»";
     position: absolute;
     opacity: 0;
@@ -147,11 +159,11 @@ export default {
     transition: 0.5s;
 }
 
-.button:hover span {
+.buttonred:hover span {
     padding-right: 25px;
 }
 
-.button:hover span:after {
+.buttonred:hover span:after {
     opacity: 1;
     right: 0;
 }

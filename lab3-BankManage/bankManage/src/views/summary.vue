@@ -143,10 +143,15 @@ export default {
             timegrain: "",
             sumtype: "",
             datatype: "",
-            graphtype: ""
+            graphtype: "",
+            permission: ""
         };
     },
     created() {
+        this.permission = localStorage.getItem("type");
+        if (this.permission != 'SUB_BANK') {
+            this.$router.push("/404");
+        }
         this.timegrain = "month";
         this.sumtype = "all";
         this.datatype = "money";

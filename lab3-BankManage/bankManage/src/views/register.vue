@@ -1,59 +1,20 @@
- <template>
-  <div>
-    <form onSubmit="return false">
-      <h1>注册界面</h1>
-      <table align="center" class="emptytable">
-        <tr>
-          <td>&emsp;&emsp;&emsp;&emsp;<font color="red">*</font> 账户类型</td>
-          <td>
-            <input
-              type="radio"
-              name="type"
-              v-model="type"
-              value="管理"
-              required="true"
-            />管理账户
-            <input
-              type="radio"
-              name="type"
-              v-model="type"
-              value="支行"
-              required="true"
-            />支行账户
-            <input
-              type="radio"
-              name="type"
-              v-model="type"
-              value="客户"
-              required="true"
-            />客户账户
-            <input
-              type="radio"
-              name="type"
-              v-model="type"
-              value="员工"
-              required="true"
-            />员工账户
-          </td>
-        </tr>
-        <tr>
-          <td v-if="type === '支行'"><font color="red">*</font> 支行名称</td>
-          <td v-if="type === '管理'"><font color="red">*</font> 用户名</td>
-          <td v-if="type === '员工' || type === '客户'">
-            <font color="red">*</font> 身份证号
-          </td>
-          <td>
-            <input
-              v-if="type === '管理'"
-              type="text"
-              placeholder="Please enter your username"
-              id="username"
-              v-model="username"
-              required="true"
-              style=" width:345px;
-                    font-family: 'Fira Code', '汉仪南宫体简';
-                    "
-                        />
+<template>
+    <div>
+        <form onSubmit="return false">
+            <h1>注册界面</h1>
+            <table align="center" class="emptytable" >
+                <tr>
+                    <td>&emsp;&emsp;&emsp;&emsp;<font color="red">*</font> 账户类型</td>
+                    <td>
+                        <input type="radio" name="type" v-model="type" value="支行" required="true" />支行账户&emsp;
+                        <input type="radio" name="type" v-model="type" value="客户" required="true" />客户账户&emsp;
+                        <input type="radio" name="type" v-model="type" value="员工" required="true" />员工账户&emsp;&emsp;&emsp;&ensp;
+                    </td>
+                </tr>
+                <tr>
+                    <td v-if="type === '支行'"><font color="red">*</font> 支行名称</td>
+                    <td v-else><font color="red">*</font> 身份证号</td>
+                    <td>
                         <input
                             v-if="type === '支行'"
                             type="text"
@@ -61,20 +22,16 @@
                             id="username"
                             v-model="username"
                             required="true"
-                            style=" width:345px;
-                    font-family: 'Fira Code', '汉仪南宫体简';
-                    "
+                            style=" width:345px;font-family: 'Fira Code', '汉仪南宫体简';"
                         />
                         <input
-                            v-if="type === '员工' || type === '客户'"
+                            v-else
                             type="text"
                             placeholder="Please enter the ID"
                             id="username"
                             v-model="username"
                             required="true"
-                            style=" width:345px;
-                    font-family: 'Fira Code', '汉仪南宫体简';
-                    "
+                            style=" width:345px;font-family: 'Fira Code', '汉仪南宫体简';"
                         />
                     </td>
                 </tr>
@@ -87,9 +44,7 @@
                             id="city"
                             v-model="city"
                             required="false"
-                            style=" width:345px;
-                        font-family: 'Fira Code', '汉仪南宫体简';
-                        "
+                            style=" width:345px;font-family: 'Fira Code', '汉仪南宫体简';"
                         />
                     </td>
                 </tr>
@@ -102,9 +57,7 @@
                             id="money"
                             v-model="money"
                             required="false"
-                            style=" width:345px;
-                        font-family: 'Fira Code', '汉仪南宫体简';
-                        "
+                            style=" width:345px;font-family: 'Fira Code', '汉仪南宫体简';"
                         />
                     </td>
                 </tr>
@@ -117,9 +70,7 @@
                             id="name"
                             v-model="name"
                             required="false"
-                            style=" width:345px;
-                        font-family: 'Fira Code', '汉仪南宫体简';
-                        "
+                            style=" width:345px;font-family: 'Fira Code', '汉仪南宫体简';"
                         />
                     </td>
                 </tr>
@@ -132,9 +83,7 @@
                             id="tel"
                             v-model="tel"
                             required="false"
-                            style=" width:345px;
-                        font-family: 'Fira Code', '汉仪南宫体简';
-                        "
+                            style=" width:345px;font-family: 'Fira Code', '汉仪南宫体简';"
                         />
                     </td>
                 </tr>
@@ -320,16 +269,16 @@
                 </tr>
             </table>
 
-            <label style="font-family:汉仪南宫体简;color:red;font-size:15px;"
-                >注：带*的字段必须填写，密码必须由6位字母或数字组成。</label
-            ><br />
+            <label style="font-family:汉仪南宫体简;color:red;font-size:15px;">注：带*的字段必须填写，密码必须由6位字母或数字组成。</label><br />
         </form>
         <br />
-        <button class="button" v-on:click="submit()"><span>提交</span></button>
+        <button class="buttonred" v-on:click="submit()"><span>提交</span></button>
     </div>
 </template>
 
 <script>
+import XEUtils from "xe-utils";
+import XEAjax from "xe-ajax";
 export default {
     name: "login",
     data: function() {
@@ -352,7 +301,7 @@ export default {
         };
     },
     created() {
-        this.type = "管理";
+        this.type = "支行";
     },
     methods: {
         submit: function() {
@@ -366,13 +315,7 @@ export default {
             }
             for (var i = 0; i < this.password.length; i++) {
                 var x = this.password.charAt(i);
-                if (
-                    !(
-                        (x >= "0" && x <= "9") ||
-                        (x >= "a" && x <= "z") ||
-                        (x >= "A" && x <= "Z")
-                    )
-                ) {
+                if (!((x >= "0" && x <= "9") || (x >= "a" && x <= "z") || (x >= "A" && x <= "Z"))) {
                     window.alert("密码非法");
                     return;
                 }
@@ -397,7 +340,7 @@ export default {
                             email_link: this.email_link,
                             relation: this.relation,
                             dept: this.dept,
-                            date: this.date
+                            date_s: XEUtils.toDateString(this.date, "yyyy-MM-dd")
                         },
                         {
                             emulateJSON: true
@@ -433,7 +376,7 @@ export default {
 .emptytable td {
     text-align: right;
 }
-.button {
+.buttonred {
     display: inline-block;
     border-radius: 4px;
     background-color: #f4511e;
@@ -447,13 +390,13 @@ export default {
     cursor: pointer;
     margin: 5px;
 }
-.button span {
+.buttonred span {
     cursor: pointer;
     display: inline-block;
     position: relative;
     transition: 0.5s;
 }
-.button span:after {
+.buttonred span:after {
     content: "»";
     position: absolute;
     opacity: 0;
@@ -461,12 +404,11 @@ export default {
     right: -20px;
     transition: 0.5s;
 }
-.button:hover span {
+.buttonred:hover span {
     padding-right: 25px;
 }
-.button:hover span:after {
+.buttonred:hover span:after {
     opacity: 1;
     right: 0;
 }
 </style>
-
