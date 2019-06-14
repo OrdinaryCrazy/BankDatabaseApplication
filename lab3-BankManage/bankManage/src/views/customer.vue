@@ -386,7 +386,12 @@ export default {
                 } else {
                     this.$refs[name].setActiveRow(row);
                     // this.primary = row.id;
-                    this.primary = row.staffid;
+                    if (name == "elxEditable1") {
+                        this.primary = row.id;
+                    } else {
+                        this.primary = row.staffid;
+                    }
+
                     console.log(row.id);
                 }
             });

@@ -141,14 +141,7 @@
                     props: { type: 'date', format: 'yyyy-MM-dd' }
                 }"
             ></elx-editable-column>
-            <elx-editable-column
-                prop="visit_date"
-                label="最近访问日期"
-                :edit-render="{
-                    name: 'ElDatePicker',
-                    props: { type: 'date', format: 'yyyy-MM-dd' }
-                }"
-            ></elx-editable-column>
+
             <elx-editable-column prop="type" label="账户类型" :edit-render="{ name: 'ElSelect', options: typeList }"></elx-editable-column>
             <elx-editable-column prop="interest" label="利率" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
             <elx-editable-column prop="cashtype" label="货币类型" :edit-render="{ name: 'ElSelect', options: cashList }"></elx-editable-column>
@@ -198,6 +191,14 @@
                 <elx-editable-column prop="bank" label="开户银行"></elx-editable-column>
                 <elx-editable-column prop="ownerid" label="户主身份证号"></elx-editable-column>
                 <elx-editable-column prop="ownername" label="户主姓名"></elx-editable-column>
+                <elx-editable-column
+                    prop="visit_date"
+                    label="最近访问日期"
+                    :edit-render="{
+                        name: 'ElDatePicker',
+                        props: { type: 'date', format: 'yyyy-MM-dd' }
+                    }"
+                ></elx-editable-column>
                 <elx-editable-column label="操作" width="160">
                     <template v-slot="scope">
                         <el-button size="small" type="dangerous" @click="removeOwner(scope.row)">删除</el-button>
