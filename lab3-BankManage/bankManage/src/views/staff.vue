@@ -155,7 +155,8 @@
                 <elx-editable-column prop="staffName" label="员工姓名"></elx-editable-column>
                 <elx-editable-column prop="id" label="客户身份证号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
                 <elx-editable-column prop="name" label="客户姓名"></elx-editable-column>
-                <elx-editable-column prop="type" label="与客户关系" :edit-render="{ name: 'ElSelect', options: serviceList }"></elx-editable-column>
+                <!-- <elx-editable-column prop="type" label="与客户关系" :edit-render="{ name: 'ElSelect', options: serviceList }"></elx-editable-column> -->
+                <elx-editable-column prop="type" label="与客户关系" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
                 <elx-editable-column label="操作" width="160">
                     <template v-slot="newscope">
                         <template v-if="$refs.elxEditable2.hasActiveRow(newscope.row)">

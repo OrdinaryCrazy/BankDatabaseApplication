@@ -17,6 +17,7 @@ staff_api = Blueprint('staff_api', __name__)
 @staff_api.route('/staff',methods=['POST'])
 def staff():
     rstype=request.form['type']
+    print(request.form)
     if (rstype=="Search"):
         print('Search') # 查 #
         # Todo: 实现数据库操作，返回查询的结果
@@ -56,11 +57,11 @@ def staff():
         if (len(telSearch) > 0) :
             sqlcommand = sqlcommand + " AND EMPLOYEE_PHONE LIKE '%" + telSearch + "%'"
         if (len(addrSearch) > 0) :
-            sqlcommand = sqlcommand + " AND EMPLOYEE_ADDRESS LIKE '%" + telSearch + "%'"
+            sqlcommand = sqlcommand + " AND EMPLOYEE_ADDRESS LIKE '%" + addrSearch + "%'"
         if (len(lowerBound) > 0) :
-            sqlcommand = sqlcommand + " AND EMPLOYEE_ENTERDATE >" + lowerBound
+            sqlcommand = sqlcommand + " AND EMPLOYEE_ENTERDATE > TO_DATE('" + lowerBound + "','YYYY-MM-DD')"
         if (len(upperBound) > 0) :
-            sqlcommand = sqlcommand + " AND EMPLOYEE_ENTERDATE <" + upperBound
+            sqlcommand = sqlcommand + " AND EMPLOYEE_ENTERDATE < TO_DATE('" + upperBound + "','YYYY-MM-DD')"
 
         print(sqlcommand)
         cursor.execute(sqlcommand)
@@ -101,7 +102,7 @@ def staff():
         # Todo: 实现数据库操作，修改或新增记录
         connection = cx_Oracle.connect('System/db2019@localhost/ORCL')
         cursor = connection.cursor()
-        print(request.form)
+        # print(request.form)
         id_s        = request.form['id']
         name        = request.form['name']
         name        = name.rstrip()
@@ -121,14 +122,48 @@ def staff():
             if id_s != old_primary :
                 result = cursor.var(cx_Oracle.NUMBER)
                 cursor.callproc('CHANGE_EMPLOYEE_NAME',[old_primary, id_s, result ])
-
+                print(result)
+                if result.getvalue() == 2 :
+                    cursor.close()
+                    connection.close()
+                    response = make_response(jsonify({    
+                                                        'code':402,
+                                                        'msg': 'old name do not find'
+                                                    })
+                                            )
+                    response.headers['Access-Control-Allow-Origin']  = '*'
+                    response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+                    response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+                    return response
+                if result.getvalue() == 1 :
+                    cursor.close()
+                    connection.close()
+                    response = make_response(jsonify({    
+                                                        'code':401,
+                                                        'msg': 'new name used'
+                                                    })
+                                            )
+                    response.headers['Access-Control-Allow-Origin']  = '*'
+                    response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+                    response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+                    return response
+            
             sqlcommand = sqlcommand + " UPDATE EMPLOYEE SET   "
             if len(name) > 0 :
                 sqlcommand = sqlcommand + " EMPLOYEE_NAME = '" + name + "',"
             if len(bank) > 0 :
                 sqlcommand = sqlcommand + " EMPLOYEE_BANK_NAME = '" + bank + "',"
+            if len(dept) > 0 :
+                sqlcommand = sqlcommand + " EMPLOYEE_DEPART_ID = '" + dept + "',"
+            if len(tel) > 0 :
+                sqlcommand = sqlcommand + " EMPLOYEE_PHONE = '" + tel + "',"
+            if len(addr) > 0 :
+                sqlcommand = sqlcommand + " EMPLOYEE_ADDRESS = '" + addr + "',"
+            if len(date_s) > 0 :
+                sqlcommand = sqlcommand + " EMPLOYEE_ENTERDATE = TO_DATE('" + date_s + "','YYYY-MM-DD'),"
+
             sqlcommand = sqlcommand[:len(sqlcommand) - 1]
-            sqlcommand = sqlcommand + " WHERE BANK_NAME = '" + name + "'"
+            sqlcommand = sqlcommand + " WHERE EMPLOYEE_ID = '" + id_s + "'"
             
         else : # 增 #
             insert = "("
@@ -182,6 +217,39 @@ def staff():
     if (rstype=="Delete"):
         # Todo: 实现数据库操作，删除记录
         print('Delete')
+        connection = cx_Oracle.connect('System/db2019@localhost/ORCL')
+        cursor = connection.cursor()
+
+        primary = request.form['primary']
+        primary = primary.rstrip()
+
+        sqlcommand = " SELECT * FROM EMPLOYEE_CUSTOMER WHERE "
+        sqlcommand = sqlcommand + " EMPLOYEE_ID = '" + primary + "'"
+        print(sqlcommand)
+        cursor.execute(sqlcommand)
+        # 使读取的 Oracle 数据字典化
+        cursor.rowfactory = makeDictFactory(cursor)
+        result = cursor.fetchall()
+        if len(result) > 0 :
+            cursor.close()
+            connection.close()
+            response = make_response(jsonify({    
+                                            'code': 403,
+                                            'msg': '有关联客户信息'
+                                            })
+                                    )
+            response.headers['Access-Control-Allow-Origin'] = '*'
+            response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+            response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+            return response
+        
+        sqlcommand = " DELETE FROM EMPLOYEE WHERE "
+        sqlcommand = sqlcommand + " EMPLOYEE_ID = '" + primary + "'"
+        print(sqlcommand)
+        cursor.execute(sqlcommand)
+        cursor.close()
+        connection.commit()
+        connection.close()
         response = make_response(jsonify({    
                                         'code':200,
                                         'msg': 'ok'
@@ -196,24 +264,122 @@ def staff():
 @staff_api.route('/staffCustomer',methods=['POST'])
 def staffCustomer():
     rstype=request.form['type']
-    if (rstype=="Search"):
+    if (rstype=="SearchByStaff"):
         # Todo: 实现数据库操作，返回查询的结果
-        print('Search')
-        response = make_response(jsonify({    
-                                        'code':200,
-                                        'list':[
-                                            {'ID':'331002199802021545','name': '张三','type':'1'},
-                                            {'ID':'331002195602021545','name': '李四','type':'0'},
-                                        ]
-                                    })
-                                )
-        response.headers['Access-Control-Allow-Origin'] = '*'
+        print('SearchByStaff')
+
+        connection = cx_Oracle.connect('System/db2019@localhost/ORCL')
+        cursor = connection.cursor()
+
+        staffID = request.form['staffID']
+        staffID = staffID.rstrip()
+
+        sqlcommand = ""
+        sqlcommand = sqlcommand + " SELECT"
+        sqlcommand = sqlcommand + " EMPLOYEE_CUSTOMER.CUSTOMER_ID AS ID"    + ','
+        sqlcommand = sqlcommand + " CUSTOMER.CUSTOMER_NAME AS name"      + ','
+        sqlcommand = sqlcommand + " EMPLOYEE_CUSTOMER.SERVICETYPE AS type"
+        sqlcommand = sqlcommand + " FROM"
+        sqlcommand = sqlcommand + " EMPLOYEE_CUSTOMER, CUSTOMER"
+        sqlcommand = sqlcommand + " WHERE"
+        sqlcommand = sqlcommand + " EMPLOYEE_CUSTOMER.CUSTOMER_ID = CUSTOMER.CUSTOMER_ID AND"
+        sqlcommand = sqlcommand + " EMPLOYEE_CUSTOMER.EMPLOYEE_ID = '" + staffID + "'"
+
+        print(sqlcommand)
+        cursor.execute(sqlcommand)
+        # 使读取的 Oracle 数据字典化
+        cursor.rowfactory = makeDictFactory(cursor)
+        result = cursor.fetchall()
+        # print(result)
+        for line in result:
+            line['id']      = str(line['id'])
+        # print(result)
+
+        if result :
+            response = make_response(jsonify({    
+                                            'code':200,
+                                            'list':result
+                                        })
+                                    )
+            response.headers['Access-Control-Allow-Origin']  = '*'
+            response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+            response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+            return response
+
+        response = make_response(
+            jsonify(
+                {
+                    'code': 400
+                }
+            )
+        )
+        response.headers['Access-Control-Allow-Origin']  = '*'
         response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
         response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
         return response
+
     if (rstype=="Update"):
         # Todo: 实现数据库操作，修改或新增记录
         print('Update')
+        connection = cx_Oracle.connect('System/db2019@localhost/ORCL')
+        cursor = connection.cursor()
+
+        custID      = request.form['custID']
+        custID      = custID.rstrip()
+        staffID     = request.form['staffID']
+        staffID     = staffID.rstrip()
+        serviceType = request.form['serviceType']
+        serviceType = serviceType.rstrip()
+        old_custID  = request.form['old_custID']
+        old_custID  = old_custID.rstrip()
+        old_staffID = request.form['old_staffID']
+        old_staffID = old_staffID.rstrip()
+
+        sqlcommand = ""
+        if len(old_custID) > 0 : # 改 #
+            
+            sqlcommand = sqlcommand + " UPDATE EMPLOYEE_CUSTOMER SET   "
+            if len(custID) > 0 :
+                sqlcommand = sqlcommand + " CUSTOMER_ID = '" + custID + "',"
+            if len(staffID) > 0 :
+                sqlcommand = sqlcommand + " EMPLOYEE_ID = '" + staffID + "',"
+            if len(serviceType) > 0 :
+                sqlcommand = sqlcommand + " SERVICETYPE = '" + serviceType + "',"
+
+            sqlcommand = sqlcommand[:len(sqlcommand) - 1]
+            sqlcommand = sqlcommand + " WHERE CUSTOMER_ID = '" + old_custID + "'"
+            sqlcommand = sqlcommand + " AND EMPLOYEE_ID = '" + old_staffID + "'"
+            
+        else : # 增 #
+            insert = "("
+            insert = insert + "'" + custID      + "'" + ","
+            insert = insert + "'" + staffID     + "'" + ","
+            insert = insert + "'" + serviceType + "'"
+            insert = insert + ")"
+            sqlcommand =    sqlcommand + \
+                            "   INSERT \
+                                INTO EMPLOYEE_CUSTOMER(CUSTOMER_ID, EMPLOYEE_ID, SERVICETYPE) \
+                                VALUES " + insert
+        
+        print(sqlcommand)
+        try :
+            cursor.execute(sqlcommand)
+        except :
+            cursor.close()
+            connection.close()
+            response = make_response(jsonify({    
+                                            'code':400,
+                                            'msg': 'fail'
+                                            })
+                                    )
+            response.headers['Access-Control-Allow-Origin'] = '*'
+            response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+            response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+            return response
+
+        cursor.close()
+        connection.commit()
+        connection.close()
         response = make_response(jsonify({    
                                         'code':200,
                                         'msg': 'ok'
@@ -223,9 +389,27 @@ def staffCustomer():
         response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
         response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
         return response
+
     if (rstype=="Delete"):
         # Todo: 实现数据库操作，删除记录
         print('Delete')
+        connection = cx_Oracle.connect('System/db2019@localhost/ORCL')
+        cursor = connection.cursor()
+
+        custID = request.form['custID']
+        custID = custID.rstrip()
+        staffID = request.form['staffID']
+        staffID = staffID.rstrip()
+
+        
+        sqlcommand = " DELETE FROM EMPLOYEE_CUSTOMER WHERE "
+        sqlcommand = sqlcommand + " EMPLOYEE_ID = '" + staffID + "'"
+        sqlcommand = sqlcommand + " AND CUSTOMER_ID = '" + custID + "'"
+        print(sqlcommand)
+        cursor.execute(sqlcommand)
+        cursor.close()
+        connection.commit()
+        connection.close()
         response = make_response(jsonify({    
                                         'code':200,
                                         'msg': 'ok'
