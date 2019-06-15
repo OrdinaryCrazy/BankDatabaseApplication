@@ -43,7 +43,7 @@
                 style=" width:280px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-            />&emsp;<br />联系人姓名
+            />&emsp;<br /><br>联系人姓名
             <input
                 type="text"
                 placeholder="包含关键字"
@@ -74,14 +74,14 @@
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;
-            <el-button class="button" size="small" type="primary" @click="submit()">查询</el-button>
-            <el-button class="button" size="small" type="primary" @click="reset()">重置</el-button>
+            <el-button size="small" type="primary" @click="submit()">查询</el-button>
+            <el-button size="small" type="primary" @click="reset()">重置</el-button>
         </div>
         <br />
         <p style="color: red;font-size: 24px;" align="left">客户信息表</p>
         <div align="left">
-            <el-button class="button" type="success" size="small" @click="insertEvent('elxEditable1')">新增</el-button>
-            <el-button class="button" type="success" size="small" @click="exportCsvEvent('elxEditable1')">导出</el-button>
+            <el-button  type="success" size="small" @click="insertEvent('elxEditable1')">新增</el-button>
+            <el-button  type="success" size="small" @click="exportCsvEvent('elxEditable1')">导出</el-button>
         </div>
         <br /><br />
         <elx-editable
@@ -101,7 +101,7 @@
             <elx-editable-column prop="tel_link" label="联系人手机号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="email_link" label="联系人Email" width="200" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="relation" label="联系人与客户关系" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
-            <elx-editable-column label="操作" width="160">
+            <elx-editable-column label="操作" width="250">
                 <template v-slot="scope">
                     <template v-if="$refs.elxEditable1.hasActiveRow(scope.row)">
                         <el-button size="small" type="success" @click="saveRowEvent('elxEditable1', scope.row)">保存</el-button>
@@ -110,7 +110,7 @@
                     <template v-else>
                         <el-button size="small" type="primary" @click="openActiveRowEvent('elxEditable1', scope.row)">编辑</el-button>
                         <el-button size="small" type="danger" @click="removeEvent('elxEditable1', scope.row)">删除</el-button>
-                        <el-button size="small" type="danger" @click="showDetail(scope.row)">详情</el-button>
+                        <el-button size="small" type="success" @click="showDetail(scope.row)">详情</el-button>
                     </template>
                 </template>
             </elx-editable-column>
@@ -119,11 +119,11 @@
             <br />
             <p style="color: red;font-size: 24px;" align="left">
                 员工联系表
-                <el-button class="button" type="success" size="small" @click="showlink = false">关闭</el-button>
+                <el-button  type="success" size="small" @click="showlink = false">关闭</el-button>
             </p>
             <div align="left">
-                <el-button class="button" type="success" size="small" @click="insertEvent('elxEditable2')">新增</el-button>
-                <el-button class="button" type="success" size="small" @click="exportCsvEvent('elxEditable2')">导出</el-button>
+                <el-button  type="success" size="small" @click="insertEvent('elxEditable2')">新增</el-button>
+                <el-button  type="success" size="small" @click="exportCsvEvent('elxEditable2')">导出</el-button>
             </div>
             <br />
             <elx-editable
@@ -299,6 +299,7 @@ export default {
                         this.$refs[name].setActiveRow(row);
                     });
                 } else {
+                    console.log(this.detail);
                     this.$refs[name].insert({ id: this.detail.id, name: this.detail.name }).then(({ row }) => {
                         this.$refs[name].setActiveRow(row);
                     });
@@ -448,10 +449,12 @@ export default {
             switch (name) {
                 case "elxEditable2":
                     if (row.staffid == null || row.staffid == "") {
+                        Message({ message: "字段不能为空", type: "warning" });
                         return;
                     }
                 case "elxEditable1":
                     if (row.id == null || row.id == "") {
+                        Message({ message: "字段不能为空", type: "warning" });
                         return;
                     }
             }
@@ -485,6 +488,7 @@ export default {
                                         this.$refs.elxEditable1.clearActive();
                                         this.$refs.elxEditable1.reloadRow(row);
                                         console.log("Update");
+                                        Message({ message: "保存成功", type: "success" });
                                     } else {
                                         window.alert("更新非法");
                                     }
@@ -516,6 +520,7 @@ export default {
                                         this.$refs.elxEditable2.clearActive();
                                         row = response.body.record;
                                         this.$refs.elxEditable2.reloadRow(row);
+                                        Message({ message: "保存成功", type: "success" });
                                         console.log("Update");
                                     } else {
                                         window.alert("更新非法");
