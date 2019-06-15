@@ -271,7 +271,7 @@ def staffCustomer():
         connection = cx_Oracle.connect('System/db2019@localhost/ORCL')
         cursor = connection.cursor()
 
-        staffID = request.form['staffID']
+        staffID = request.form['staffid']
         staffID = staffID.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
 
         sqlcommand = ""
