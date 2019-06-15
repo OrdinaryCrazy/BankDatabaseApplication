@@ -204,6 +204,7 @@
                 />
                 <el-button type="success" size="small" @click="addOwner()">提交</el-button>
             </div>
+            <br>
             <elx-editable
                 ref="elxEditable2"
                 class="table"
@@ -379,8 +380,9 @@ export default {
                             cashtype: this.newmoneytype,
                             overdraft: null
                         });
+                        Message({message:"开户成功",type:"success"});
                     } else {
-                        window.alert("更新非法");
+                        Message({message:"开户失败，您提供的信息可能有误或您已经在该支行开设同类账户",type:"warning"});
                     }
                 });
         },
@@ -484,9 +486,9 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.$refs.elxEditable.remove(row);
-                        console.log("Delete");
+                        Message({message:"删除成功",type:"success"});
                     } else {
-                        window.alert("删除失败");
+                        Message({message:"删除失败",type:"warning"});
                     }
                 });
         },
@@ -519,8 +521,9 @@ export default {
                             //更新合法
                             this.$refs.elxEditable.clearActive();
                             this.$refs.elxEditable.reloadRow(row);
+                            Message({message:"保存成功",type:"success"});
                         } else {
-                            window.alert("更新非法");
+                            Message({message:"保存失败，可能是账户号已存在",type:"warning"});
                         }
                     });
             }
@@ -554,8 +557,9 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.list = response.body.list;
+                        Message({message:"查询成功",type:"success"});
                     } else {
-                        window.alert("查询失败");
+                        Message({message:"查询结果为空",type:"warning"});
                     }
                 });
         },
@@ -595,8 +599,9 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.ownerlist.push(response.body.record);
+                        Message({message:"新增户主成功",type:"success"});
                     } else {
-                        window.alert("查询失败");
+                        Message({message:"新增户主失败，可能是身份证号错误或其已经在该支行开设同类账户",type:"warning"});
                     }
                 });
         },
@@ -618,6 +623,7 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.$refs.elxEditable2.remove(row);
+                        Message({message:"删除成功",type:"success"});
                     } else {
                         window.alert("删除失败");
                     }
@@ -644,8 +650,9 @@ export default {
                             this.ownerlist[i].id = row.id;
                             this.ownerlist[i].bank = row.bank;
                         }
+                        Message({message:"查询成功",type:"success"});
                     } else {
-                        window.alert("查询失败");
+                        Message({message:"查询失败",type:"error"});
                     }
                 });
         },
@@ -668,58 +675,4 @@ export default {
 </script>
 
 <style>
-.table {
-    border: 2px solid #429fff; /* 表格边框 */
-    font-family: "汉仪南宫体简";
-    font-size: 18px;
-    /*border-collapse: collapse;  边框重叠 */
-    overflow-x: auto;
-    overflow-y: auto;
-}
-.table tr:hover {
-    background-color: #c4e4ff; /* 动态变色,IE6下无效！*/
-}
-.table caption {
-    padding-top: 3px;
-    padding-bottom: 2px;
-    font: bold 1.1em;
-    color: #ff00ff;
-    background-color: #f0f7ff;
-    border: 1px solid #429fff; /* 表格标题边框 */
-}
-.table th {
-    border: 1px solid #429fff; /* 行、列名称边框 */
-    background-color: #d2e8ff;
-    font-weight: bold;
-    /* min-width: 200px;*/
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 10px;
-    padding-right: 10px;
-    text-align: center;
-}
-.table td {
-    border: 1px solid #429fff; /* 单元格边框 */
-    text-align: center;
-    padding: 4px;
-    /*  min-width: 200px;*/
-    word-break: break-all;
-}
-.table .ElInput {
-    min-width: 10px;
-}
-.button {
-    display: inline-block;
-    border-radius: 4px;
-    background-color: limegreen;
-    border: none;
-    color: #ffffff;
-    text-align: center;
-    font-size: 15px;
-    padding: 5px;
-    width: 80px;
-    transition: all 0.5s;
-    cursor: pointer;
-    margin: 5px;
-}
 </style>

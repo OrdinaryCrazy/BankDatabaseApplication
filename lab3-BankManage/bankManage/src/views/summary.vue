@@ -94,6 +94,7 @@
 <script>
 import XEUtils from "xe-utils";
 import XEAjax from "xe-ajax";
+import { MessageBox, Message } from "element-ui";
 export default {
     data() {
         return {
@@ -160,6 +161,7 @@ export default {
     methods: {
         start: function() {
             if (this.upperBound == "" || this.lowerBound == "") {
+                Message({message:"时间范围不能为空",type:"warning"});
                 return;
             }
             this.$http
@@ -191,6 +193,7 @@ export default {
                             this.columnConfigs.push(item);
                         });
                         this.userList = response.body.rawData;
+                        Message({message:"查询成功",type:"success"});
                     }
                 });
         }
@@ -199,57 +202,4 @@ export default {
 </script>
 
 <style>
-.table {
-    border: 2px solid #429fff; /* 表格边框 */
-    font-family: "汉仪南宫体简";
-    font-size: 18px;
-    max-height: 500px;
-    border-collapse: collapse; /* 边框重叠 */
-    overflow-x: auto;
-    overflow-y: auto;
-    white-space: nowrap;
-}
-.table tr:hover {
-    background-color: #c4e4ff; /* 动态变色,IE6下无效！*/
-}
-.table caption {
-    padding-top: 3px;
-    padding-bottom: 2px;
-    font: bold 1.1em;
-    color: #ff00ff;
-    background-color: #f0f7ff;
-    border: 1px solid #429fff; /* 表格标题边框 */
-}
-.table th {
-    border: 1px solid #429fff; /* 行、列名称边框 */
-    background-color: #d2e8ff;
-    font-weight: bold;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 10px;
-    padding-right: 10px;
-    min-width: 100px;
-    text-align: center;
-}
-.table td {
-    border: 1px solid #429fff; /* 单元格边框 */
-    text-align: center;
-    padding: 4px;
-    min-width: 100px;
-    word-break: break-all;
-}
-.button {
-    display: inline-block;
-    border-radius: 4px;
-    background-color: limegreen;
-    border: none;
-    color: #ffffff;
-    text-align: center;
-    font-size: 15px;
-    padding: 5px;
-    width: 80px;
-    transition: all 0.5s;
-    cursor: pointer;
-    margin: 5px;
-}
 </style>

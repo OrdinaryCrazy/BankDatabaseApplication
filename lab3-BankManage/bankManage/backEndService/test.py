@@ -95,9 +95,9 @@ def staff():
         response = make_response(jsonify({    
                                         'code':200,
                                         'list':[
-                                            {'ID':'331002199802021545','name': '张三','dept':'人事处','tel':'10086','addr':'黄山路','date_s':'2010-12-30'},
-                                            {'ID':'33100220001002002X','name': '李四','dept':'财务处','tel':'10010','addr':'合作化路','date_s':'2011-02-00'},
-                                            {'ID':'331002199011110010','name': '王五','dept':'前台','tel':'10000','addr':'肥西路','date_s':'2019-04-30'}                                        ]
+                                            {'id':'331002199802021545','name': '张三','dept':'人事处','tel':'10086','addr':'黄山路','date_s':'2010-12-30'},
+                                            {'id':'33100220001002002X','name': '李四','dept':'财务处','tel':'10010','addr':'合作化路','date_s':'2011-02-00'},
+                                            {'id':'331002199011110010','name': '王五','dept':'前台','tel':'10000','addr':'肥西路','date_s':'2019-04-30'}                                        ]
                                     })
                                 )
         response.headers['Access-Control-Allow-Origin'] = '*'
@@ -177,17 +177,9 @@ def staffCustomer():
         # Todo: 实现数据库操作，修改或新增记录（建议使用视图）
         # 并将修改或新增的记录返回给前端（前端需要的主要是名字，但是为了兼容性，应该将整条记录都返回）
         print('Update')
-        staffID=request.form['staffID'] # 员工身份证号，用于查询和修改、删除
-        custID=request.form['custID'] # 客户身份证号，用于修改、删除
-        serviceType=request.form['serviceType'] # 服务类型，用于修改
-        old_custID=request.form['old_custID'] # 旧的客户身份证号，用于修改
-        old_staffID=request.form['old_staffID'] # 旧的员工身份证号，用于修改
-        # 当两个旧的值中有一个为空时，说明是新增
-        print(len(old_custID))
-        print(len(old_staffID))
         response = make_response(jsonify({    
                                         'code':200,
-                                        'record': {'ID':'331002199802021545','name': '张三','staffID':'331002199802021545','staffName': '张三','type':'1'}
+                                        'record': {'id':'331002199802021545','name': '张三','staffid':'331002199802021545','staffname': '李四','type':'1'}
                                         })
                                 )
         response.headers['Access-Control-Allow-Origin'] = '*'
@@ -197,8 +189,8 @@ def staffCustomer():
     if (rstype=="Delete"):
         # Todo: 实现数据库操作，删除记录
         print('Delete')
-        staffID=request.form['staffID'] # 员工身份证号
-        custID=request.form['custID'] # 客户身份证号，这两个主键可以用于删除联系
+        staffID=request.form['staffid'] # 员工身份证号
+        custID=request.form['custid'] # 客户身份证号，这两个主键可以用于删除联系
         print(staffID)
         print(custID)
         response = make_response(jsonify({    
