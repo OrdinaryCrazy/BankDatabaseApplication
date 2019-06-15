@@ -144,7 +144,7 @@
             "
             />&emsp;账户类型
             <select v-model="newtype">
-                <option value="0">存款账户</option>
+                <option value="0">储蓄账户</option>
                 <option value="1">支票账户</option> </select
             >&emsp;
             <el-button class="button" type="success" size="small" @click="newaccount()">开户</el-button>
