@@ -384,7 +384,7 @@ export default {
                                 bank: row.bank,
                                 customer: row.customer,
                                 amount: row.amount,
-                                status: row.status,
+                                status: this.statusList.indexOf(row.status),
                                 old_primary: this.primary //null代表新增
                             },
                             {

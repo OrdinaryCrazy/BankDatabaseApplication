@@ -75,6 +75,7 @@ CREATE TABLE LOAN (
     LOAN_ID     NUMBER(16)  CONSTRAINT LOAN_PK PRIMARY KEY,
     BANK_NAME   CHAR(50),
     LOAN_MONEY  FLOAT,
+    STATUS      NUMBER(1),
     CONSTRAINT FK_BANK_NAME FOREIGN KEY(BANK_NAME)  REFERENCES SUB_BANK(BANK_NAME)
 );
 /*==============================================================*/
