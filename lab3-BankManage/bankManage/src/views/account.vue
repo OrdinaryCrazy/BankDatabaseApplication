@@ -200,7 +200,7 @@
                     id="newOwner"
                     v-model="newOwner"
                     required="false"
-                    style=" width:100px;font-family: 'Fira Code', '汉仪南宫体简';"
+                    style=" width:250px;font-family: 'Fira Code', '汉仪南宫体简';"
                 />
                 <el-button class="button" type="success" size="small" @click="addOwner()">提交</el-button>
             </div>
@@ -585,7 +585,8 @@ export default {
                         accid: this.detail.id,
                         bank: this.detail.bank,
                         visit_date: XEUtils.toDateString(new Date(), "yyyy-MM-dd"),
-                        ownerid: this.newOwner
+                        ownerid: this.newOwner,
+                        acctype: this.detail.type
                     },
                     {
                         emulateJSON: true
@@ -607,7 +608,8 @@ export default {
                         type: "Delete",
                         accid: this.detail.id,
                         bank: this.detail.bank,
-                        ownerid: row.ownerid
+                        ownerid: row.ownerid,
+                        acctype: this.detail.type
                     },
                     {
                         emulateJSON: true
@@ -628,7 +630,8 @@ export default {
                     {
                         type: "Search",
                         accid: this.detail.id,
-                        bank: row.bank
+                        bank: row.bank,
+                        acctype: row.type
                     },
                     {
                         emulateJSON: true

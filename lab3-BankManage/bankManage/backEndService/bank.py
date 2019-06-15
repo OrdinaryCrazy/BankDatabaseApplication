@@ -123,12 +123,12 @@ def bank():
         cursor = connection.cursor()
 
         name        = request.form['name']
-        name        = name.rstrip()
+        name        = name.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         city        = request.form['city']
-        city        = city.rstrip()
+        city        = city.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         money       = request.form['money']
         old_primary = request.form['old_primary']
-        old_primary = old_primary.rstrip()
+        old_primary = old_primary.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
 
         sqlcommand = ""
         if len(old_primary) > 0 : # 改 #
@@ -222,7 +222,7 @@ def bank():
         cursor = connection.cursor()
 
         primary = request.form['primary']
-        primary = primary.rstrip()
+        primary = primary.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
 
         sqlcommand = " SELECT * FROM EMPLOYEE WHERE "
         sqlcommand = sqlcommand + " EMPLOYEE_BANK_NAME = '" + primary + "'"

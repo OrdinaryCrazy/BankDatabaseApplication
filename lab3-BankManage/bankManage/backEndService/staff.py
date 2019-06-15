@@ -105,16 +105,16 @@ def staff():
         # print(request.form)
         id_s        = request.form['id']
         name        = request.form['name']
-        name        = name.rstrip()
+        name        = name.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         bank        = request.form['bank']
-        bank        = bank.rstrip()
+        bank        = bank.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         dept        = request.form['dept']
         tel         = request.form['tel']
         addr        = request.form['addr']
-        addr        = addr.rstrip()
+        addr        = addr.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         date_s      = request.form['date_s']
         old_primary = request.form['old_primary']
-        old_primary = old_primary.rstrip()
+        old_primary = old_primary.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         print("hello")
 
         sqlcommand = ""
@@ -221,7 +221,7 @@ def staff():
         cursor = connection.cursor()
 
         primary = request.form['primary']
-        primary = primary.rstrip()
+        primary = primary.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
 
         sqlcommand = " SELECT * FROM EMPLOYEE_CUSTOMER WHERE "
         sqlcommand = sqlcommand + " EMPLOYEE_ID = '" + primary + "'"
@@ -272,7 +272,7 @@ def staffCustomer():
         cursor = connection.cursor()
 
         staffID = request.form['staffID']
-        staffID = staffID.rstrip()
+        staffID = staffID.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
 
         sqlcommand = ""
         sqlcommand = sqlcommand + " SELECT"
@@ -321,7 +321,7 @@ def staffCustomer():
     if (rstype=='SearchByCustomer'):
         # Todo: 实现数据库操作，返回查询的结果
         custID = request.form['custid'] # 客户身份证号，查找所有关于该客户的员工联系
-        custID = custID.rstrip()
+        custID = custID.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         print('SearchByCustomer')
         print(custID)
 
@@ -379,15 +379,15 @@ def staffCustomer():
         cursor = connection.cursor()
 
         custID      = request.form['custID']
-        custID      = custID.rstrip()
+        custID      = custID.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         staffID     = request.form['staffID']
-        staffID     = staffID.rstrip()
+        staffID     = staffID.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         serviceType = request.form['serviceType']
-        serviceType = serviceType.rstrip()
+        serviceType = serviceType.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         old_custID  = request.form['old_custID']
-        old_custID  = old_custID.rstrip()
+        old_custID  = old_custID.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         old_staffID = request.form['old_staffID']
-        old_staffID = old_staffID.rstrip()
+        old_staffID = old_staffID.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
 
         sqlcommand = ""
         # if      len(old_custID)  > 0 and len(old_staffID) == 0  \
@@ -452,9 +452,9 @@ def staffCustomer():
         cursor = connection.cursor()
 
         custID = request.form['custID']
-        custID = custID.rstrip()
+        custID = custID.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         staffID = request.form['staffID']
-        staffID = staffID.rstrip()
+        staffID = staffID.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
 
         
         sqlcommand = " DELETE FROM EMPLOYEE_CUSTOMER WHERE "
