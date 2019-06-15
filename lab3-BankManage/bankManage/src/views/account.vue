@@ -82,7 +82,7 @@
                 style=" width:150px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-            />&emsp;最近访问日期
+            /><!-- &emsp;最近访问日期
             <input
                 type="date"
                 min="0"
@@ -104,7 +104,7 @@
                 style=" width:150px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-            />&emsp;
+            />&emsp; -->
 
             <el-button class="button" size="small" type="primary" @click="submit()">查询</el-button>
             <el-button class="button" size="small" type="primary" @click="reset()">重置</el-button>
@@ -115,7 +115,7 @@
         <div align="left">
             <el-button class="button" type="success" size="small" @click="exportCsvEvent()">导出</el-button>
             <el-button class="button" type="success" size="small" @click="newaccount()">开户</el-button>
-            <font style="color: red" align="left">注：账户号不允许修改</font>
+            <font style="color: red" align="left">注：账户类型不允许修改</font>
         </div>
         <br />
 
@@ -411,7 +411,8 @@ export default {
                     "http://" + document.domain + ":5000/account",
                     {
                         type: "Delete",
-                        primary: row.id
+                        primary: row.id,
+                        acctype: row.type
                     },
                     {
                         emulateJSON: true
