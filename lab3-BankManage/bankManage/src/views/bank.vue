@@ -178,29 +178,50 @@ export default {
         },
         // 取消处理
         cancelRowEvent(row) {
-            this.isClearActiveFlag = false;
-            MessageBox.confirm("检测到未保存的内容，是否取消修改?", "温馨提示", {
-                distinguishCancelAndClose: true,
-                confirmButtonText: "取消修改",
-                cancelButtonText: "返回继续",
-                type: "warning"
-            })
-                .then(action => {
-                    this.$refs.elxEditable.clearActive();
-                    this.$refs.elxEditable.revert(row);
-                    if (this.primary == null) {
-                        this.$refs.elxEditable.remove(row);
-                    }
-                    this.primary = null;
+            if (this.primary == null) {
+                this.isClearActiveFlag = false;
+                MessageBox.confirm("该数据未保存，是否移除?", "温馨提示", {
+                    distinguishCancelAndClose: true,
+                    confirmButtonText: "移除数据",
+                    cancelButtonText: "返回继续",
+                    type: "warning"
                 })
-                .catch(action => {
-                    if (action === "cancel") {
-                        this.$refs.elxEditable.setActiveRow(row);
-                    }
+                    .then(action => {
+                        if (action === "confirm") {
+                            this.$refs.elxEditable.remove(row);
+                        }
+                    })
+                    .catch(action => action)
+                    .then(() => {
+                        this.isClearActiveFlag = true;
+                    });
+            } else if (this.$refs.elxEditable.hasRowChange(row)) {
+                this.isClearActiveFlag = false;
+                MessageBox.confirm("检测到未保存的内容，是否取消修改?", "温馨提示", {
+                    distinguishCancelAndClose: true,
+                    confirmButtonText: "取消修改",
+                    cancelButtonText: "返回继续",
+                    type: "warning"
                 })
-                .then(() => {
-                    this.isClearActiveFlag = true;
-                });
+                    .then(action => {
+                        this.$refs.elxEditable.clearActive();
+                        this.$refs.elxEditable.revert(row);
+                        if (this.primary == null) {
+                            this.$refs.elxEditable.remove(row);
+                        }
+                        this.primary = null;
+                    })
+                    .catch(action => {
+                        if (action === "cancel") {
+                            this.$refs.elxEditable.setActiveRow(row);
+                        }
+                    })
+                    .then(() => {
+                        this.isClearActiveFlag = true;
+                    });
+            } else {
+                this.$refs.elxEditable.clearActive();
+            }
         },
         //删除某一行
         removeEvent(row) {
@@ -218,9 +239,9 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.$refs.elxEditable.remove(row);
-                        console.log("Delete");
+                        Message({ message: "删除成功", type: "success" });
                     } else {
-                        window.alert("删除失败");
+                        Message({ message: "删除失败，" + response.body.msg, type: "warning" });
                     }
                 });
         },
@@ -250,8 +271,11 @@ export default {
                                 this.$refs.elxEditable.clearActive();
                                 this.$refs.elxEditable.reloadRow(row);
                                 console.log("Update");
+                                Message({ message: "保存成功", type: "success" });
+                            } else if (parseInt(response.body.code) === 400) {
+                                Message({ message: "新增记录失败，可能是支行名称重复", type: "warning" });
                             } else {
-                                window.alert("更新非法");
+                                Message({ message: "更新失败\n" + response.body.msg, type: "warning" });
                             }
                         });
                 } else if (valid && !this.$refs.elxEditable.hasRowChange(row)) {
@@ -284,8 +308,9 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.list = response.body.list;
+                        Message({ message: "查询成功", type: "success" });
                     } else {
-                        window.alert("查询失败");
+                        Message({ message: "没有查到任何内容", type: "warning" });
                     }
                 });
         },
@@ -305,7 +330,7 @@ export default {
     border: 2px solid #429fff; /* 表格边框 */
     font-family: "汉仪南宫体简";
     font-size: 18px;
-    border-collapse: collapse; /* 边框重叠 */
+    border-collapse: collapse; /*边框重叠 */
     overflow-x: auto;
     overflow-y: auto;
 }
