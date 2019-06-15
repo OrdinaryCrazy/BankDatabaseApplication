@@ -141,14 +141,14 @@ def staffCustomer():
     # old_staffID=request.form['old_staffID'] # 旧的员工身份证号，用于修改
     if (rstype=="SearchByStaff"):
         # Todo: 实现数据库操作，返回查询的结果
-        staffID=request.form['staffID'] # 员工身份证号，查找所有关于该员工的客户联系
+        staffID=request.form['staffid'] # 员工身份证号，查找所有关于该员工的客户联系
         print('SearchByStaff')
         print(staffID)
         response = make_response(jsonify({    
                                         'code':200,
                                         'list':[
-                                            {'ID':'331002199802021545','name': '张三','type':'1'},
-                                            {'ID':'331002195602021545','name': '李四','type':'0'},
+                                            {'id':'331002199802021545','name': '张三','type':'1'},
+                                            {'id':'331002195602021545','name': '李四','type':'0'},
                                         ]
                                     })
                                 )
@@ -158,14 +158,14 @@ def staffCustomer():
         return response
     if (rstype=='SearchByCustomer'):
         # Todo: 实现数据库操作，返回查询的结果
-        custID=request.form['custID'] # 客户身份证号，查找所有关于该客户的员工联系
+        custID=request.form['custid'] # 客户身份证号，查找所有关于该客户的员工联系
         print('SearchByCustomer')
         print(custID)
         response = make_response(jsonify({    
                                         'code':200,
                                         'list':[
-                                            {'staffID':'331002199802021545','staffName': '张三','type':'1'},
-                                            {'staffID':'331002195602021545','staffName': '李四','type':'0'},
+                                            {'staffid':'331002199802021545','staffname': '张三','type':'1'},
+                                            {'staffid':'331002195602021545','staffname': '李四','type':'0'},
                                         ]
                                     })
                                 )
@@ -309,11 +309,11 @@ def customer():
         response = make_response(jsonify({    
                                         'code':200,
                                         'list':[
-                                            {'ID':'331002199802021545','name': '张三','tel':'10086','addr':'黄山路',
+                                            {'id':'331002199802021545','name': '张三','tel':'10086','addr':'黄山路',
                                             'name_link':'张三丰','tel_link':'112','email_link':'4323@qq.com','relation':'父子'},
-                                            {'ID':'331002195602021545','name': '李四','tel':'10086','addr':'黄山路',
+                                            {'id':'331002195602021545','name': '李四','tel':'10086','addr':'黄山路',
                                             'name_link':'张三丰','tel_link':'112','email_link':'4323@qq.com','relation':'父子'},
-                                            {'ID':'331002199802021555','name': '王五','tel':'10086','addr':'黄山路',
+                                            {'id':'331002199802021555','name': '王五','tel':'10086','addr':'黄山路',
                                             'name_link':'张三丰','tel_link':'112','email_link':'4323@qq.com','relation':'父子'}
                                         ]
                                     })

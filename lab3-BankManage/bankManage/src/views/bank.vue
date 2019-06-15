@@ -46,14 +46,14 @@
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;
-            <el-button class="button" size="small" type="primary" @click="submit()">查询</el-button>
-            <el-button class="button" size="small" type="primary" @click="reset()">重置</el-button>
+            <el-button size="small" type="primary" @click="submit()">查询</el-button>
+            <el-button size="small" type="primary" @click="reset()">重置</el-button>
         </div>
         <br />
         <p style="color: red;font-size: 24px;" align="left">支行信息表</p>
         <div align="left">
-            <el-button class="button" type="success" size="small" @click="insertEvent()">新增</el-button>
-            <el-button class="button" type="success" size="small" @click="exportCsvEvent()">导出</el-button>
+            <el-button type="success" size="small" @click="insertEvent()">新增</el-button>
+            <el-button type="success" size="small" @click="exportCsvEvent()">导出</el-button>
         </div>
         <br />
 

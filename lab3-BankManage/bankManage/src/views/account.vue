@@ -106,12 +106,12 @@
             "
             />&emsp; -->
 
-            <el-button class="button" size="small" type="primary" @click="submit()">查询</el-button>
-            <el-button class="button" size="small" type="primary" @click="reset()">重置</el-button>
+            <el-button size="small" type="primary" @click="submit()">查询</el-button>
+            <el-button size="small" type="primary" @click="reset()">重置</el-button>
         </div>
         <br />
         <p style="color: red;font-size: 24px;" align="left">
-            账户信息表 <el-button class="button" type="success" size="small" @click="exportCsvEvent()">导出</el-button>
+            账户信息表 <el-button type="success" size="small" @click="exportCsvEvent()">导出</el-button>
         </p>
 
         <div align="left">
@@ -155,8 +155,8 @@
                 <option value="3">日元</option> </select
             >&emsp;
 
-            <el-button class="button" type="success" size="small" @click="newaccount()">开户</el-button>
-            <el-button class="button" type="success" size="small" @click="reset2()">重置</el-button>
+            <el-button type="success" size="small" @click="newaccount()">开户</el-button>
+            <el-button type="success" size="small" @click="reset2()">重置</el-button>
         </div>
         <br />
 
@@ -182,14 +182,14 @@
                 <template v-slot="scope">
                     <el-button size="small" type="primary" @click="saveRowEvent(scope.row)">提交</el-button>
                     <el-button size="small" type="danger" @click="removeEvent(scope.row)">销户</el-button>
-                    <el-button size="small" type="primary" @click="showDetail(scope.row)">查看户主</el-button>
+                    <el-button size="small" type="success" @click="showDetail(scope.row)">查看户主</el-button>
                 </template>
             </elx-editable-column>
         </elx-editable>
         <div v-if="showlink">
             <p style="color: red;font-size: 24px;" align="left">
                 户主信息表
-                <el-button class="button" type="success" size="small" @click="showlink = false">关闭</el-button>
+                <el-button type="success" size="small" @click="showlink = false">关闭</el-button>
             </p>
             <div align="left">
                 新增户主
@@ -202,7 +202,7 @@
                     required="false"
                     style=" width:100px;font-family: 'Fira Code', '汉仪南宫体简';"
                 />
-                <el-button class="button" type="success" size="small" @click="addOwner()">提交</el-button>
+                <el-button type="success" size="small" @click="addOwner()">提交</el-button>
             </div>
             <elx-editable
                 ref="elxEditable2"
@@ -227,7 +227,7 @@
                 ></elx-editable-column>
                 <elx-editable-column label="操作" width="160">
                     <template v-slot="scope">
-                        <el-button size="small" type="dangerous" @click="removeOwner(scope.row)">删除</el-button>
+                        <el-button size="small" type="danger" @click="removeOwner(scope.row)">删除</el-button>
                     </template>
                 </elx-editable-column>
             </elx-editable>

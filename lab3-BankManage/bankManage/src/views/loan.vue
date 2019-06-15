@@ -63,14 +63,14 @@
             "
             />&emsp;
 
-            <el-button class="button" size="small" type="primary" @click="submit()">查询</el-button>
-            <el-button class="button" size="small" type="primary" @click="reset()">重置</el-button>
+            <el-button size="small" type="primary" @click="submit()">查询</el-button>
+            <el-button size="small" type="primary" @click="reset()">重置</el-button>
         </div>
         <br />
         <p style="color: red;font-size: 24px;" align="left">贷款信息表</p>
         <div align="left">
-            <el-button class="button" type="success" size="small" @click="exportCsvEvent()">导出</el-button>
-            <el-button class="button" type="success" size="small" @click="insertEvent()">发放贷款</el-button>
+            <el-button type="success" size="small" @click="exportCsvEvent()">导出</el-button>
+            <el-button type="success" size="small" @click="insertEvent()">发放贷款</el-button>
             <font style="color: red" align="left" v-if="messageshow">请在贷款人字段填写所有贷款人的身份证号，并使用英文逗号分隔</font>
         </div>
         <br /><br />
@@ -104,7 +104,7 @@
         <div v-if="showlink">
             <p style="color: red;font-size: 24px;" align="left">
                 支付信息表
-                <el-button class="button" type="success" size="small" @click="showlink = false">关闭</el-button>
+                <el-button type="success" size="small" @click="showlink = false">关闭</el-button>
             </p>
             <div align="left">
                 进行支付&emsp;
@@ -117,7 +117,7 @@
                     required="false"
                     style=" width:100px;font-family: 'Fira Code', '汉仪南宫体简';"
                 />
-                <el-button class="button" type="success" size="small" @click="newpay()">支付</el-button>
+                <el-button type="success" size="small" @click="newpay()">支付</el-button><br><br>
             </div>
             <elx-table ref="elxTable" border size="small" :data.sync="paylist" style="width: 100%" class="table">
                 <elx-table-column type="index" width="55"></elx-table-column>

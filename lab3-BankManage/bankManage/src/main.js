@@ -10,6 +10,7 @@ import Elements from 'element-ui'
 import VueElementExtends from 'vue-element-extends'
 import 'vue-element-extends/lib/index.css'
 import VueResource from 'vue-resource'
+import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(VueElementExtends)
 Vue.use(Elements)

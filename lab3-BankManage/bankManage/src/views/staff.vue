@@ -43,7 +43,7 @@
                 style=" width:280px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-            />&emsp;<br />电话号码
+            />&emsp;<br /><br>电话号码
             <input
                 type="text"
                 placeholder="包含关键字"
@@ -84,14 +84,14 @@
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;
-            <el-button class="button" size="small" type="primary" @click="submit()">查询</el-button>
-            <el-button class="button" size="small" type="primary" @click="reset()">重置</el-button>
+            <el-button size="small" type="primary" @click="submit()">查询</el-button>
+            <el-button size="small" type="primary" @click="reset()">重置</el-button>
         </div>
         <br />
         <p style="color: red;font-size: 24px;" align="left">员工信息表</p>
         <div align="left">
-            <el-button class="button" type="success" size="small" @click="insertEvent('elxEditable1')">新增</el-button>
-            <el-button class="button" type="success" size="small" @click="exportCsvEvent('elxEditable1')">导出</el-button>
+            <el-button type="success" size="small" @click="insertEvent('elxEditable1')">新增</el-button>
+            <el-button type="success" size="small" @click="exportCsvEvent('elxEditable1')">导出</el-button>
         </div>
         <br />
         <elx-editable
@@ -117,7 +117,7 @@
                     props: { type: 'date', format: 'yyyy-MM-dd' }
                 }"
             ></elx-editable-column>
-            <elx-editable-column label="操作" width="160">
+            <elx-editable-column label="操作" width="250">
                 <template v-slot="scope">
                     <template v-if="$refs.elxEditable1.hasActiveRow(scope.row)">
                         <el-button size="small" type="success" @click="saveRowEvent('elxEditable1', scope.row)">保存</el-button>
@@ -126,7 +126,7 @@
                     <template v-else>
                         <el-button size="small" type="primary" @click="openActiveRowEvent('elxEditable1', scope.row)">编辑</el-button>
                         <el-button size="small" type="danger" @click="removeEvent('elxEditable1', scope.row)">删除</el-button>
-                        <el-button size="small" type="danger" @click="showDetail(scope.row)">详情</el-button>
+                        <el-button size="small" type="success" @click="showDetail(scope.row)">详情</el-button>
                     </template>
                 </template>
             </elx-editable-column>
@@ -592,6 +592,7 @@ export default {
     overflow-x: auto;
     overflow-y: auto;
     border-collapse: collapse; /* 边框重叠 */
+    
 }
 .table tr:hover {
     background-color: #c4e4ff; /* 动态变色,IE6下无效！*/

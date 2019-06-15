@@ -54,9 +54,9 @@
                 value="pie"
                 required="true"
             />按支行统计&emsp;
-            <button class="button" v-on:click="start()">
+            <el-button type="primary" v-on:click="start()">
                 <span>提交</span>
-            </button>
+            </el-button>
         </form>
         <template v-if="result">
             <p style="color: red;font-size: 24px;" align="left">统计表</p>
