@@ -122,7 +122,7 @@
             <elx-table ref="elxTable" border size="small" :data.sync="paylist" style="width: 100%" class="table">
                 <elx-table-column type="index" width="55"></elx-table-column>
                 <elx-table-column prop="id" label="贷款号"></elx-table-column>
-                <elx-table-column prop="date" label="支付日期" :formatter="formatterDate"></elx-table-column>
+                <elx-table-column prop="date_s" label="支付日期" :formatter="formatterDate"></elx-table-column>
                 <elx-table-column prop="money" label="支付金额"></elx-table-column>
             </elx-table>
         </div>
