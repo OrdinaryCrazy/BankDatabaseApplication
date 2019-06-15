@@ -147,7 +147,16 @@
                 <option value="0">储蓄账户</option>
                 <option value="1">支票账户</option> </select
             >&emsp;
+            <label v-if="newtype == '0'"> 货币类型 </label>
+            <select v-model="newmoneytype" v-if="newtype == '0'">
+                <option value="0">人民币</option>
+                <option value="1">美元</option>
+                <option value="2">欧元</option>
+                <option value="3">日元</option> </select
+            >&emsp;
+
             <el-button class="button" type="success" size="small" @click="newaccount()">开户</el-button>
+            <el-button class="button" type="success" size="small" @click="reset2()">重置</el-button>
         </div>
         <br />
 
@@ -235,6 +244,7 @@ export default {
         return {
             loading: false,
             newbankname: "",
+            newmoneytype: "0",
             newbankid: "",
             newtype: "0",
             showlink: false,
@@ -314,13 +324,13 @@ export default {
             this.loading = false;
         },
         activeMethod({ row, column }) {
-            if (column.label == "账户号" || column.label == "开户支行" || column.label == "账户类型") {
+            if (column.label == "账户号" || column.label == "开户支行" || column.label == "账户类型" || column.label == "货币类型") {
                 return false;
             }
             if (row.type == "0" && column.label == "透支额") {
                 return false;
             }
-            if (row.type == "1" && (column.label == "利率" || column.label == "货币类型")) {
+            if (row.type == "1" && column.label == "利率") {
                 return false;
             }
             return true;
@@ -333,7 +343,7 @@ export default {
         },
         //开户
         newaccount() {
-            if (this.newbankid=="" || this.newbankname=="" || this.newownerid==""){
+            if (this.newbankid == "" || this.newbankname == "" || this.newownerid == "") {
                 return;
             }
             this.$http
@@ -348,7 +358,7 @@ export default {
                         open_date: XEUtils.toDateString(new Date(), "yyyy-MM-dd"),
                         acctype: this.newtype,
                         interest: null,
-                        cashtype: null,
+                        cashtype: this.newmoneytype,
                         overdraft: null,
                         old_primary: null
                     },
@@ -366,7 +376,7 @@ export default {
                             open_date: XEUtils.toDateString(new Date(), "yyyy-MM-dd"),
                             type: this.newtype,
                             interest: null,
-                            cashtype: null,
+                            cashtype: this.newmoneytype,
                             overdraft: null
                         });
                     } else {
@@ -642,6 +652,13 @@ export default {
             console.log("update");
             console.log(row.id);
             this.searchOwner(row);
+        },
+        reset2() {
+            this.newbankname = "";
+            this.newmoneytype = "0";
+            this.newbankid = "";
+            this.newtype = "0";
+            this.newownerid = "";
         }
     }
 };
