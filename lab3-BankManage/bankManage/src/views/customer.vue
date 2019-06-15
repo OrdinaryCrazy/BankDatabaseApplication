@@ -43,7 +43,7 @@
                 style=" width:280px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-            />&emsp;<br /><br>联系人姓名
+            />&emsp;<br /><br />联系人姓名
             <input
                 type="text"
                 placeholder="包含关键字"
@@ -80,8 +80,8 @@
         <br />
         <p style="color: red;font-size: 24px;" align="left">客户信息表</p>
         <div align="left">
-            <el-button  type="success" size="small" @click="insertEvent('elxEditable1')">新增</el-button>
-            <el-button  type="success" size="small" @click="exportCsvEvent('elxEditable1')">导出</el-button>
+            <el-button type="success" size="small" @click="insertEvent('elxEditable1')">新增</el-button>
+            <el-button type="success" size="small" @click="exportCsvEvent('elxEditable1')">导出</el-button>
         </div>
         <br /><br />
         <elx-editable
@@ -119,11 +119,11 @@
             <br />
             <p style="color: red;font-size: 24px;" align="left">
                 员工联系表
-                <el-button  type="success" size="small" @click="showlink = false">关闭</el-button>
+                <el-button type="success" size="small" @click="showlink = false">关闭</el-button>
             </p>
             <div align="left">
-                <el-button  type="success" size="small" @click="insertEvent('elxEditable2')">新增</el-button>
-                <el-button  type="success" size="small" @click="exportCsvEvent('elxEditable2')">导出</el-button>
+                <el-button type="success" size="small" @click="insertEvent('elxEditable2')">新增</el-button>
+                <el-button type="success" size="small" @click="exportCsvEvent('elxEditable2')">导出</el-button>
             </div>
             <br />
             <elx-editable
@@ -242,7 +242,7 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.list = response.body.list;
-                        Message({message:"查询成功",type:"success"});
+                        Message({ message: "查询成功", type: "success" });
                     } else {
                         window.alert("查询失败");
                     }
@@ -280,9 +280,9 @@ export default {
                             this.linklist[i].name = row.name;
                             this.linklist[i].id = row.id;
                         }
-                        Message({message:"查询成功",type:"success"});
+                        Message({ message: "查询成功", type: "success" });
                     } else {
-                        Message({message:"查询结果为空",type:"warning"});
+                        Message({ message: "查询结果为空", type: "warning" });
                     }
                 });
         },
@@ -416,7 +416,7 @@ export default {
                         .then(function(response) {
                             if (parseInt(response.body.code) === 200) {
                                 this.$refs.elxEditable1.remove(row);
-                                Message({message:"删除成功",type:"success"});
+                                Message({ message: "删除成功", type: "success" });
                             } else {
                                 window.alert("删除失败");
                             }
@@ -439,9 +439,9 @@ export default {
                         .then(function(response) {
                             if (parseInt(response.body.code) === 200) {
                                 this.$refs.elxEditable2.remove(row);
-                                Message({message:"删除成功",type:"success"});
+                                Message({ message: "删除成功", type: "success" });
                             } else {
-                                Message({message:"删除失败，"+response.body.msg,type:"warning"});
+                                Message({ message: "删除失败，" + response.body.msg, type: "warning" });
                             }
                         });
                     break;
@@ -492,9 +492,9 @@ export default {
                                         console.log("Update");
                                         Message({ message: "保存成功", type: "success" });
                                     } else if (parseInt(response.body.code) === 400) {
-                                        Message({message:"新增记录失败，可能是身份证号重复",type:"warning"});
+                                        Message({ message: "新增记录失败，可能是身份证号重复", type: "warning" });
                                     } else {
-                                        Message({message:"保存失败\n"+response.body.msg,type:"warning"});
+                                        Message({ message: "保存失败\n" + response.body.msg, type: "warning" });
                                     }
                                 });
                             break;
@@ -523,12 +523,12 @@ export default {
                                         this.primary = null;
                                         this.$refs.elxEditable2.clearActive();
                                         row.name = response.body.record.name;
-                                        row.staffname=response.body.record.staffname;
+                                        row.staffname = response.body.record.staffname;
                                         this.$refs.elxEditable2.reloadRow(row);
                                         Message({ message: "保存成功", type: "success" });
                                         console.log("Update");
                                     } else {
-                                        Message({message:"保存失败",type:"warning"});
+                                        Message({ message: "保存失败", type: "warning" });
                                     }
                                 });
                             break;
@@ -574,54 +574,4 @@ export default {
 };
 </script>
 
-<style>
-.table {
-    border: 2px solid #429fff; /* 表格边框 */
-    font-family: "汉仪南宫体简";
-    font-size: 18px;
-    border-collapse: collapse; /* 边框重叠 */
-    overflow-x: auto;
-    overflow-y: auto;
-}
-.table tr:hover {
-    background-color: #c4e4ff; /* 动态变色,IE6下无效！*/
-}
-.table caption {
-    padding-top: 3px;
-    padding-bottom: 2px;
-    font: bold 1.1em;
-    color: #ff00ff;
-    background-color: #f0f7ff;
-    border: 1px solid #429fff; /* 表格标题边框 */
-}
-.table th {
-    border: 1px solid #429fff; /* 行、列名称边框 */
-    background-color: #d2e8ff;
-    font-weight: bold;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 10px;
-    padding-right: 10px;
-    text-align: center;
-}
-.table td {
-    border: 1px solid #429fff; /* 单元格边框 */
-    text-align: center;
-    padding: 4px;
-    word-break: break-all;
-}
-.button {
-    display: inline-block;
-    border-radius: 4px;
-    background-color: limegreen;
-    border: none;
-    color: #ffffff;
-    text-align: center;
-    font-size: 15px;
-    padding: 5px;
-    width: 80px;
-    transition: all 0.5s;
-    cursor: pointer;
-    margin: 5px;
-}
-</style>
+<style></style>
