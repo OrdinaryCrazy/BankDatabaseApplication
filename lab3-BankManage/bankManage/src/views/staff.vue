@@ -135,11 +135,11 @@
             <br />
             <p style="color: red;font-size: 24px;" align="left">
                 客户联系表
-                <el-button class="button" type="success" size="small" @click="showlink = false">关闭</el-button>
+                <el-button type="success" size="small" @click="showlink = false">关闭</el-button>
             </p>
             <div align="left">
-                <el-button class="button" type="success" size="small" @click="insertEvent('elxEditable2')">新增</el-button>
-                <el-button class="button" type="success" size="small" @click="exportCsvEvent('elxEditable2')">导出</el-button>
+                <el-button type="success" size="small" @click="insertEvent('elxEditable2')">新增</el-button>
+                <el-button type="success" size="small" @click="exportCsvEvent('elxEditable2')">导出</el-button>
             </div>
             <br />
             <elx-editable
@@ -151,8 +151,8 @@
                 style="width: 100%"
             >
                 <elx-editable-column type="index" width="55"></elx-editable-column>
-                <elx-editable-column prop="staffID" label="员工身份证号"></elx-editable-column>
-                <elx-editable-column prop="staffName" label="员工姓名"></elx-editable-column>
+                <elx-editable-column prop="staffid" label="员工身份证号"></elx-editable-column>
+                <elx-editable-column prop="staffname" label="员工姓名"></elx-editable-column>
                 <elx-editable-column prop="id" label="客户身份证号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
                 <elx-editable-column prop="name" label="客户姓名"></elx-editable-column>
                 <!-- <elx-editable-column prop="type" label="与客户关系" :edit-render="{ name: 'ElSelect', options: serviceList }"></elx-editable-column> -->
@@ -235,7 +235,7 @@ export default {
                 // {
                 //     id: "33122212121210001X",
                 //     name: "吴邪",
-                //     staffID: "33122220001010001X",
+                //     staffid: "33122220001010001X",
                 //     staffName: "张三",
                 //     type: "1"
                 // }
@@ -260,7 +260,7 @@ export default {
                         this.$refs[name].setActiveRow(row);
                     });
                 } else {
-                    this.$refs[name].insert({ staffID: this.detail.id, staffName: this.detail.name }).then(({ row }) => {
+                    this.$refs[name].insert({ staffid: this.detail.id, staffname: this.detail.name }).then(({ row }) => {
                         this.$refs[name].setActiveRow(row);
                     });
                 }
@@ -293,8 +293,9 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.list = response.body.list;
+                        Message({message:"查询成功",type:"success"});
                     } else {
-                        window.alert("查询失败");
+                        Message({message:"查询失败",type:"warning"});
                     }
                 });
         },
@@ -316,7 +317,7 @@ export default {
                     "http://" + document.domain + ":5000/staffCustomer",
                     {
                         type: "SearchByStaff",
-                        staffID: row.id
+                        staffid: row.id
                     },
                     {
                         emulateJSON: true
@@ -326,11 +327,12 @@ export default {
                     if (parseInt(response.body.code) === 200) {
                         this.linklist = response.body.list;
                         for (var i = 0; i < this.linklist.length; i++) {
-                            this.linklist[i].staffName = row.name;
-                            this.linklist[i].staffID = row.id;
+                            this.linklist[i].staffname = row.name;
+                            this.linklist[i].staffid = row.id;
                         }
+                        Message({message:"查询成功",type:"success"});
                     } else {
-                        window.alert("查询失败");
+                        Message({message:"没有查到任何记录",type:"warning"});
                     }
                 });
         },
@@ -435,9 +437,9 @@ export default {
                         .then(function(response) {
                             if (parseInt(response.body.code) === 200) {
                                 this.$refs.elxEditable1.remove(row);
-                                console.log("Delete");
+                                Message({message:"删除成功",type:"success"});
                             } else {
-                                window.alert("删除失败");
+                                Message({message:"删除失败，有关联客户信息",type:"warning"});
                             }
                         });
                     break;
@@ -448,8 +450,8 @@ export default {
                             "http://" + document.domain + ":5000/staffCustomer",
                             {
                                 type: "Delete",
-                                custID: row.id,
-                                staffID: row.staffID
+                                custid: row.id,
+                                staffid: row.staffid
                             },
                             {
                                 emulateJSON: true
@@ -458,9 +460,9 @@ export default {
                         .then(function(response) {
                             if (parseInt(response.body.code) === 200) {
                                 this.$refs.elxEditable2.remove(row);
-                                console.log("Delete");
+                                Message({message:"删除成功",type:"success"});
                             } else {
-                                window.alert("删除失败");
+                               Message({message:"删除失败",type:"warning"});
                             }
                         });
                     break;
@@ -469,11 +471,13 @@ export default {
         saveRowEvent(name, row) {
             switch (name) {
                 case "elxEditable2":
-                    if (row.staffID == null || row.staffID == "") {
+                    if (row.staffid == null || row.staffid == "") {
+                        Message({message:"字段不能为空",type:"warning"});
                         return;
                     }
                 case "elxEditable1":
                     if (row.id == null || row.id == "") {
+                        Message({message:"字段不能为空",type:"warning"});
                         return;
                     }
             }
@@ -505,10 +509,12 @@ export default {
                                         //更新合法
                                         this.primary = null;
                                         this.$refs.elxEditable1.clearActive();
-                                        console.log("Update");
+                                        Message({message:"保存成功",type:"success"});
                                         this.$refs.elxEditable1.reloadRow(row);
-                                    } else {
-                                        window.alert("更新非法");
+                                    } else if (parseInt(response.body.code)===400) {
+                                        Message({message:"新增记录失败，可能是身份证号重复",type:"warning"});
+                                    }else{
+                                        Message({message:"保存失败\n"+response.body.msg,type:"warning"});
                                     }
                                 });
                             break;
@@ -519,10 +525,10 @@ export default {
                                     {
                                         type: "Update",
                                         custID: row.id,
-                                        staffID: row.staffID, //该字段是不变的
+                                        staffID: row.staffid, //该字段是不变的
                                         serviceType: row.type,
                                         old_custID: this.primary, //null代表新增，这是旧的客户身份证号
-                                        old_staffID: row.staffID
+                                        old_staffID: row.staffid
                                     },
                                     {
                                         emulateJSON: true
@@ -533,11 +539,12 @@ export default {
                                         //更新合法
                                         this.primary = null;
                                         this.$refs.elxEditable2.clearActive();
-                                        row = response.body.record;
+                                        row.name = response.body.record.name;
+                                        row.staffname=response.body.record.staffname;
                                         this.$refs.elxEditable2.reloadRow(row);
-                                        console.log("Update");
+                                        Message({message:"保存成功",type:"success"});
                                     } else {
-                                        window.alert("更新非法");
+                                        Message({message:"保存失败",type:"warning"});
                                     }
                                 });
                             break;

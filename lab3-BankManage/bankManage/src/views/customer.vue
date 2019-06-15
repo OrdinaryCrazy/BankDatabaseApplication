@@ -242,6 +242,7 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.list = response.body.list;
+                        Message({message:"查询成功",type:"success"});
                     } else {
                         window.alert("查询失败");
                     }
@@ -279,8 +280,9 @@ export default {
                             this.linklist[i].name = row.name;
                             this.linklist[i].id = row.id;
                         }
+                        Message({message:"查询成功",type:"success"});
                     } else {
-                        window.alert("查询失败");
+                        Message({message:"查询结果为空",type:"warning"});
                     }
                 });
         },
@@ -414,7 +416,7 @@ export default {
                         .then(function(response) {
                             if (parseInt(response.body.code) === 200) {
                                 this.$refs.elxEditable1.remove(row);
-                                console.log("Delete");
+                                Message({message:"删除成功",type:"success"});
                             } else {
                                 window.alert("删除失败");
                             }
@@ -437,9 +439,9 @@ export default {
                         .then(function(response) {
                             if (parseInt(response.body.code) === 200) {
                                 this.$refs.elxEditable2.remove(row);
-                                console.log("Delete");
+                                Message({message:"删除成功",type:"success"});
                             } else {
-                                window.alert("删除失败");
+                                Message({message:"删除失败，"+response.body.msg,type:"warning"});
                             }
                         });
                     break;
@@ -489,8 +491,10 @@ export default {
                                         this.$refs.elxEditable1.reloadRow(row);
                                         console.log("Update");
                                         Message({ message: "保存成功", type: "success" });
+                                    } else if (parseInt(response.body.code) === 400) {
+                                        Message({message:"新增记录失败，可能是身份证号重复",type:"warning"});
                                     } else {
-                                        window.alert("更新非法");
+                                        Message({message:"保存失败\n"+response.body.msg,type:"warning"});
                                     }
                                 });
                             break;
@@ -518,12 +522,13 @@ export default {
                                         //更新合法
                                         this.primary = null;
                                         this.$refs.elxEditable2.clearActive();
-                                        row = response.body.record;
+                                        row.name = response.body.record.name;
+                                        row.staffname=response.body.record.staffname;
                                         this.$refs.elxEditable2.reloadRow(row);
                                         Message({ message: "保存成功", type: "success" });
                                         console.log("Update");
                                     } else {
-                                        window.alert("更新非法");
+                                        Message({message:"保存失败",type:"warning"});
                                     }
                                 });
                             break;
