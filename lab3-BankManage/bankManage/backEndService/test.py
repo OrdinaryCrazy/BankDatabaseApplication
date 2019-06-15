@@ -356,9 +356,9 @@ def account():
         response = make_response(jsonify({    
                                         'code':200,
                                         'list':[
-                                            {'ID': "123000",'owner': "张三，李四，王五，马云，刘强东",'bank': "合肥支行",'money':2563.00,
+                                            {'id': "123000",'owner': "张三，李四，王五，马云，刘强东",'bank': "合肥支行",'money':2563.00,
                                             'open_date': '2016-2-20','visit_date': '2018-5-6','type': '0','interest': 0.043,'cashtype': '1'},
-                                            {'ID': "123020",'owner': "刘强东",'bank': "合肥支行",'money':23563.00,
+                                            {'id': "123020",'owner': "刘强东",'bank': "合肥支行",'money':23563.00,
                                             'open_date': '2016-2-20','visit_date': '2018-5-6','type': '1','overdraft': 25000000}
                                         ]
                                     })
@@ -403,9 +403,9 @@ def loan():
         response = make_response(jsonify({    
                                         'code':200,
                                         'list':[
-                                            {'ID': "123000",'customer': "10000 张三",'bank': "合肥支行",'amount':2563.00,'status':'未开始发放'},
-                                            {'ID': "123001",'customer': "10001 李四",'bank': "合肥支行",'amount':252263.00,'status':'发放中'},
-                                            {'ID': "123023",'customer': "10002 王五",'bank': "合肥支行",'amount':25.00,'status':'已全部发放'}
+                                            {'id': "123000",'customer': "10000 张三",'bank': "合肥支行",'amount':2563.00,'status':'0'},
+                                            {'id': "123001",'customer': "10001 李四",'bank': "合肥支行",'amount':252263.00,'status':'1'},
+                                            {'id': "123023",'customer': "10002 王五",'bank': "合肥支行",'amount':25.00,'status':'2'}
                                         ]
                                     })
                                 )

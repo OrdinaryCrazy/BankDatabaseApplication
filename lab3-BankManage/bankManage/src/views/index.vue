@@ -24,12 +24,13 @@
             <button class="buttonred" v-on:click="goSummary" v-if="type == 'SUB_BANK'">
                 <span>业务统计</span>
             </button>
+        </div>
+        <p>
             <button class="buttonred" v-on:click="exit">
                 <span>退出登录</span>
             </button>
-        </div>
-        <br /><br /><br />
-        <div align="right"></div>
+        </p>
+        
     </div>
 </template>
 

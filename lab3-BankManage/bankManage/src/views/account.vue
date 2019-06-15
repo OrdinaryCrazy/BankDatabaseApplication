@@ -170,15 +170,15 @@
             style="width: 100%"
         >
             <elx-editable-column type="index" width="55"></elx-editable-column>
-            <elx-editable-column prop="id" label="账户号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
-            <elx-editable-column prop="bank" label="开户支行" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+            <elx-editable-column prop="id" label="账户号" ></elx-editable-column>
+            <elx-editable-column prop="bank" label="开户支行" ></elx-editable-column>
             <elx-editable-column prop="money" label="余额" :edit-render="{ type: 'default' }"></elx-editable-column>
             <elx-editable-column prop="open_date" label="开户日期"></elx-editable-column>
             <elx-editable-column prop="type" label="账户类型" :edit-render="{ name: 'ElSelect', options: typeList }"></elx-editable-column>
             <elx-editable-column prop="interest" label="利率" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
-            <elx-editable-column prop="cashtype" label="货币类型" :edit-render="{ name: 'ElSelect', options: cashList }"></elx-editable-column>
+            <elx-editable-column prop="cashtype" label="货币类型" ></elx-editable-column>
             <elx-editable-column prop="overdraft" label="透支额" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
-            <elx-editable-column label="操作" width="160">
+            <elx-editable-column label="操作" width="250">
                 <template v-slot="scope">
                     <el-button size="small" type="primary" @click="saveRowEvent(scope.row)">提交</el-button>
                     <el-button size="small" type="danger" @click="removeEvent(scope.row)">销户</el-button>
@@ -672,7 +672,7 @@ export default {
     border: 2px solid #429fff; /* 表格边框 */
     font-family: "汉仪南宫体简";
     font-size: 18px;
-    border-collapse: collapse; /* 边框重叠 */
+    /*border-collapse: collapse;  边框重叠 */
     overflow-x: auto;
     overflow-y: auto;
 }

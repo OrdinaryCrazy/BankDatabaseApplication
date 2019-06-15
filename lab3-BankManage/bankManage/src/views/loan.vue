@@ -34,7 +34,7 @@
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;状态
-            <select v-model="statusSearch" id="statusSearch" placeholder="any">
+            <select v-model="statusSearch" id="statusSearch" >
                 <option value="any" selected>任意</option>
                 <option value="none">未开始发放</option>
                 <option value="part">发放中</option>
@@ -117,7 +117,7 @@
                     required="false"
                     style=" width:100px;font-family: 'Fira Code', '汉仪南宫体简';"
                 />
-                <el-button type="success" size="small" @click="newpay()">支付</el-button><br><br>
+                <el-button type="success" size="small" @click="newpay()">支付</el-button><br /><br />
             </div>
             <elx-table ref="elxTable" border size="small" :data.sync="paylist" style="width: 100%" class="table">
                 <elx-table-column type="index" width="55"></elx-table-column>
@@ -138,27 +138,14 @@ export default {
         return {
             loading: false,
             list: [],
-            statusList: [
-                {
-                    label: "未开始发放",
-                    value: "0"
-                },
-                {
-                    label: "发放中",
-                    value: "1"
-                },
-                {
-                    label: "已全部发放",
-                    value: "2"
-                }
-            ],
+            statusList: ["未开始发放", "发放中", "已全部发放"],
             paylist: [],
             showlink: false,
             showpay: false,
             isClearActiveFlag: true,
             bankSearch: "",
             idSearch: "",
-            statusSearch: "",
+            statusSearch: "any",
             custSearch: "",
             upperBound: "",
             lowerBound: "",
@@ -305,7 +292,7 @@ export default {
         },
         // 取消处理
         cancelRowEvent(row) {
-            if (!row.id) {
+            if (this.primary == null) {
                 this.isClearActiveFlag = false;
                 MessageBox.confirm("该数据未保存，是否移除?", "温馨提示", {
                     distinguishCancelAndClose: true,
@@ -333,8 +320,11 @@ export default {
                 })
                     .then(action => {
                         this.$refs.elxEditable.clearActive();
-                        this.primary = null;
                         this.$refs.elxEditable.revert(row);
+                        if (this.primary == null) {
+                            this.$refs.elxEditable.remove(row);
+                        }
+                        this.primary = null;
                     })
                     .catch(action => {
                         if (action === "cancel") {
@@ -445,6 +435,10 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.list = response.body.list;
+                        for (var i = 0; i < this.list.length; i++) {
+                            var t = this.list[i].status;
+                            this.list[i].status = this.statusList[t];
+                        }
                     } else {
                         window.alert("查询失败");
                     }
