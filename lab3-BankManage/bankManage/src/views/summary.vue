@@ -94,6 +94,7 @@
 <script>
 import XEUtils from "xe-utils";
 import XEAjax from "xe-ajax";
+import { MessageBox, Message } from "element-ui";
 export default {
     data() {
         return {
@@ -160,6 +161,7 @@ export default {
     methods: {
         start: function() {
             if (this.upperBound == "" || this.lowerBound == "") {
+                Message({message:"时间范围不能为空",type:"warning"});
                 return;
             }
             this.$http
@@ -191,6 +193,7 @@ export default {
                             this.columnConfigs.push(item);
                         });
                         this.userList = response.body.rawData;
+                        Message({message:"查询成功",type:"success"});
                     }
                 });
         }

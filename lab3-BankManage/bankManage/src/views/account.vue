@@ -379,8 +379,9 @@ export default {
                             cashtype: this.newmoneytype,
                             overdraft: null
                         });
+                        Message({message:"开户成功",type:"success"});
                     } else {
-                        window.alert("更新非法");
+                        Message({message:"开户失败，您提供的信息可能有误或您已经在该支行开设同类账户",type:"warning"});
                     }
                 });
         },
@@ -484,9 +485,9 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.$refs.elxEditable.remove(row);
-                        console.log("Delete");
+                        Message({message:"删除成功",type:"success"});
                     } else {
-                        window.alert("删除失败");
+                        Message({message:"删除失败",type:"warning"});
                     }
                 });
         },
@@ -519,8 +520,9 @@ export default {
                             //更新合法
                             this.$refs.elxEditable.clearActive();
                             this.$refs.elxEditable.reloadRow(row);
+                            Message({message:"保存成功",type:"success"});
                         } else {
-                            window.alert("更新非法");
+                            Message({message:"保存失败，可能是账户号已存在",type:"warning"});
                         }
                     });
             }
@@ -554,8 +556,9 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.list = response.body.list;
+                        Message({message:"查询成功",type:"success"});
                     } else {
-                        window.alert("查询失败");
+                        Message({message:"查询结果为空",type:"warning"});
                     }
                 });
         },
@@ -595,8 +598,9 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.ownerlist.push(response.body.record);
+                        Message({message:"新增户主成功",type:"success"});
                     } else {
-                        window.alert("查询失败");
+                        Message({message:"新增户主失败，可能是身份证号错误或其已经在该支行开设同类账户",type:"warning"});
                     }
                 });
         },
@@ -618,6 +622,7 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.$refs.elxEditable2.remove(row);
+                        Message({message:"删除成功",type:"success"});
                     } else {
                         window.alert("删除失败");
                     }
@@ -644,8 +649,9 @@ export default {
                             this.ownerlist[i].id = row.id;
                             this.ownerlist[i].bank = row.bank;
                         }
+                        Message({message:"查询成功",type:"success"});
                     } else {
-                        window.alert("查询失败");
+                        Message({message:"查询失败",type:"error"});
                     }
                 });
         },
