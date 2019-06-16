@@ -427,7 +427,7 @@ export default {
                                 this.$refs.elxEditable1.remove(row);
                                 Message({ message: "删除成功", type: "success" });
                             } else {
-                                window.alert("删除失败");
+                                Message({ message: "删除失败，" + response.body.msg, type: "warning" });
                             }
                         });
                     break;

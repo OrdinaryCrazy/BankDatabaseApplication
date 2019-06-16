@@ -205,6 +205,11 @@ export default {
                 }
             }
             for (var i=0;i<rawData.length;i++){
+                if (rawData[i].indexOf('.')!=-1){                    
+                    XEUtils.toStringDate(rawData[i], 'yyyy.mm');
+                }
+            }
+            for (var i=0;i<rawData.length;i++){
                 for (var j=i+1;j<rawData.length;j++){
                     if (rawData[i].time>rawData[j].time){
                         var temp=rawData[i];
