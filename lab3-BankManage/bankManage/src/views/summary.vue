@@ -39,8 +39,7 @@
             <select v-model="datatype" id="datatype" placeholder="all">
                 <option value="money">业务总金额</option>
                 <option value="user">用户数</option> </select
-            >&emsp; <input type="radio" name="graphtype" v-model="graphtype" value="curve" required="true" />按时间统计&emsp;
-            <input type="radio" name="graphtype" v-model="graphtype" value="pie" required="true" />按支行统计&emsp;
+            >&emsp;
             <el-button type="primary" v-on:click="start()">
                 <span>提交</span>
             </el-button>
@@ -57,7 +56,7 @@
                     :edit-config="{ trigger: 'manual', mode: 'row' }"
                     style="width: 100%"
                 >
-                    <elx-editable-column prop="time" label="时间" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
+                    <elx-editable-column prop="time" label="时间"></elx-editable-column>
                     <template v-for="item in columnConfigs">
                         <template v-if="item._show">
                             <elx-editable-column v-bind="item" :key="item.prop"></elx-editable-column>
@@ -66,7 +65,14 @@
                 </elx-editable>
             </div>
             <p style="color: red;font-size: 24px;" align="left">统计图</p>
-            <ve-pie :data="chartData"></ve-pie>
+            <div align="left">
+            <input type="radio" name="graphtype" v-model="graphtype" value="curve" required="true" />按时间统计&emsp;
+            <input type="radio" name="graphtype" v-model="graphtype" value="pie" required="true" />按支行统计&emsp;
+            </div>
+            <div align="center">
+                <ve-pie :data="chartData" v-if="graphtype=='pie'" width="800px"></ve-pie>
+                <ve-line :data="chartData2" :settings="chartSettings" width="800px" v-else></ve-line>
+            </div>
         </template>
     </div>
 </template>
@@ -79,20 +85,13 @@ export default {
     data() {
         return {
             loading: false,
+            showpie: false,
+            chartSettings: {},
             list: [],
             result: false,
             isClearActiveFlag: true,
-            chartData: {
-                columns: ["日期", "访问用户"],
-                rows: [
-                    { 日期: "1/1", 访问用户: 1393 },
-                    { 日期: "1/2", 访问用户: 3530 },
-                    { 日期: "1/3", 访问用户: 2923 },
-                    { 日期: "1/4", 访问用户: 1723 },
-                    { 日期: "1/5", 访问用户: 3792 },
-                    { 日期: "1/6", 访问用户: 4593 }
-                ]
-            },
+            chartData: {},
+            chartData2: {},
             columnConfigs: [
                 {
                     prop: "bank1",
@@ -184,10 +183,9 @@ export default {
                             this.columnConfigs.push(item);
                         });
                         this.userList = response.body.rawData;
-                        if (this.graphtype=='pie'){
-                            this.makePieChart(response.body.columnList, response.body.rawData);
-                        }
-                        
+                        this.makePieChart(response.body.columnList, response.body.rawData);
+                        this.makeLineChart(response.body.columnList, response.body.rawData);
+
                         Message({ message: "查询成功", type: "success" });
                     }
                 });
@@ -196,17 +194,31 @@ export default {
             //只有当用户选择按支行统计时，才会制作饼图，将同一支行在所有时间的值都加起来，显示在饼图上
             //饼图有两个维度，一个是支行名，一个是要统计的指标
             //var index=(this.datatype==='money')? '业务总金额':'用户数';
-            this.chartData.columns=[];
-            this.chartData.rows=[];//清空图片数据            
+            this.chartData.columns = [];
+            this.chartData.rows = []; //清空图片数据
             this.chartData.columns = ["支行", "index"];
             for (var i = 0; i < columnList.length; i++) {
                 this.chartData.rows.push({ 支行: columnList[i], index: 0 });
             }
-            for (var i=0; i<rawData.length;i++){
-                for (var j=0;j<columnList.length;j++){
-                    this.chartData.rows[j].index+=rawData[i][columnList[j]];
+            for (var i = 0; i < rawData.length; i++) {
+                for (var j = 0; j < columnList.length; j++) {
+                    this.chartData.rows[j].index += rawData[i][columnList[j]];
                 }
             }
+        },
+        makeLineChart: function(columnList, rawData) {
+            this.chartData2.columns = [];
+            this.chartData2.columns.push("time");
+            for (var i = 0; i < columnList.length; i++) {
+                this.chartData2.columns.push(columnList[i]);
+            }
+            this.chartData2.rows = rawData;
+            this.chartSettings = {
+                metrics: columnList,
+                dimension: ["time"],
+                min: ["dataMin", "dataMin"],
+                max: ["dataMax", "dataMax"]
+            };
         }
     }
 };
