@@ -663,7 +663,7 @@ export default {
                         }
                         Message({message:"查询成功",type:"success"});
                     } else {
-                        this.showlink=false;
+                        this.ownerlist=[];
                         Message({message:"查询失败",type:"error"});
                     }
                 });

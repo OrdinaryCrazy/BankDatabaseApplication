@@ -345,7 +345,7 @@ export default {
                         }
                         Message({ message: "查询成功", type: "success" });
                     } else {
-                        this.showlink = false;
+                        this.linklist=[];
                         Message({ message: "没有查到任何记录", type: "warning" });
                     }
                 });
