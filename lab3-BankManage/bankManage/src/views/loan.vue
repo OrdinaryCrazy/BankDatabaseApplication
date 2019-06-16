@@ -245,7 +245,7 @@ export default {
                 )
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
-                        this.paylist.push({ id: this.detail.id, date: XEUtils.toDateString(new Date(), "yyyy-MM-dd"), money: this.payAmount });
+                        this.paylist.push({ id: this.detail.id, date_s: XEUtils.toDateString(new Date(), "yyyy-MM-dd"), money: this.payAmount });
                         var sum = 0;
                         for (var i = 0; i < this.paylist.length; i++) {
                             sum = sum + parseInt(this.paylist[i].money);
