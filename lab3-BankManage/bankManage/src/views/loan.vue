@@ -10,6 +10,7 @@
                 id="idSearch"
                 v-model="idSearch"
                 required="false"
+                class="input"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
@@ -19,6 +20,7 @@
                 placeholder="包含关键字"
                 id="bankSearch"
                 v-model="bankSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -29,12 +31,13 @@
                 placeholder="包含关键字"
                 id="custSearch"
                 v-model="custSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;状态
-            <select v-model="statusSearch" id="statusSearch">
+            <select class="dropbtn" v-model="statusSearch" id="statusSearch">
                 <option value="any" selected>任意</option>
                 <option value="none">未开始发放</option>
                 <option value="part">发放中</option>
@@ -46,6 +49,7 @@
                 placeholder="下界"
                 id="lowerBound"
                 v-model="lowerBound"
+                class="input"
                 required="false"
                 style=" width:100px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -57,6 +61,7 @@
                 placeholder="上界"
                 id="upperBound"
                 v-model="upperBound"
+                class="input"
                 required="false"
                 style=" width:100px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -88,7 +93,7 @@
             <elx-editable-column prop="customer" label="贷款人" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="amount" label="金额" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
             <elx-editable-column prop="status" label="状态"></elx-editable-column>
-            <elx-editable-column label="操作" width="160">
+            <elx-editable-column label="操作" width="260">
                 <template v-slot="scope">
                     <template v-if="$refs.elxEditable.hasActiveRow(scope.row)">
                         <el-button size="small" type="success" @click="saveRowEvent(scope.row)">保存</el-button>
@@ -485,4 +490,65 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.input{
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 6px;
+    padding: 8px 14px;
+    width: 620px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: "Fira Code", "汉仪南宫体简";
+}
+.input:focus{
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+}
+.dropbtn {
+    border-radius: 6px;
+    background-color: rgb(223, 71, 71);
+    color: white;
+    padding: 8px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    width: 100px;
+    height: 35px;
+    font-family: "Fira Code", "汉仪南宫体简";
+}
+
+.dropdown {
+    position: relative;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.dropdown-content {
+    border-radius: 4px;
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content option {
+    color: black;
+    padding: 6px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content option :hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #b6f699;
+}
+</style>

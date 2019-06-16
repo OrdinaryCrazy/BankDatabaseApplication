@@ -9,6 +9,7 @@
                 placeholder="包含关键字"
                 id="idSearch"
                 v-model="idSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -19,6 +20,7 @@
                 placeholder="包含关键字"
                 id="ownerSearch"
                 v-model="ownerSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -30,11 +32,12 @@
                 id="bankSearch"
                 v-model="bankSearch"
                 required="false"
+                class="input"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;账户类型
-            <select v-model="typeSearch" id="typeSearch" placeholder="any">
+            <select class="dropbtn" v-model="typeSearch" id="typeSearch" placeholder="any">
                 <option value="any" selected>任意</option>
                 <option value="saving">储蓄账户</option>
                 <option value="check">支票账户</option> </select
@@ -44,6 +47,7 @@
                 min="0"
                 placeholder="下界"
                 id="money_lo"
+                class="input"
                 v-model="money_lo"
                 required="false"
                 style=" width:100px;
@@ -55,6 +59,7 @@
                 min="0"
                 placeholder="上界"
                 id="money_up"
+                class="input"
                 v-model="money_up"
                 required="false"
                 style=" width:100px;
@@ -67,6 +72,7 @@
                 placeholder="下界"
                 id="open_lo"
                 v-model="open_lo"
+                class="input"
                 required="false"
                 style=" width:150px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -76,6 +82,7 @@
                 type="date"
                 min="0"
                 placeholder="上界"
+                class="input"
                 id="open_up"
                 v-model="open_up"
                 required="false"
@@ -119,6 +126,7 @@
             <input
                 type="text"
                 placeholder="身份证号"
+                class="input"
                 id="newownerid"
                 v-model="newownerid"
                 style=" width:200px;
@@ -129,6 +137,7 @@
                 type="text"
                 placeholder="账户号"
                 id="newbankid"
+                class="input"
                 v-model="newbankid"
                 style=" width:200px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -139,16 +148,17 @@
                 placeholder="支行名称"
                 id="newbankname"
                 v-model="newbankname"
+                class="input"
                 style=" width:200px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;账户类型
-            <select v-model="newtype">
+            <select class="dropbtn" v-model="newtype">
                 <option value="0">储蓄账户</option>
                 <option value="1">支票账户</option> </select
             >&emsp;
             <label v-if="newtype == '0'"> 货币类型 </label>
-            <select v-model="newmoneytype" v-if="newtype == '0'">
+            <select class="dropbtn" v-model="newmoneytype" v-if="newtype == '0'">
                 <option value="0">人民币</option>
                 <option value="1">美元</option>
                 <option value="2">欧元</option>
@@ -178,7 +188,7 @@
             <elx-editable-column prop="interest" label="利率" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
             <elx-editable-column prop="cashtype" label="货币类型" ></elx-editable-column>
             <elx-editable-column prop="overdraft" label="透支额" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
-            <elx-editable-column label="操作" width="250">
+            <elx-editable-column label="操作" width="350">
                 <template v-slot="scope">
                     <el-button size="small" type="primary" @click="saveRowEvent(scope.row)">提交</el-button>
                     <el-button size="small" type="danger" @click="removeEvent(scope.row)">销户</el-button>
@@ -677,4 +687,64 @@ export default {
 </script>
 
 <style>
+.input{
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 6px;
+    padding: 8px 14px;
+    width: 620px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: "Fira Code", "汉仪南宫体简";
+}
+.input:focus{
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+}
+.dropbtn {
+    border-radius: 6px;
+    background-color: rgb(223, 71, 71);
+    color: white;
+    padding: 8px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    width: 100px;
+    height: 35px;
+    font-family: "Fira Code", "汉仪南宫体简";
+}
+
+.dropdown {
+    position: relative;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.dropdown-content {
+    border-radius: 4px;
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content option {
+    color: black;
+    padding: 6px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content option :hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #b6f699;
+}
 </style>

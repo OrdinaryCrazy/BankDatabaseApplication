@@ -8,6 +8,7 @@
                 type="month"
                 min="0"
                 placeholder="开始时间"
+                class="input"
                 id="lowerBound"
                 v-model="lowerBound"
                 required="true"
@@ -19,6 +20,7 @@
                 type="month"
                 min="0"
                 placeholder="停止时间"
+                class="input"
                 id="upperBound"
                 v-model="upperBound"
                 required="true"
@@ -26,17 +28,17 @@
                 font-family: 'Fira Code', '汉仪南宫体简';
                 "
             />&emsp;时间粒度
-            <select v-model="timegrain" id="timegrain" placeholder="month">
+            <select class="dropbtn" v-model="timegrain" id="timegrain" placeholder="month">
                 <option value="month" selected>月</option>
                 <option value="season">季</option>
                 <option value="year">年</option> </select
             >&emsp;业务分类
-            <select v-model="sumtype" id="sumtype" placeholder="all">
+            <select class="dropbtn" v-model="sumtype" id="sumtype" placeholder="all">
                 <option value="all" selected>所有</option>
                 <option value="saving">储蓄业务</option>
                 <option value="loan">贷款业务</option> </select
             >&emsp;统计项目
-            <select v-model="datatype" id="datatype" placeholder="all">
+            <select class="dropbtn" v-model="datatype" id="datatype" placeholder="all">
                 <option value="money">业务总金额</option>
                 <option value="user">用户数</option> </select
             >&emsp;
@@ -224,4 +226,65 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.input{
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 6px;
+    padding: 8px 14px;
+    width: 620px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: "Fira Code", "汉仪南宫体简";
+}
+.input:focus{
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+}
+.dropbtn {
+    border-radius: 6px;
+    background-color: rgb(223, 71, 71);
+    color: white;
+    padding: 8px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    width: 120px;
+    height: 35px;
+    font-family: "Fira Code", "汉仪南宫体简";
+}
+
+.dropdown {
+    position: relative;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.dropdown-content {
+    border-radius: 4px;
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content option {
+    color: black;
+    padding: 6px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content option :hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #b6f699;
+}
+</style>

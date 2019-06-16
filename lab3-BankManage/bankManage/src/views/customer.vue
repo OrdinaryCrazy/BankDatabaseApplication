@@ -9,6 +9,7 @@
                 placeholder="包含关键字"
                 id="idSearch"
                 v-model="idSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -19,6 +20,7 @@
                 placeholder="包含关键字"
                 id="nameSearch"
                 v-model="nameSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -29,6 +31,7 @@
                 placeholder="包含关键字"
                 id="telSearch"
                 v-model="telSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -39,6 +42,7 @@
                 placeholder="包含关键字"
                 id="addrSearch"
                 v-model="addrSearch"
+                class="input"
                 required="false"
                 style=" width:280px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -49,6 +53,7 @@
                 placeholder="包含关键字"
                 id="linknameSearch"
                 v-model="linknameSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -59,6 +64,7 @@
                 placeholder="包含关键字"
                 id="linktelSearch"
                 v-model="linktelSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -68,6 +74,7 @@
                 type="email"
                 placeholder="包含关键字"
                 id="emailSearch"
+                class="input"
                 v-model="emailSearch"
                 required="false"
                 style=" width:300px;
@@ -576,4 +583,21 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.input{
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 6px;
+    padding: 8px 14px;
+    width: 620px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: "Fira Code", "汉仪南宫体简";
+}
+.input:focus{
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+}
+</style>

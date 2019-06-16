@@ -7,6 +7,7 @@
             <input
                 type="text"
                 placeholder="包含关键字"
+                class="input"
                 id="bankSearch"
                 v-model="bankSearch"
                 required="false"
@@ -17,6 +18,7 @@
             <input
                 type="text"
                 placeholder="包含关键字"
+                class="input"
                 id="citySearch"
                 v-model="citySearch"
                 required="false"
@@ -28,6 +30,7 @@
                 type="number"
                 min="0"
                 placeholder="下界"
+                class="input"
                 id="lowerBound"
                 v-model="lowerBound"
                 required="false"
@@ -39,6 +42,7 @@
                 type="number"
                 min="0"
                 placeholder="上界"
+                class="input"
                 id="upperBound"
                 v-model="upperBound"
                 required="false"
@@ -326,5 +330,20 @@ export default {
 </script>
 
 <style>
-
+.input{
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 6px;
+    padding: 8px 14px;
+    width: 620px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: "Fira Code", "汉仪南宫体简";
+}
+.input:focus{
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+}
 </style>
