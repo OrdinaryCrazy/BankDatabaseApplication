@@ -350,6 +350,8 @@ export default {
                         //console.log(response.status);
                         if (parseInt(response.body.code) === 200) {
                             //console.log("OK");
+                            localStorage.setItem("type", this.type);
+                            localStorage.setItem("username", this.username);
                             this.$router.push("/index");
                             window.alert("注册成功");
                             //return;

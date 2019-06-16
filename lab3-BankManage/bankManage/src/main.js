@@ -4,6 +4,7 @@
 /* 程序入口文件，加载各种公共组件 */
 import Vue from 'vue'
 import App from './App'/* 引入组件 */
+import VCharts from 'v-charts'
 import VueRouter from 'vue-router'
 import routers from './router/index.js'
 import Elements from 'element-ui'
@@ -16,6 +17,7 @@ Vue.use(VueElementExtends)
 Vue.use(Elements)
 Vue.use(VueRouter)
 Vue.use(VueResource)
+Vue.use(VCharts)
 
 const router = new VueRouter({
   mode: 'history',

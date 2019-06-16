@@ -39,21 +39,8 @@
             <select v-model="datatype" id="datatype" placeholder="all">
                 <option value="money">业务总金额</option>
                 <option value="user">用户数</option> </select
-            >&emsp;
-            <input
-                type="radio"
-                name="graphtype"
-                v-model="graphtype"
-                value="curve"
-                required="true"
-            />按时间统计&emsp;
-            <input
-                type="radio"
-                name="graphtype"
-                v-model="graphtype"
-                value="pie"
-                required="true"
-            />按支行统计&emsp;
+            >&emsp; <input type="radio" name="graphtype" v-model="graphtype" value="curve" required="true" />按时间统计&emsp;
+            <input type="radio" name="graphtype" v-model="graphtype" value="pie" required="true" />按支行统计&emsp;
             <el-button type="primary" v-on:click="start()">
                 <span>提交</span>
             </el-button>
@@ -70,23 +57,16 @@
                     :edit-config="{ trigger: 'manual', mode: 'row' }"
                     style="width: 100%"
                 >
-                    <elx-editable-column
-                        prop="time"
-                        label="时间"
-                        :edit-render="{ name: 'ElInput' }"
-                    ></elx-editable-column>
+                    <elx-editable-column prop="time" label="时间" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
                     <template v-for="item in columnConfigs">
                         <template v-if="item._show">
-                            <elx-editable-column
-                                v-bind="item"
-                                :key="item.prop"
-                            ></elx-editable-column>
+                            <elx-editable-column v-bind="item" :key="item.prop"></elx-editable-column>
                         </template>
                     </template>
                 </elx-editable>
             </div>
             <p style="color: red;font-size: 24px;" align="left">统计图</p>
-            <img src="static/summary.png" alt="业务统计图" width="100%" />
+            <ve-pie :data="chartData"></ve-pie>
         </template>
     </div>
 </template>
@@ -102,6 +82,17 @@ export default {
             list: [],
             result: false,
             isClearActiveFlag: true,
+            chartData: {
+                columns: ["日期", "访问用户"],
+                rows: [
+                    { 日期: "1/1", 访问用户: 1393 },
+                    { 日期: "1/2", 访问用户: 3530 },
+                    { 日期: "1/3", 访问用户: 2923 },
+                    { 日期: "1/4", 访问用户: 1723 },
+                    { 日期: "1/5", 访问用户: 3792 },
+                    { 日期: "1/6", 访问用户: 4593 }
+                ]
+            },
             columnConfigs: [
                 {
                     prop: "bank1",
@@ -139,8 +130,8 @@ export default {
                     bank3: "1332"
                 }
             ],
-            upperBound: "",
-            lowerBound: "",
+            upperBound: "2019-06",
+            lowerBound: "2015-01",
             timegrain: "",
             sumtype: "",
             datatype: "",
@@ -150,7 +141,7 @@ export default {
     },
     created() {
         this.permission = localStorage.getItem("type");
-        if (this.permission != 'SUB_BANK') {
+        if (this.permission != "SUB_BANK") {
             this.$router.push("/404");
         }
         this.timegrain = "month";
@@ -161,7 +152,7 @@ export default {
     methods: {
         start: function() {
             if (this.upperBound == "" || this.lowerBound == "") {
-                Message({message:"时间范围不能为空",type:"warning"});
+                Message({ message: "时间范围不能为空", type: "warning" });
                 return;
             }
             this.$http
@@ -193,13 +184,32 @@ export default {
                             this.columnConfigs.push(item);
                         });
                         this.userList = response.body.rawData;
-                        Message({message:"查询成功",type:"success"});
+                        if (this.graphtype=='pie'){
+                            this.makePieChart(response.body.columnList, response.body.rawData);
+                        }
+                        
+                        Message({ message: "查询成功", type: "success" });
                     }
                 });
+        },
+        makePieChart: function(columnList, rawData) {
+            //只有当用户选择按支行统计时，才会制作饼图，将同一支行在所有时间的值都加起来，显示在饼图上
+            //饼图有两个维度，一个是支行名，一个是要统计的指标
+            //var index=(this.datatype==='money')? '业务总金额':'用户数';
+            this.chartData.columns=[];
+            this.chartData.rows=[];//清空图片数据            
+            this.chartData.columns = ["支行", "index"];
+            for (var i = 0; i < columnList.length; i++) {
+                this.chartData.rows.push({ 支行: columnList[i], index: 0 });
+            }
+            for (var i=0; i<rawData.length;i++){
+                for (var j=0;j<columnList.length;j++){
+                    this.chartData.rows[j].index+=rawData[i][columnList[j]];
+                }
+            }
         }
     }
 };
 </script>
 
-<style>
-</style>
+<style></style>
