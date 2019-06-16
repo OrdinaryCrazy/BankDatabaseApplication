@@ -189,6 +189,9 @@ export default {
                         this.makePieChart(response.body.columnList, response.body.rawData);
                         this.makeLineChart(response.body.columnList, response.body.rawData);
                         Message({ message: "查询成功", type: "success" });
+                    }else {
+                        this.result=false;
+                        Message({ message: "查询结果为空", type: "warning" });
                     }
                 });
         },
