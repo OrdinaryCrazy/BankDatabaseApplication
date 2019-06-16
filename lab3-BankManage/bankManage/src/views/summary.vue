@@ -165,7 +165,7 @@ export default {
                         timegrain: this.timegrain,
                         sumtype: this.sumtype,
                         datatype: this.datatype,
-                        graphtype: this.graphtype
+                        graphtype: "curve"
                     },
                     {
                         emulateJSON: true
