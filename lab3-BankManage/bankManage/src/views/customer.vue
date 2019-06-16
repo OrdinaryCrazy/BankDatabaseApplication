@@ -534,6 +534,7 @@ export default {
                                         row.name = response.body.record.name;
                                         row.staffname = response.body.record.staffname;
                                         this.$refs.elxEditable2.reloadRow(row);
+                                        this.showDetail(this.detail);
                                         Message({ message: "保存成功", type: "success" });
                                         console.log("Update");
                                     } else {
