@@ -34,7 +34,7 @@
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;状态
-            <select v-model="statusSearch" id="statusSearch" >
+            <select v-model="statusSearch" id="statusSearch">
                 <option value="any" selected>任意</option>
                 <option value="none">未开始发放</option>
                 <option value="part">发放中</option>
@@ -204,13 +204,25 @@ export default {
                         for (var i = 0; i < this.paylist.length; i++) {
                             this.paylist[i].id = row.id;
                         }
+                        Message({ message: "查询成功", type: "success" });
                     } else {
-                        window.alert("查询失败");
+                        Message({ message: "查询结果为空", type: "warning" });
+                        this.showlink = false;
                     }
                 });
         },
         newpay() {
             if (this.payAmount == "") {
+                Message({ message: "支付金额不能为空", type: "warning" });
+                return;
+            }
+            var sum = parseInt(this.payAmount);
+            for (var i = 0; i < this.paylist.length; i++) {
+                sum = sum +  parseInt(this.paylist[i].money);
+            }
+            console.log(sum);
+            if (sum > this.detail.amount) {
+                Message({ message: "支付超额", type: "warning" });
                 return;
             }
             this.$http
@@ -228,9 +240,21 @@ export default {
                 )
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
-                        this.paylist.push({ id: this.detail.id, date: new Date(), money: this.payAmount });
+                        this.paylist.push({ id: this.detail.id, date: XEUtils.toDateString(new Date(), "yyyy-MM-dd"), money: this.payAmount });
+                        var sum = 0;
+                        for (var i = 0; i < this.paylist.length; i++) {
+                            sum = sum + parseInt(this.paylist[i].money);
+                        }
+                        if (sum < this.detail.amount) {
+                            this.detail.status = "发放中";
+                        } else if (sum == 0) {
+                            this.detail.status = "未开始发放";
+                        } else {
+                            this.detail.status = "已全部发放";
+                        }
+                        Message({ message: "支付成功", type: "success" });
                     } else {
-                        window.alert("查询失败");
+                        Message({ message: "支付失败，可能超额", type: "warning" });
                     }
                 });
         },
@@ -340,8 +364,8 @@ export default {
         },
         //删除某一行
         removeEvent(row) {
-            if (row.status == "1") {
-                window.alert("发放中的贷款不能删除");
+            if (row.status == "发放中") {
+                Message({ message: "发放中的贷款不能删除", type: "warning" });
                 return;
             }
             this.$http
@@ -358,9 +382,9 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.$refs.elxEditable.remove(row);
-                        console.log("Delete");
+                        Message({ message: "删除成功", type: "success" });
                     } else {
-                        window.alert("删除失败");
+                        Message({ message: "发放中的贷款不能删除", type: "warning" });
                     }
                 });
         },
@@ -369,6 +393,7 @@ export default {
             console.log("save");
             console.log(row);
             if (row.id == "" || row.bank == "" || row.customer == "" || row.amount < 0) {
+                Message({ message: "字段不能为空", type: "warning" });
                 return;
             }
             this.messageshow = false;
@@ -398,9 +423,9 @@ export default {
                                 row.customer = response.body.customer; //从后端得到所有贷款人的名字
                                 this.$refs.elxEditable.clearActive();
                                 this.$refs.elxEditable.reloadRow(row);
-                                console.log("Update");
+                                Message({ message: "发放贷款成功", type: "success" });
                             } else {
-                                window.alert("更新非法");
+                                Message({ message: "发放贷款失败,可能是输入信息错误", type: "warning" });
                             }
                         });
                 } else if (valid && !this.$refs.elxEditable.hasRowChange(row)) {
@@ -439,8 +464,11 @@ export default {
                             var t = this.list[i].status;
                             this.list[i].status = this.statusList[t];
                         }
+                        this.showlink = false;
+                        Message({ message: "查询成功", type: "success" });
                     } else {
-                        window.alert("查询失败");
+                        this.showlink = false;
+                        Message({ message: "查询结果为空", type: "warning" });
                     }
                 });
         },
@@ -457,5 +485,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

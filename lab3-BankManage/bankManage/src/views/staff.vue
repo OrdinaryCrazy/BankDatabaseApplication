@@ -43,7 +43,7 @@
                 style=" width:280px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-            />&emsp;<br /><br>电话号码
+            />&emsp;<br /><br />电话号码
             <input
                 type="text"
                 placeholder="包含关键字"
@@ -272,6 +272,7 @@ export default {
 
         //提交查询请求
         submit() {
+            this.showlink = false;
             this.$http
                 .post(
                     "http://" + document.domain + ":5000/staff",
@@ -293,9 +294,9 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.list = response.body.list;
-                        Message({message:"查询成功",type:"success"});
+                        Message({ message: "查询成功", type: "success" });
                     } else {
-                        Message({message:"查询失败",type:"warning"});
+                        Message({ message: "查询失败", type: "warning" });
                     }
                 });
         },
@@ -330,9 +331,10 @@ export default {
                             this.linklist[i].staffname = row.name;
                             this.linklist[i].staffid = row.id;
                         }
-                        Message({message:"查询成功",type:"success"});
+                        Message({ message: "查询成功", type: "success" });
                     } else {
-                        Message({message:"没有查到任何记录",type:"warning"});
+                        this.showlink=false;
+                        Message({ message: "没有查到任何记录", type: "warning" });
                     }
                 });
         },
@@ -437,9 +439,9 @@ export default {
                         .then(function(response) {
                             if (parseInt(response.body.code) === 200) {
                                 this.$refs.elxEditable1.remove(row);
-                                Message({message:"删除成功",type:"success"});
+                                Message({ message: "删除成功", type: "success" });
                             } else {
-                                Message({message:"删除失败，有关联客户信息",type:"warning"});
+                                Message({ message: "删除失败，有关联客户信息", type: "warning" });
                             }
                         });
                     break;
@@ -460,9 +462,9 @@ export default {
                         .then(function(response) {
                             if (parseInt(response.body.code) === 200) {
                                 this.$refs.elxEditable2.remove(row);
-                                Message({message:"删除成功",type:"success"});
+                                Message({ message: "删除成功", type: "success" });
                             } else {
-                               Message({message:"删除失败",type:"warning"});
+                                Message({ message: "删除失败", type: "warning" });
                             }
                         });
                     break;
@@ -472,12 +474,12 @@ export default {
             switch (name) {
                 case "elxEditable2":
                     if (row.staffid == null || row.staffid == "") {
-                        Message({message:"字段不能为空",type:"warning"});
+                        Message({ message: "字段不能为空", type: "warning" });
                         return;
                     }
                 case "elxEditable1":
                     if (row.id == null || row.id == "") {
-                        Message({message:"字段不能为空",type:"warning"});
+                        Message({ message: "字段不能为空", type: "warning" });
                         return;
                     }
             }
@@ -509,12 +511,12 @@ export default {
                                         //更新合法
                                         this.primary = null;
                                         this.$refs.elxEditable1.clearActive();
-                                        Message({message:"保存成功",type:"success"});
+                                        Message({ message: "保存成功", type: "success" });
                                         this.$refs.elxEditable1.reloadRow(row);
-                                    } else if (parseInt(response.body.code)===400) {
-                                        Message({message:"新增记录失败，可能是身份证号重复",type:"warning"});
-                                    }else{
-                                        Message({message:"保存失败\n"+response.body.msg,type:"warning"});
+                                    } else if (parseInt(response.body.code) === 400) {
+                                        Message({ message: "新增记录失败，可能是身份证号重复", type: "warning" });
+                                    } else {
+                                        Message({ message: "保存失败\n" + response.body.msg, type: "warning" });
                                     }
                                 });
                             break;
@@ -540,11 +542,11 @@ export default {
                                         this.primary = null;
                                         this.$refs.elxEditable2.clearActive();
                                         row.name = response.body.record.name;
-                                        row.staffname=response.body.record.staffname;
+                                        row.staffname = response.body.record.staffname;
                                         this.$refs.elxEditable2.reloadRow(row);
-                                        Message({message:"保存成功",type:"success"});
+                                        Message({ message: "保存成功", type: "success" });
                                     } else {
-                                        Message({message:"保存失败",type:"warning"});
+                                        Message({ message: "保存失败", type: "warning" });
                                     }
                                 });
                             break;
@@ -590,5 +592,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

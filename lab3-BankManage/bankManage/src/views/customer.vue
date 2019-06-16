@@ -222,6 +222,7 @@ export default {
         },
         //提交查询请求
         submit() {
+            this.showlink=false;
             this.$http
                 .post(
                     "http://" + document.domain + ":5000/customer",
@@ -282,6 +283,7 @@ export default {
                         }
                         Message({ message: "查询成功", type: "success" });
                     } else {
+                        this.showlink=false;
                         Message({ message: "查询结果为空", type: "warning" });
                     }
                 });
