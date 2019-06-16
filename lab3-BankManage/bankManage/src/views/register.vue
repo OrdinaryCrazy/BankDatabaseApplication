@@ -182,9 +182,24 @@
                     <td>
                         <input
                             type="text"
-                            placeholder="Please enter the department of staff"
+                            placeholder="Please enter the department ID of staff"
                             id="dept"
                             v-model="dept"
+                            required="false"
+                            style=" width:345px;
+                        font-family: 'Fira Code', '汉仪南宫体简';
+                        "
+                        />
+                    </td>
+                </tr>
+                <tr v-if="type === 'EMPLOYEE'">
+                    <td>所在支行</td>
+                    <td>
+                        <input
+                            type="text"
+                            placeholder="Please enter the bank name of staff"
+                            id="dept"
+                            v-model="bankname"
                             required="false"
                             style=" width:345px;
                         font-family: 'Fira Code', '汉仪南宫体简';
@@ -297,7 +312,8 @@ export default {
             email_link: "",
             relation: "",
             dept: "",
-            date: ""
+            date: "",
+            bankname: ""
         };
     },
     created() {
@@ -340,6 +356,7 @@ export default {
                             email_link: this.email_link,
                             relation: this.relation,
                             dept: this.dept,
+                            bankname: this.bankname,
                             date_s: XEUtils.toDateString(this.date, "yyyy-MM-dd")
                         },
                         {
