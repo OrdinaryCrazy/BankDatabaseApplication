@@ -68,8 +68,12 @@
             </div>
             <p style="color: red;font-size: 24px;" align="left">统计图</p>
             <div align="left">
-            <input type="radio" name="graphtype" v-model="graphtype" value="curve" required="true" />按时间统计&emsp;
-            <input type="radio" name="graphtype" v-model="graphtype" value="pie" required="true" />按支行统计&emsp;
+                <div class="radio">
+                <input id="radio-1" type="radio" name="graphtype" v-model="graphtype" value="curve" required="true" />
+                <label for="radio-1" class="radio-label">按时间统计</label>&emsp;
+                <input id="radio-2" type="radio" name="graphtype" v-model="graphtype" value="pie" required="true" />
+                <label for="radio-2" class="radio-label">按支行统计</label>&emsp;
+                </div>
             </div>
             <div align="center">
                 <ve-pie :data="chartData" v-if="graphtype=='pie'" width="800px"></ve-pie>
@@ -205,7 +209,7 @@ export default {
                 }
             }
             for (var i=0;i<rawData.length;i++){
-                if (rawData[i].indexOf('.')!=-1){                    
+                if (rawData[i].time.indexOf('.')!=-1){                    
                     XEUtils.toStringDate(rawData[i], 'yyyy.mm');
                 }
             }
@@ -313,5 +317,45 @@ export default {
 
 .dropdown:hover .dropbtn {
     background-color: #b6f699;
+}
+.radio {
+    margin: 0.5rem;
+}
+.radio input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+}
+.radio input[type="radio"] + .radio-label:before {
+    content: '';
+    background: #f4f4f4;
+    border-radius: 100%;
+    border: 1px solid #b4b4b4;
+    display: inline-block;
+    width: 1.2em;
+    height: 1.2em;
+    position: relative;
+    top: -0.2em;
+    margin-right: 0.3em;
+    vertical-align: top;
+    cursor: pointer;
+    text-align: center;
+    -webkit-transition: all 250ms ease;
+    transition: all 250ms ease;
+}
+.radio input[type="radio"]:checked + .radio-label:before {
+    background-color: #3197EE;
+    box-shadow: inset 0 0 0 4px #f4f4f4;
+}
+.radio input[type="radio"]:focus + .radio-label:before {
+    outline: none;
+    border-color: #3197EE;
+}
+.radio input[type="radio"]:disabled + .radio-label:before {
+    box-shadow: inset 0 0 0 4px #f4f4f4;
+    border-color: #b4b4b4;
+    background: #b4b4b4;
+}
+.radio input[type="radio"] + .radio-label:empty:before {
+    margin-right: 0;
 }
 </style>

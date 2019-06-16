@@ -515,7 +515,7 @@ export default {
     font-size: 14px;
     border: none;
     cursor: pointer;
-    width: 100px;
+    width: 120px;
     height: 35px;
     font-family: "Fira Code", "汉仪南宫体简";
 }

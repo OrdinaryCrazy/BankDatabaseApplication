@@ -40,14 +40,20 @@ def loan():
         sqlcommand = sqlcommand + " LOAN, CUSTOMER, LOAN_CUSTOMER"
         sqlcommand = sqlcommand + " WHERE"
         sqlcommand = sqlcommand + " LOAN_CUSTOMER.CUSTOMER_ID = CUSTOMER.CUSTOMER_ID "
-        sqlcommand = sqlcommand + " AND LOAN_CUSTOMER.LOAN_ID = LOAN.LOAN_ID" 
-        if (len(lowerBound) > 0) :
-            sqlcommand = sqlcommand + " AND LOAN.STATUS             = "         + statusSearch
-        if (len(lowerBound) > 0) :
+        sqlcommand = sqlcommand + " AND LOAN_CUSTOMER.LOAN_ID = LOAN.LOAN_ID"
+
+        statusdict = {
+            "none":"0",
+            "part":"1",
+            "all":"2"
+        }
+        if (len(statusSearch) > 0 and statusSearch != "any") :
+            sqlcommand = sqlcommand + " AND LOAN.STATUS             = "         + statusdict[statusSearch]
+        if (len(idSearch) > 0) :
             sqlcommand = sqlcommand + " AND LOAN.LOAN_ID            LIKE '%"    + idSearch      + "%'"
-        if (len(lowerBound) > 0) :
+        if (len(bankSearch) > 0) :
             sqlcommand = sqlcommand + " AND LOAN.BANK_NAME          LIKE '%"    + bankSearch    + "%'"
-        if (len(lowerBound) > 0) :
+        if (len(custSearch) > 0) :
             sqlcommand = sqlcommand + " AND CUSTOMER.CUSTOMER_NAME  LIKE '%"    + custSearch    + "%'"
         if (len(upperBound) > 0) :
             sqlcommand = sqlcommand + " AND LOAN.LOAN_MONEY < " + upperBound
