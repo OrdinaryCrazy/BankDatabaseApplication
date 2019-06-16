@@ -50,7 +50,7 @@ html {
     background-image: url("../static/background3.jpg");
     background-size: cover;
     background-position: center center;
-    background-repeat: repeat-x;
+    background-repeat: repeat-x,repeat-y;
     background-attachment: scroll;
 }
 .body {
