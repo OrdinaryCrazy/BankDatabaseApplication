@@ -23,19 +23,19 @@ def customer():
         cursor = connection.cursor()
 
         nameSearch      = request.form['nameSearch']
-        nameSearch      = nameSearch.rstrip()
+        nameSearch      = nameSearch.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         idSearch        = request.form['idSearch']
-        idSearch        = idSearch.rstrip()
+        idSearch        = idSearch.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         telSearch       = request.form['telSearch']
-        telSearch       = telSearch.rstrip()
+        telSearch       = telSearch.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         addrSearch      = request.form['addrSearch']
-        addrSearch      = addrSearch.rstrip()
+        addrSearch      = addrSearch.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         linknameSearch  = request.form['linknameSearch']
-        linknameSearch  = linknameSearch.rstrip()
+        linknameSearch  = linknameSearch.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         linktelSearch   = request.form['linktelSearch']
-        linktelSearch   = linktelSearch.rstrip()
+        linktelSearch   = linktelSearch.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         emailSearch     = request.form['emailSearch']
-        emailSearch     = emailSearch.rstrip()
+        emailSearch     = emailSearch.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
 
         sqlcommand = ""
         sqlcommand = sqlcommand + " SELECT"
@@ -90,21 +90,21 @@ def customer():
         # print(request.form)
         id_s        = request.form['id']
         name        = request.form['name']
-        name        = name.rstrip()
+        name        = name.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         tel         = request.form['tel']
-        tel         = tel.rstrip()
+        tel         = tel.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         addr        = request.form['addr']
-        addr        = addr.rstrip()
+        addr        = addr.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         name_link   = request.form['name_link']
-        name_link   = name_link.rstrip()
+        name_link   = name_link.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         tel_link    = request.form['tel_link']
-        tel_link    = tel_link.rstrip()
+        tel_link    = tel_link.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         email_link  = request.form['email_link']
-        email_link  = email_link.rstrip()
+        email_link  = email_link.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         relation    = request.form['relation']
-        relation    = relation.rstrip()
+        relation    = relation.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         old_primary = request.form['old_primary']
-        old_primary = old_primary.rstrip()
+        old_primary = old_primary.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         print("hello")
 
         sqlcommand = ""
@@ -218,7 +218,7 @@ def customer():
         cursor = connection.cursor()
 
         primary = request.form['primary']
-        primary = primary.rstrip()
+        primary = primary.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
     #==============================================================================
         sqlcommand = " SELECT * FROM EMPLOYEE_CUSTOMER WHERE "
         sqlcommand = sqlcommand + " CUSTOMER_ID = '" + primary + "'"

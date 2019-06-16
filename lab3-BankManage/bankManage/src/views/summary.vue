@@ -8,6 +8,7 @@
                 type="month"
                 min="0"
                 placeholder="开始时间"
+                class="input"
                 id="lowerBound"
                 v-model="lowerBound"
                 required="true"
@@ -19,6 +20,7 @@
                 type="month"
                 min="0"
                 placeholder="停止时间"
+                class="input"
                 id="upperBound"
                 v-model="upperBound"
                 required="true"
@@ -26,37 +28,23 @@
                 font-family: 'Fira Code', '汉仪南宫体简';
                 "
             />&emsp;时间粒度
-            <select v-model="timegrain" id="timegrain" placeholder="month">
+            <select class="dropbtn" v-model="timegrain" id="timegrain" placeholder="month">
                 <option value="month" selected>月</option>
                 <option value="season">季</option>
                 <option value="year">年</option> </select
             >&emsp;业务分类
-            <select v-model="sumtype" id="sumtype" placeholder="all">
+            <select class="dropbtn" v-model="sumtype" id="sumtype" placeholder="all">
                 <option value="all" selected>所有</option>
                 <option value="saving">储蓄业务</option>
                 <option value="loan">贷款业务</option> </select
             >&emsp;统计项目
-            <select v-model="datatype" id="datatype" placeholder="all">
+            <select class="dropbtn" v-model="datatype" id="datatype" placeholder="all">
                 <option value="money">业务总金额</option>
                 <option value="user">用户数</option> </select
             >&emsp;
-            <input
-                type="radio"
-                name="graphtype"
-                v-model="graphtype"
-                value="curve"
-                required="true"
-            />按时间统计&emsp;
-            <input
-                type="radio"
-                name="graphtype"
-                v-model="graphtype"
-                value="pie"
-                required="true"
-            />按支行统计&emsp;
-            <button class="button" v-on:click="start()">
+            <el-button type="primary" v-on:click="start()">
                 <span>提交</span>
-            </button>
+            </el-button>
         </form>
         <template v-if="result">
             <p style="color: red;font-size: 24px;" align="left">统计表</p>
@@ -70,23 +58,23 @@
                     :edit-config="{ trigger: 'manual', mode: 'row' }"
                     style="width: 100%"
                 >
-                    <elx-editable-column
-                        prop="time"
-                        label="时间"
-                        :edit-render="{ name: 'ElInput' }"
-                    ></elx-editable-column>
+                    <elx-editable-column prop="time" label="时间"></elx-editable-column>
                     <template v-for="item in columnConfigs">
                         <template v-if="item._show">
-                            <elx-editable-column
-                                v-bind="item"
-                                :key="item.prop"
-                            ></elx-editable-column>
+                            <elx-editable-column v-bind="item" :key="item.prop"></elx-editable-column>
                         </template>
                     </template>
                 </elx-editable>
             </div>
             <p style="color: red;font-size: 24px;" align="left">统计图</p>
-            <img src="static/summary.png" alt="业务统计图" width="100%" />
+            <div align="left">
+            <input type="radio" name="graphtype" v-model="graphtype" value="curve" required="true" />按时间统计&emsp;
+            <input type="radio" name="graphtype" v-model="graphtype" value="pie" required="true" />按支行统计&emsp;
+            </div>
+            <div align="center">
+                <ve-pie :data="chartData" v-if="graphtype=='pie'" width="800px"></ve-pie>
+                <ve-line :data="chartData2" :settings="chartSettings" width="800px" v-else></ve-line>
+            </div>
         </template>
     </div>
 </template>
@@ -94,13 +82,18 @@
 <script>
 import XEUtils from "xe-utils";
 import XEAjax from "xe-ajax";
+import { MessageBox, Message } from "element-ui";
 export default {
     data() {
         return {
             loading: false,
+            showpie: false,
+            chartSettings: {},
             list: [],
             result: false,
             isClearActiveFlag: true,
+            chartData: {},
+            chartData2: {},
             columnConfigs: [
                 {
                     prop: "bank1",
@@ -138,8 +131,8 @@ export default {
                     bank3: "1332"
                 }
             ],
-            upperBound: "",
-            lowerBound: "",
+            upperBound: "2019-06",
+            lowerBound: "2015-01",
             timegrain: "",
             sumtype: "",
             datatype: "",
@@ -149,7 +142,7 @@ export default {
     },
     created() {
         this.permission = localStorage.getItem("type");
-        if (this.permission != 'SUB_BANK') {
+        if (this.permission != "SUB_BANK") {
             this.$router.push("/404");
         }
         this.timegrain = "month";
@@ -160,6 +153,7 @@ export default {
     methods: {
         start: function() {
             if (this.upperBound == "" || this.lowerBound == "") {
+                Message({ message: "时间范围不能为空", type: "warning" });
                 return;
             }
             this.$http
@@ -191,65 +185,105 @@ export default {
                             this.columnConfigs.push(item);
                         });
                         this.userList = response.body.rawData;
+                        this.makePieChart(response.body.columnList, response.body.rawData);
+                        this.makeLineChart(response.body.columnList, response.body.rawData);
+                        Message({ message: "查询成功", type: "success" });
                     }
                 });
+        },
+        makePieChart: function(columnList, rawData) {
+            //只有当用户选择按支行统计时，才会制作饼图，将同一支行在所有时间的值都加起来，显示在饼图上
+            //饼图有两个维度，一个是支行名，一个是要统计的指标
+            //var index=(this.datatype==='money')? '业务总金额':'用户数';
+            this.chartData.columns = [];
+            this.chartData.rows = []; //清空图片数据
+            this.chartData.columns = ["支行", "index"];
+            for (var i = 0; i < columnList.length; i++) {
+                this.chartData.rows.push({ 支行: columnList[i], index: 0 });
+            }
+            for (var i = 0; i < rawData.length; i++) {
+                for (var j = 0; j < columnList.length; j++) {
+                    this.chartData.rows[j].index += rawData[i][columnList[j]];
+                }
+            }
+        },
+        makeLineChart: function(columnList, rawData) {
+            this.chartData2.columns = [];
+            this.chartData2.columns.push("time");
+            for (var i = 0; i < columnList.length; i++) {
+                this.chartData2.columns.push(columnList[i]);
+            }
+            this.chartData2.rows = rawData;
+            this.chartSettings = {
+                metrics: columnList,
+                dimension: ["time"],
+                min: ["dataMin", "dataMin"],
+                max: ["dataMax", "dataMax"]
+            };
         }
     }
 };
 </script>
 
 <style>
-.table {
-    border: 2px solid #429fff; /* 表格边框 */
-    font-family: "汉仪南宫体简";
-    font-size: 18px;
-    max-height: 500px;
-    border-collapse: collapse; /* 边框重叠 */
-    overflow-x: auto;
-    overflow-y: auto;
-    white-space: nowrap;
+.input{
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 6px;
+    padding: 8px 14px;
+    width: 620px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: "Fira Code", "汉仪南宫体简";
 }
-.table tr:hover {
-    background-color: #c4e4ff; /* 动态变色,IE6下无效！*/
+.input:focus{
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
 }
-.table caption {
-    padding-top: 3px;
-    padding-bottom: 2px;
-    font: bold 1.1em;
-    color: #ff00ff;
-    background-color: #f0f7ff;
-    border: 1px solid #429fff; /* 表格标题边框 */
-}
-.table th {
-    border: 1px solid #429fff; /* 行、列名称边框 */
-    background-color: #d2e8ff;
-    font-weight: bold;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 10px;
-    padding-right: 10px;
-    min-width: 100px;
-    text-align: center;
-}
-.table td {
-    border: 1px solid #429fff; /* 单元格边框 */
-    text-align: center;
-    padding: 4px;
-    min-width: 100px;
-    word-break: break-all;
-}
-.button {
-    display: inline-block;
-    border-radius: 4px;
-    background-color: limegreen;
+.dropbtn {
+    border-radius: 6px;
+    background-color: rgb(223, 71, 71);
+    color: white;
+    padding: 8px;
+    font-size: 14px;
     border: none;
-    color: #ffffff;
-    text-align: center;
-    font-size: 15px;
-    padding: 5px;
-    width: 80px;
-    transition: all 0.5s;
     cursor: pointer;
-    margin: 5px;
+    width: 120px;
+    height: 35px;
+    font-family: "Fira Code", "汉仪南宫体简";
+}
+
+.dropdown {
+    position: relative;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.dropdown-content {
+    border-radius: 4px;
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content option {
+    color: black;
+    padding: 6px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content option :hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #b6f699;
 }
 </style>

@@ -1,11 +1,11 @@
 /* 登录界面 */
 <template>
     <html>
-        <form validate @submit.native.prevent>
+        <form validate @submit.native.prevent class="form">
             <h1>登录界面</h1>
             <!--======================================================================-->
             <label for="custype"> 登录类型 </label>
-            <select id="custype" v-model="custype">
+            <select id="custype" v-model="custype" class="dropbtn">
                 <option value="SUB_BANK"> 支行账户 </option>
                 <option value="EMPLOYEE"> 员工账户 </option>
                 <!-- <option value="CUSTOMER"> 员工 </option> -->
@@ -14,8 +14,8 @@
             <!--======================================================================-->
             <label v-if="custype == 'SUB_BANK'">支行名称</label>
             <label v-else>身份证号</label>
-            
             <input
+                class="input"
                 type="text"
                 placeholder="Please enter your username"
                 id="username"
@@ -28,6 +28,7 @@
             <!--======================================================================-->
             <label for="password">密码</label>
             <input
+                class="input"
                 type="password"
                 placeholder="Please enter your password"
                 id="password"
@@ -135,12 +136,14 @@ export default {
     text-align: center;
     font-size: 12px;
     padding: 20px;
-    width: 120px;
+    width: 220px;
     transition: all 0.5s;
     cursor: pointer;
     margin: 5px;
     font-family: "Fira Code", "汉仪南宫体简";
     font-size: 20px;
+    box-shadow:0px 1px 2px 1px #aaaaaa,
+                inset 0px 1px 1px rgba(255,255,255,0.7);
 }
 
 .buttonred span {
@@ -166,5 +169,75 @@ export default {
 .buttonred:hover span:after {
     opacity: 1;
     right: 0;
+}
+.dropbtn {
+    border-radius: 6px;
+    background-color: rgb(223, 71, 71);
+    color: white;
+    padding: 4px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    width: 100px;
+    height: 40px;
+    font-family: "Fira Code", "汉仪南宫体简";
+}
+
+.dropdown {
+    position: relative;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.dropdown-content {
+    border-radius: 4px;
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content option {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content option :hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #b6f699;
+}
+.form{
+        background: #e0de83;
+        width: 760px;
+        height: 260px;
+        margin: 35px auto;
+        padding: 30px;
+        box-shadow:0px 2px 4px 2px #aaaaaa,
+                   inset 0px 2px 2px rgba(255,255,255,0.7);
+        border-radius: 5px;
+    }
+.input{
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 6px;
+    padding: 8px 14px;
+    width: 620px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: "Fira Code", "汉仪南宫体简";
+}
+.input:focus{
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
 }
 </style>

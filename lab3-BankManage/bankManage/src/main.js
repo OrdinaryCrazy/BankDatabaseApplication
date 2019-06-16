@@ -4,17 +4,20 @@
 /* 程序入口文件，加载各种公共组件 */
 import Vue from 'vue'
 import App from './App'/* 引入组件 */
+import VCharts from 'v-charts'
 import VueRouter from 'vue-router'
 import routers from './router/index.js'
 import Elements from 'element-ui'
 import VueElementExtends from 'vue-element-extends'
 import 'vue-element-extends/lib/index.css'
 import VueResource from 'vue-resource'
+import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(VueElementExtends)
 Vue.use(Elements)
 Vue.use(VueRouter)
 Vue.use(VueResource)
+Vue.use(VCharts)
 
 const router = new VueRouter({
   mode: 'history',

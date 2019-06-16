@@ -9,6 +9,7 @@
                 placeholder="包含关键字"
                 id="idSearch"
                 v-model="idSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -19,6 +20,7 @@
                 placeholder="包含关键字"
                 id="nameSearch"
                 v-model="nameSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -29,6 +31,7 @@
                 placeholder="包含关键字"
                 id="telSearch"
                 v-model="telSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -39,16 +42,18 @@
                 placeholder="包含关键字"
                 id="addrSearch"
                 v-model="addrSearch"
+                class="input"
                 required="false"
                 style=" width:280px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-            />&emsp;<br />联系人姓名
+            />&emsp;<br /><br />联系人姓名
             <input
                 type="text"
                 placeholder="包含关键字"
                 id="linknameSearch"
                 v-model="linknameSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -59,6 +64,7 @@
                 placeholder="包含关键字"
                 id="linktelSearch"
                 v-model="linktelSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -68,20 +74,21 @@
                 type="email"
                 placeholder="包含关键字"
                 id="emailSearch"
+                class="input"
                 v-model="emailSearch"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;
-            <el-button class="button" size="small" type="primary" @click="submit()">查询</el-button>
-            <el-button class="button" size="small" type="primary" @click="reset()">重置</el-button>
+            <el-button size="small" type="primary" @click="submit()">查询</el-button>
+            <el-button size="small" type="primary" @click="reset()">重置</el-button>
         </div>
         <br />
         <p style="color: red;font-size: 24px;" align="left">客户信息表</p>
         <div align="left">
-            <el-button class="button" type="success" size="small" @click="insertEvent('elxEditable1')">新增</el-button>
-            <el-button class="button" type="success" size="small" @click="exportCsvEvent('elxEditable1')">导出</el-button>
+            <el-button type="success" size="small" @click="insertEvent('elxEditable1')">新增</el-button>
+            <el-button type="success" size="small" @click="exportCsvEvent('elxEditable1')">导出</el-button>
         </div>
         <br /><br />
         <elx-editable
@@ -101,7 +108,7 @@
             <elx-editable-column prop="tel_link" label="联系人手机号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="email_link" label="联系人Email" width="200" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
             <elx-editable-column prop="relation" label="联系人与客户关系" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
-            <elx-editable-column label="操作" width="160">
+            <elx-editable-column label="操作" width="250">
                 <template v-slot="scope">
                     <template v-if="$refs.elxEditable1.hasActiveRow(scope.row)">
                         <el-button size="small" type="success" @click="saveRowEvent('elxEditable1', scope.row)">保存</el-button>
@@ -110,7 +117,7 @@
                     <template v-else>
                         <el-button size="small" type="primary" @click="openActiveRowEvent('elxEditable1', scope.row)">编辑</el-button>
                         <el-button size="small" type="danger" @click="removeEvent('elxEditable1', scope.row)">删除</el-button>
-                        <el-button size="small" type="danger" @click="showDetail(scope.row)">详情</el-button>
+                        <el-button size="small" type="success" @click="showDetail(scope.row)">详情</el-button>
                     </template>
                 </template>
             </elx-editable-column>
@@ -119,11 +126,11 @@
             <br />
             <p style="color: red;font-size: 24px;" align="left">
                 员工联系表
-                <el-button class="button" type="success" size="small" @click="showlink = false">关闭</el-button>
+                <el-button type="success" size="small" @click="showlink = false">关闭</el-button>
             </p>
             <div align="left">
-                <el-button class="button" type="success" size="small" @click="insertEvent('elxEditable2')">新增</el-button>
-                <el-button class="button" type="success" size="small" @click="exportCsvEvent('elxEditable2')">导出</el-button>
+                <el-button type="success" size="small" @click="insertEvent('elxEditable2')">新增</el-button>
+                <el-button type="success" size="small" @click="exportCsvEvent('elxEditable2')">导出</el-button>
             </div>
             <br />
             <elx-editable
@@ -222,6 +229,7 @@ export default {
         },
         //提交查询请求
         submit() {
+            this.showlink=false;
             this.$http
                 .post(
                     "http://" + document.domain + ":5000/customer",
@@ -242,6 +250,7 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.list = response.body.list;
+                        Message({ message: "查询成功", type: "success" });
                     } else {
                         window.alert("查询失败");
                     }
@@ -279,8 +288,10 @@ export default {
                             this.linklist[i].name = row.name;
                             this.linklist[i].id = row.id;
                         }
+                        Message({ message: "查询成功", type: "success" });
                     } else {
-                        window.alert("查询失败");
+                        this.showlink=false;
+                        Message({ message: "查询结果为空", type: "warning" });
                     }
                 });
         },
@@ -299,6 +310,7 @@ export default {
                         this.$refs[name].setActiveRow(row);
                     });
                 } else {
+                    console.log(this.detail);
                     this.$refs[name].insert({ id: this.detail.id, name: this.detail.name }).then(({ row }) => {
                         this.$refs[name].setActiveRow(row);
                     });
@@ -386,7 +398,12 @@ export default {
                 } else {
                     this.$refs[name].setActiveRow(row);
                     // this.primary = row.id;
-                    this.primary = row.staffid;
+                    if (name == "elxEditable1") {
+                        this.primary = row.id;
+                    } else {
+                        this.primary = row.staffid;
+                    }
+
                     console.log(row.id);
                 }
             });
@@ -408,7 +425,7 @@ export default {
                         .then(function(response) {
                             if (parseInt(response.body.code) === 200) {
                                 this.$refs.elxEditable1.remove(row);
-                                console.log("Delete");
+                                Message({ message: "删除成功", type: "success" });
                             } else {
                                 window.alert("删除失败");
                             }
@@ -431,9 +448,9 @@ export default {
                         .then(function(response) {
                             if (parseInt(response.body.code) === 200) {
                                 this.$refs.elxEditable2.remove(row);
-                                console.log("Delete");
+                                Message({ message: "删除成功", type: "success" });
                             } else {
-                                window.alert("删除失败");
+                                Message({ message: "删除失败，" + response.body.msg, type: "warning" });
                             }
                         });
                     break;
@@ -443,10 +460,12 @@ export default {
             switch (name) {
                 case "elxEditable2":
                     if (row.staffid == null || row.staffid == "") {
+                        Message({ message: "字段不能为空", type: "warning" });
                         return;
                     }
                 case "elxEditable1":
                     if (row.id == null || row.id == "") {
+                        Message({ message: "字段不能为空", type: "warning" });
                         return;
                     }
             }
@@ -480,8 +499,11 @@ export default {
                                         this.$refs.elxEditable1.clearActive();
                                         this.$refs.elxEditable1.reloadRow(row);
                                         console.log("Update");
+                                        Message({ message: "保存成功", type: "success" });
+                                    } else if (parseInt(response.body.code) === 400) {
+                                        Message({ message: "新增记录失败，可能是身份证号重复", type: "warning" });
                                     } else {
-                                        window.alert("更新非法");
+                                        Message({ message: "保存失败\n" + response.body.msg, type: "warning" });
                                     }
                                 });
                             break;
@@ -509,11 +531,13 @@ export default {
                                         //更新合法
                                         this.primary = null;
                                         this.$refs.elxEditable2.clearActive();
-                                        row = response.body.record;
+                                        row.name = response.body.record.name;
+                                        row.staffname = response.body.record.staffname;
                                         this.$refs.elxEditable2.reloadRow(row);
+                                        Message({ message: "保存成功", type: "success" });
                                         console.log("Update");
                                     } else {
-                                        window.alert("更新非法");
+                                        Message({ message: "保存失败", type: "warning" });
                                     }
                                 });
                             break;
@@ -560,53 +584,20 @@ export default {
 </script>
 
 <style>
-.table {
-    border: 2px solid #429fff; /* 表格边框 */
-    font-family: "汉仪南宫体简";
-    font-size: 18px;
-    border-collapse: collapse; /* 边框重叠 */
-    overflow-x: auto;
-    overflow-y: auto;
+.input{
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 6px;
+    padding: 8px 14px;
+    width: 620px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: "Fira Code", "汉仪南宫体简";
 }
-.table tr:hover {
-    background-color: #c4e4ff; /* 动态变色,IE6下无效！*/
-}
-.table caption {
-    padding-top: 3px;
-    padding-bottom: 2px;
-    font: bold 1.1em;
-    color: #ff00ff;
-    background-color: #f0f7ff;
-    border: 1px solid #429fff; /* 表格标题边框 */
-}
-.table th {
-    border: 1px solid #429fff; /* 行、列名称边框 */
-    background-color: #d2e8ff;
-    font-weight: bold;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 10px;
-    padding-right: 10px;
-    text-align: center;
-}
-.table td {
-    border: 1px solid #429fff; /* 单元格边框 */
-    text-align: center;
-    padding: 4px;
-    word-break: break-all;
-}
-.button {
-    display: inline-block;
-    border-radius: 4px;
-    background-color: limegreen;
-    border: none;
-    color: #ffffff;
-    text-align: center;
-    font-size: 15px;
-    padding: 5px;
-    width: 80px;
-    transition: all 0.5s;
-    cursor: pointer;
-    margin: 5px;
+.input:focus{
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
 }
 </style>

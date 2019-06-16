@@ -12,26 +12,32 @@ VALUES  ('无锡城北支行测试', '无锡', '6786.12');
 --------------------------------------------------------------------------------------
 INSERT
 INTO    EMPLOYEE(   EMPLOYEE_ID,    EMPLOYEE_NAME,      EMPLOYEE_DEPART_ID, 
-                    EMPLOYEE_PHONE, EMPLOYEE_ADDRESS,   EMPLOYEE_ENTERDATE
+                    EMPLOYEE_PHONE, EMPLOYEE_ADDRESS,   EMPLOYEE_ENTERDATE,
+                    EMPLOYEE_BANK_NAME
                     )
 VALUES          (   '3310021998020215',     '张三',         '000001', 
-                    '10086',                '黄山路',       TO_DATE('2010-12-30','YYYY-MM-DD')
+                    '10086',                '黄山路',       TO_DATE('2010-12-30','YYYY-MM-DD'),
+                    '合肥城南支行测试'
                     );
 --------------------------------------------------------------------------------------
 INSERT
 INTO    EMPLOYEE(   EMPLOYEE_ID,    EMPLOYEE_NAME,      EMPLOYEE_DEPART_ID, 
-                    EMPLOYEE_PHONE, EMPLOYEE_ADDRESS,   EMPLOYEE_ENTERDATE
+                    EMPLOYEE_PHONE, EMPLOYEE_ADDRESS,   EMPLOYEE_ENTERDATE,
+                    EMPLOYEE_BANK_NAME
                     )
 VALUES          (   '3310022000100200',     '李四',         '000002',
-                    '10010',                '合作化路',     TO_DATE('2011-02-01','YYYY-MM-DD')
+                    '10010',                '合作化路',     TO_DATE('2011-02-01','YYYY-MM-DD'),
+                    '合肥城南支行测试'
                     );
 --------------------------------------------------------------------------------------
 INSERT
 INTO    EMPLOYEE(   EMPLOYEE_ID,    EMPLOYEE_NAME,      EMPLOYEE_DEPART_ID, 
-                    EMPLOYEE_PHONE, EMPLOYEE_ADDRESS,   EMPLOYEE_ENTERDATE
+                    EMPLOYEE_PHONE, EMPLOYEE_ADDRESS,   EMPLOYEE_ENTERDATE,
+                    EMPLOYEE_BANK_NAME
                     )
 VALUES          (   '3310021990111100',     '王五',         '000003',
-                    '10000',                '肥西路',       TO_DATE('2019-04-30','YYYY-MM-DD')
+                    '10000',                '肥西路',       TO_DATE('2019-04-30','YYYY-MM-DD'),
+                    '合肥城南支行测试'
                     ); 
 --------------------------------------------------------------------------------------
 INSERT

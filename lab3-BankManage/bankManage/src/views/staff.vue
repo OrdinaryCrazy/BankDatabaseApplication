@@ -9,6 +9,7 @@
                 placeholder="包含关键字"
                 id="idSearch"
                 v-model="idSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -19,6 +20,7 @@
                 placeholder="包含关键字"
                 id="nameSearch"
                 v-model="nameSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -28,6 +30,7 @@
                 type="text"
                 placeholder="包含关键字"
                 id="bankSearch"
+                class="input"
                 v-model="bankSearch"
                 required="false"
                 style=" width:300px;
@@ -38,17 +41,19 @@
                 type="text"
                 placeholder="包含关键字"
                 id="deptSearch"
+                class="input"
                 v-model="deptSearch"
                 required="false"
                 style=" width:280px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-            />&emsp;<br />电话号码
+            />&emsp;<br /><br />电话号码
             <input
                 type="text"
                 placeholder="包含关键字"
                 id="telSearch"
                 v-model="telSearch"
+                class="input"
                 required="false"
                 style=" width:280px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -59,6 +64,7 @@
                 placeholder="包含关键字"
                 id="addrSearch"
                 v-model="addrSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -69,6 +75,7 @@
                 placeholder="下界"
                 id="lowerBound"
                 v-model="lowerBound"
+                class="input"
                 required="false"
                 style="   width:200px;
                     font-family: 'Fira Code', '汉仪南宫体简';
@@ -77,6 +84,7 @@
             <input
                 type="date"
                 placeholder="上界"
+                class="input"
                 id="upperBound"
                 v-model="upperBound"
                 required="false"
@@ -84,14 +92,14 @@
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;
-            <el-button class="button" size="small" type="primary" @click="submit()">查询</el-button>
-            <el-button class="button" size="small" type="primary" @click="reset()">重置</el-button>
+            <el-button size="small" type="primary" @click="submit()">查询</el-button>
+            <el-button size="small" type="primary" @click="reset()">重置</el-button>
         </div>
         <br />
         <p style="color: red;font-size: 24px;" align="left">员工信息表</p>
         <div align="left">
-            <el-button class="button" type="success" size="small" @click="insertEvent('elxEditable1')">新增</el-button>
-            <el-button class="button" type="success" size="small" @click="exportCsvEvent('elxEditable1')">导出</el-button>
+            <el-button type="success" size="small" @click="insertEvent('elxEditable1')" v-if="permission == 'SUB_BANK'">新增</el-button>
+            <el-button type="success" size="small" @click="exportCsvEvent('elxEditable1')">导出</el-button>
         </div>
         <br />
         <elx-editable
@@ -117,7 +125,7 @@
                     props: { type: 'date', format: 'yyyy-MM-dd' }
                 }"
             ></elx-editable-column>
-            <elx-editable-column label="操作" width="160">
+            <elx-editable-column label="操作" width="250">
                 <template v-slot="scope">
                     <template v-if="$refs.elxEditable1.hasActiveRow(scope.row)">
                         <el-button size="small" type="success" @click="saveRowEvent('elxEditable1', scope.row)">保存</el-button>
@@ -125,8 +133,8 @@
                     </template>
                     <template v-else>
                         <el-button size="small" type="primary" @click="openActiveRowEvent('elxEditable1', scope.row)">编辑</el-button>
-                        <el-button size="small" type="danger" @click="removeEvent('elxEditable1', scope.row)">删除</el-button>
-                        <el-button size="small" type="danger" @click="showDetail(scope.row)">详情</el-button>
+                        <el-button size="small" type="danger" @click="removeEvent('elxEditable1', scope.row)" v-if="permission == 'SUB_BANK'">删除</el-button>
+                        <el-button size="small" type="success" @click="showDetail(scope.row)">详情</el-button>
                     </template>
                 </template>
             </elx-editable-column>
@@ -135,11 +143,11 @@
             <br />
             <p style="color: red;font-size: 24px;" align="left">
                 客户联系表
-                <el-button class="button" type="success" size="small" @click="showlink = false">关闭</el-button>
+                <el-button type="success" size="small" @click="showlink = false">关闭</el-button>
             </p>
             <div align="left">
-                <el-button class="button" type="success" size="small" @click="insertEvent('elxEditable2')">新增</el-button>
-                <el-button class="button" type="success" size="small" @click="exportCsvEvent('elxEditable2')">导出</el-button>
+                <el-button type="success" size="small" @click="insertEvent('elxEditable2')">新增</el-button>
+                <el-button type="success" size="small" @click="exportCsvEvent('elxEditable2')">导出</el-button>
             </div>
             <br />
             <elx-editable
@@ -151,8 +159,8 @@
                 style="width: 100%"
             >
                 <elx-editable-column type="index" width="55"></elx-editable-column>
-                <elx-editable-column prop="staffID" label="员工身份证号"></elx-editable-column>
-                <elx-editable-column prop="staffName" label="员工姓名"></elx-editable-column>
+                <elx-editable-column prop="staffid" label="员工身份证号"></elx-editable-column>
+                <elx-editable-column prop="staffname" label="员工姓名"></elx-editable-column>
                 <elx-editable-column prop="id" label="客户身份证号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
                 <elx-editable-column prop="name" label="客户姓名"></elx-editable-column>
                 <!-- <elx-editable-column prop="type" label="与客户关系" :edit-render="{ name: 'ElSelect', options: serviceList }"></elx-editable-column> -->
@@ -235,7 +243,7 @@ export default {
                 // {
                 //     id: "33122212121210001X",
                 //     name: "吴邪",
-                //     staffID: "33122220001010001X",
+                //     staffid: "33122220001010001X",
                 //     staffName: "张三",
                 //     type: "1"
                 // }
@@ -260,7 +268,11 @@ export default {
                         this.$refs[name].setActiveRow(row);
                     });
                 } else {
-                    this.$refs[name].insert({ staffID: this.detail.id, staffName: this.detail.name }).then(({ row }) => {
+                    if (this.permission != "SUB_BANK" && this.detail.id != localStorage.getItem("username")) {
+                        Message({ message: "您没有操作权限", type: "warning" });
+                        return;
+                    }
+                    this.$refs[name].insert({ staffid: this.detail.id, staffname: this.detail.name }).then(({ row }) => {
                         this.$refs[name].setActiveRow(row);
                     });
                 }
@@ -272,6 +284,7 @@ export default {
 
         //提交查询请求
         submit() {
+            this.showlink = false;
             this.$http
                 .post(
                     "http://" + document.domain + ":5000/staff",
@@ -293,8 +306,9 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.list = response.body.list;
+                        Message({ message: "查询成功", type: "success" });
                     } else {
-                        window.alert("查询失败");
+                        Message({ message: "查询失败", type: "warning" });
                     }
                 });
         },
@@ -316,7 +330,7 @@ export default {
                     "http://" + document.domain + ":5000/staffCustomer",
                     {
                         type: "SearchByStaff",
-                        staffID: row.id
+                        staffid: row.id
                     },
                     {
                         emulateJSON: true
@@ -326,11 +340,13 @@ export default {
                     if (parseInt(response.body.code) === 200) {
                         this.linklist = response.body.list;
                         for (var i = 0; i < this.linklist.length; i++) {
-                            this.linklist[i].staffName = row.name;
-                            this.linklist[i].staffID = row.id;
+                            this.linklist[i].staffname = row.name;
+                            this.linklist[i].staffid = row.id;
                         }
+                        Message({ message: "查询成功", type: "success" });
                     } else {
-                        window.alert("查询失败");
+                        this.showlink = false;
+                        Message({ message: "没有查到任何记录", type: "warning" });
                     }
                 });
         },
@@ -373,6 +389,21 @@ export default {
             return this.isClearActiveFlag;
         },
         openActiveRowEvent(name, row) {
+            switch (name) {
+                case "elxEditable1":
+                    if (this.permission != "SUB_BANK" && row.id != localStorage.getItem("username")) {
+                        Message({ message: "您没有操作权限", type: "warning" });
+                        return;
+                    }
+                    break;
+                case "elxEditable2":
+                    if (this.permission != "SUB_BANK" && row.staffid != localStorage.getItem("username")) {
+                        Message({ message: "您没有操作权限", type: "warning" });
+                        return;
+                    }
+                    break;
+            }
+
             this.$nextTick(() => {
                 let activeInfo = this.$refs[name].getActiveRow();
                 // 如果当前行正在编辑中，禁止编辑其他行
@@ -419,6 +450,10 @@ export default {
             });
         },
         removeEvent(name, row) {
+            if (this.permission != "SUB_BANK" && row.staffid != localStorage.getItem("username")) {
+                Message({ message: "您没有操作权限", type: "warning" });
+                return;
+            }
             switch (name) {
                 case "elxEditable1":
                     this.$http
@@ -435,9 +470,9 @@ export default {
                         .then(function(response) {
                             if (parseInt(response.body.code) === 200) {
                                 this.$refs.elxEditable1.remove(row);
-                                console.log("Delete");
+                                Message({ message: "删除成功", type: "success" });
                             } else {
-                                window.alert("删除失败");
+                                Message({ message: "删除失败，有关联客户信息", type: "warning" });
                             }
                         });
                     break;
@@ -448,8 +483,8 @@ export default {
                             "http://" + document.domain + ":5000/staffCustomer",
                             {
                                 type: "Delete",
-                                custID: row.id,
-                                staffID: row.staffID
+                                custid: row.id,
+                                staffid: row.staffid
                             },
                             {
                                 emulateJSON: true
@@ -458,9 +493,9 @@ export default {
                         .then(function(response) {
                             if (parseInt(response.body.code) === 200) {
                                 this.$refs.elxEditable2.remove(row);
-                                console.log("Delete");
+                                Message({ message: "删除成功", type: "success" });
                             } else {
-                                window.alert("删除失败");
+                                Message({ message: "删除失败", type: "warning" });
                             }
                         });
                     break;
@@ -469,11 +504,13 @@ export default {
         saveRowEvent(name, row) {
             switch (name) {
                 case "elxEditable2":
-                    if (row.staffID == null || row.staffID == "") {
+                    if (row.staffid == null || row.staffid == "") {
+                        Message({ message: "字段不能为空", type: "warning" });
                         return;
                     }
                 case "elxEditable1":
                     if (row.id == null || row.id == "") {
+                        Message({ message: "字段不能为空", type: "warning" });
                         return;
                     }
             }
@@ -505,10 +542,12 @@ export default {
                                         //更新合法
                                         this.primary = null;
                                         this.$refs.elxEditable1.clearActive();
-                                        console.log("Update");
+                                        Message({ message: "保存成功", type: "success" });
                                         this.$refs.elxEditable1.reloadRow(row);
+                                    } else if (parseInt(response.body.code) === 400) {
+                                        Message({ message: "新增记录失败，可能是身份证号重复", type: "warning" });
                                     } else {
-                                        window.alert("更新非法");
+                                        Message({ message: "保存失败\n" + response.body.msg, type: "warning" });
                                     }
                                 });
                             break;
@@ -519,10 +558,10 @@ export default {
                                     {
                                         type: "Update",
                                         custID: row.id,
-                                        staffID: row.staffID, //该字段是不变的
+                                        staffID: row.staffid, //该字段是不变的
                                         serviceType: row.type,
                                         old_custID: this.primary, //null代表新增，这是旧的客户身份证号
-                                        old_staffID: row.staffID
+                                        old_staffID: row.staffid
                                     },
                                     {
                                         emulateJSON: true
@@ -533,11 +572,12 @@ export default {
                                         //更新合法
                                         this.primary = null;
                                         this.$refs.elxEditable2.clearActive();
-                                        row = response.body.record;
+                                        row.name = response.body.record.name;
+                                        row.staffname = response.body.record.staffname;
                                         this.$refs.elxEditable2.reloadRow(row);
-                                        console.log("Update");
+                                        Message({ message: "保存成功", type: "success" });
                                     } else {
-                                        window.alert("更新非法");
+                                        Message({ message: "保存失败", type: "warning" });
                                     }
                                 });
                             break;
@@ -584,54 +624,20 @@ export default {
 </script>
 
 <style>
-.table {
-    border: 2px solid #429fff; /* 表格边框 */
-    font-family: "汉仪南宫体简";
-    font-size: 18px;
-    max-height: 500px;
-    overflow-x: auto;
-    overflow-y: auto;
-    border-collapse: collapse; /* 边框重叠 */
+.input{
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 6px;
+    padding: 8px 14px;
+    width: 620px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: "Fira Code", "汉仪南宫体简";
 }
-.table tr:hover {
-    background-color: #c4e4ff; /* 动态变色,IE6下无效！*/
-}
-.table caption {
-    padding-top: 3px;
-    padding-bottom: 2px;
-    font: bold 1.1em;
-    color: #ff00ff;
-    background-color: #f0f7ff;
-    border: 1px solid #429fff; /* 表格标题边框 */
-}
-.table th {
-    border: 1px solid #429fff; /* 行、列名称边框 */
-    background-color: #d2e8ff;
-    font-weight: bold;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 10px;
-    padding-right: 10px;
-    text-align: center;
-}
-.table td {
-    border: 1px solid #429fff; /* 单元格边框 */
-    text-align: center;
-    padding: 4px;
-    word-break: break-all;
-}
-.button {
-    display: inline-block;
-    border-radius: 4px;
-    background-color: limegreen;
-    border: none;
-    color: #ffffff;
-    text-align: center;
-    font-size: 15px;
-    padding: 5px;
-    width: 80px;
-    transition: all 0.5s;
-    cursor: pointer;
-    margin: 5px;
+.input:focus{
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
 }
 </style>

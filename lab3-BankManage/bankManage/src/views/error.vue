@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { MessageBox, Message } from "element-ui";
 export default {
     data: function() {
         return {
@@ -15,7 +16,12 @@ export default {
         };
     },
     methods: {
-        
+        f() {
+        //const h = this.$createElement;
+        this.$message({
+          message:  "hello"
+        });
+      }
     }
 };
 </script>

@@ -9,6 +9,7 @@
                 placeholder="包含关键字"
                 id="idSearch"
                 v-model="idSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -19,6 +20,7 @@
                 placeholder="包含关键字"
                 id="ownerSearch"
                 v-model="ownerSearch"
+                class="input"
                 required="false"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -30,11 +32,12 @@
                 id="bankSearch"
                 v-model="bankSearch"
                 required="false"
+                class="input"
                 style=" width:300px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;账户类型
-            <select v-model="typeSearch" id="typeSearch" placeholder="any">
+            <select class="dropbtn" v-model="typeSearch" id="typeSearch" placeholder="any">
                 <option value="any" selected>任意</option>
                 <option value="saving">储蓄账户</option>
                 <option value="check">支票账户</option> </select
@@ -44,6 +47,7 @@
                 min="0"
                 placeholder="下界"
                 id="money_lo"
+                class="input"
                 v-model="money_lo"
                 required="false"
                 style=" width:100px;
@@ -55,6 +59,7 @@
                 min="0"
                 placeholder="上界"
                 id="money_up"
+                class="input"
                 v-model="money_up"
                 required="false"
                 style=" width:100px;
@@ -67,6 +72,7 @@
                 placeholder="下界"
                 id="open_lo"
                 v-model="open_lo"
+                class="input"
                 required="false"
                 style=" width:150px;
               font-family: 'Fira Code', '汉仪南宫体简';
@@ -76,13 +82,14 @@
                 type="date"
                 min="0"
                 placeholder="上界"
+                class="input"
                 id="open_up"
                 v-model="open_up"
                 required="false"
                 style=" width:150px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-            />&emsp;最近访问日期
+            /><!-- &emsp;最近访问日期
             <input
                 type="date"
                 min="0"
@@ -104,18 +111,62 @@
                 style=" width:150px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-            />&emsp;
+            />&emsp; -->
 
-            <el-button class="button" size="small" type="primary" @click="submit()">查询</el-button>
-            <el-button class="button" size="small" type="primary" @click="reset()">重置</el-button>
+            <el-button size="small" type="primary" @click="submit()">查询</el-button>
+            <el-button size="small" type="primary" @click="reset()">重置</el-button>
         </div>
         <br />
-        <p style="color: red;font-size: 24px;" align="left">账户信息表</p>
+        <p style="color: red;font-size: 24px;" align="left">
+            账户信息表 <el-button type="success" size="small" @click="exportCsvEvent()">导出</el-button>
+        </p>
 
         <div align="left">
-            <el-button class="button" type="success" size="small" @click="exportCsvEvent()">导出</el-button>
-            <el-button class="button" type="success" size="small" @click="newaccount()">开户</el-button>
-            <font style="color: red" align="left">注：账户号不允许修改</font>
+            开户者
+            <input
+                type="text"
+                placeholder="身份证号"
+                class="input"
+                id="newownerid"
+                v-model="newownerid"
+                style=" width:200px;
+              font-family: 'Fira Code', '汉仪南宫体简';
+            "
+            />&emsp;账户号
+            <input
+                type="text"
+                placeholder="账户号"
+                id="newbankid"
+                class="input"
+                v-model="newbankid"
+                style=" width:200px;
+              font-family: 'Fira Code', '汉仪南宫体简';
+            "
+            />&emsp;开户支行
+            <input
+                type="text"
+                placeholder="支行名称"
+                id="newbankname"
+                v-model="newbankname"
+                class="input"
+                style=" width:200px;
+              font-family: 'Fira Code', '汉仪南宫体简';
+            "
+            />&emsp;账户类型
+            <select class="dropbtn" v-model="newtype">
+                <option value="0">储蓄账户</option>
+                <option value="1">支票账户</option> </select
+            >&emsp;
+            <label v-if="newtype == '0'"> 货币类型 </label>
+            <select class="dropbtn" v-model="newmoneytype" v-if="newtype == '0'">
+                <option value="0">人民币</option>
+                <option value="1">美元</option>
+                <option value="2">欧元</option>
+                <option value="3">日元</option> </select
+            >&emsp;
+
+            <el-button type="success" size="small" @click="newaccount()">开户</el-button>
+            <el-button type="success" size="small" @click="reset2()">重置</el-button>
         </div>
         <br />
 
@@ -125,52 +176,30 @@
             size="mini"
             border
             :data.sync="list"
-            :edit-config="{ trigger: 'manual', mode: 'row', clearActiveMethod }"
+            :edit-config="{ trigger: 'click', mode: 'cell', activeMethod }"
             style="width: 100%"
         >
             <elx-editable-column type="index" width="55"></elx-editable-column>
-            <elx-editable-column prop="id" label="账户号" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
-            <!--<elx-editable-column prop="owner" label="户主"></elx-editable-column> -->
-            <elx-editable-column prop="bank" label="开户银行" :edit-render="{ name: 'ElInput' }"></elx-editable-column>
-            <elx-editable-column prop="money" label="余额" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
-            <elx-editable-column
-                prop="open_date"
-                label="开户日期"
-                :edit-render="{
-                    name: 'ElDatePicker',
-                    props: { type: 'date', format: 'yyyy-MM-dd' }
-                }"
-            ></elx-editable-column>
-            <elx-editable-column
-                prop="visit_date"
-                label="最近访问日期"
-                :edit-render="{
-                    name: 'ElDatePicker',
-                    props: { type: 'date', format: 'yyyy-MM-dd' }
-                }"
-            ></elx-editable-column>
+            <elx-editable-column prop="id" label="账户号" ></elx-editable-column>
+            <elx-editable-column prop="bank" label="开户支行" ></elx-editable-column>
+            <elx-editable-column prop="money" label="余额" :edit-render="{ type: 'default' }"></elx-editable-column>
+            <elx-editable-column prop="open_date" label="开户日期"></elx-editable-column>
             <elx-editable-column prop="type" label="账户类型" :edit-render="{ name: 'ElSelect', options: typeList }"></elx-editable-column>
             <elx-editable-column prop="interest" label="利率" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
-            <elx-editable-column prop="cashtype" label="货币类型" :edit-render="{ name: 'ElSelect', options: cashList }"></elx-editable-column>
+            <elx-editable-column prop="cashtype" label="货币类型" ></elx-editable-column>
             <elx-editable-column prop="overdraft" label="透支额" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
-            <elx-editable-column label="操作" width="160">
+            <elx-editable-column label="操作" width="350">
                 <template v-slot="scope">
-                    <template v-if="$refs.elxEditable.hasActiveRow(scope.row)">
-                        <el-button size="small" type="success" @click="saveRowEvent(scope.row)">保存</el-button>
-                        <el-button size="small" type="warning" @click="cancelRowEvent(scope.row)">取消</el-button>
-                    </template>
-                    <template v-else>
-                        <el-button size="small" type="primary" @click="openActiveRowEvent(scope.row)">修改</el-button>
-                        <el-button size="small" type="danger" @click="removeEvent(scope.row)">销户</el-button>
-                        <el-button size="small" type="primary" @click="showDetail(scope.row)">查看户主</el-button>
-                    </template>
+                    <el-button size="small" type="primary" @click="saveRowEvent(scope.row)">提交</el-button>
+                    <el-button size="small" type="danger" @click="removeEvent(scope.row)">销户</el-button>
+                    <el-button size="small" type="success" @click="showDetail(scope.row)">查看户主</el-button>
                 </template>
             </elx-editable-column>
         </elx-editable>
         <div v-if="showlink">
             <p style="color: red;font-size: 24px;" align="left">
                 户主信息表
-                <el-button class="button" type="success" size="small" @click="showlink = false">关闭</el-button>
+                <el-button type="success" size="small" @click="showlink = false">关闭</el-button>
             </p>
             <div align="left">
                 新增户主
@@ -181,10 +210,11 @@
                     id="newOwner"
                     v-model="newOwner"
                     required="false"
-                    style=" width:100px;font-family: 'Fira Code', '汉仪南宫体简';"
+                    style=" width:250px;font-family: 'Fira Code', '汉仪南宫体简';"
                 />
-                <el-button class="button" type="success" size="small" @click="addOwner()">提交</el-button>
+                <el-button type="success" size="small" @click="addOwner()">提交</el-button>
             </div>
+            <br>
             <elx-editable
                 ref="elxEditable2"
                 class="table"
@@ -198,9 +228,17 @@
                 <elx-editable-column prop="bank" label="开户银行"></elx-editable-column>
                 <elx-editable-column prop="ownerid" label="户主身份证号"></elx-editable-column>
                 <elx-editable-column prop="ownername" label="户主姓名"></elx-editable-column>
+                <elx-editable-column
+                    prop="visit_date"
+                    label="最近访问日期"
+                    :edit-render="{
+                        name: 'ElDatePicker',
+                        props: { type: 'date', format: 'yyyy-MM-dd' }
+                    }"
+                ></elx-editable-column>
                 <elx-editable-column label="操作" width="160">
                     <template v-slot="scope">
-                        <el-button size="small" type="dangerous" @click="removeOwner(scope.row)">删除</el-button>
+                        <el-button size="small" type="danger" @click="removeOwner(scope.row)">删除</el-button>
                     </template>
                 </elx-editable-column>
             </elx-editable>
@@ -216,6 +254,10 @@ export default {
     data() {
         return {
             loading: false,
+            newbankname: "",
+            newmoneytype: "0",
+            newbankid: "",
+            newtype: "0",
             showlink: false,
             newOwner: "",
             detail: "",
@@ -292,33 +334,67 @@ export default {
             ];
             this.loading = false;
         },
+        activeMethod({ row, column }) {
+            if (column.label == "账户号" || column.label == "开户支行" || column.label == "账户类型" || column.label == "货币类型") {
+                return false;
+            }
+            if (row.type == "0" && column.label == "透支额") {
+                return false;
+            }
+            if (row.type == "1" && column.label == "利率") {
+                return false;
+            }
+            return true;
+        },
         clearActiveMethod2({ type, row, rowIndex }) {
             return false;
         },
         formatterDate(row, column, cellValue, index) {
-            return XEUtils.toDateString(cellValue, "yyyy-MM-dd HH:mm:ss");
+            return XEUtils.toDateString(cellValue, "yyyy-MM-dd");
         },
-        clearActiveMethod({ type, row }) {
-            return false;
-        },
-        //新增记录
+        //开户
         newaccount() {
-            if (this.primary == null) {
-                this.$prompt("请输入开户者的身份证号", "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消"
-                })
-                    .then(({ value }) => {
-                        this.newownerid = value;
-                        this.insertEvent();
-                    })
-                    .catch(() => {
-                        this.$message({
-                            type: "info",
-                            message: "取消输入"
-                        });
-                    });
+            if (this.newbankid == "" || this.newbankname == "" || this.newownerid == "") {
+                return;
             }
+            this.$http
+                .post(
+                    "http://" + document.domain + ":5000/account",
+                    {
+                        type: "Update",
+                        id: this.newbankid,
+                        bank: this.newbankname,
+                        money: 0,
+                        ownerid: this.newownerid,
+                        open_date: XEUtils.toDateString(new Date(), "yyyy-MM-dd"),
+                        acctype: this.newtype,
+                        interest: null,
+                        cashtype: this.newmoneytype,
+                        overdraft: null,
+                        old_primary: null
+                    },
+                    {
+                        emulateJSON: true
+                    }
+                )
+                .then(function(response) {
+                    if (parseInt(response.body.code) === 200) {
+                        //更新合法
+                        this.$refs.elxEditable.insert({
+                            id: this.newbankid,
+                            bank: this.newbankname,
+                            money: 0,
+                            open_date: XEUtils.toDateString(new Date(), "yyyy-MM-dd"),
+                            type: this.newtype,
+                            interest: null,
+                            cashtype: this.newmoneytype,
+                            overdraft: null
+                        });
+                        Message({message:"开户成功",type:"success"});
+                    } else {
+                        Message({message:"开户失败，您提供的信息可能有误或您已经在该支行开设同类账户",type:"warning"});
+                    }
+                });
         },
 
         insertEvent() {
@@ -334,8 +410,7 @@ export default {
                         owner: "",
                         bank: "",
                         money: 0,
-                        open_date: new Date(),
-                        visit_date: new Date(),
+                        open_date: XEUtils.toDateString(new Date(), "yyyy-MM-dd"),
                         type: "0",
                         interest: null,
                         cashtype: null,
@@ -411,7 +486,8 @@ export default {
                     "http://" + document.domain + ":5000/account",
                     {
                         type: "Delete",
-                        primary: row.id
+                        primary: row.id,
+                        acctype: row.type
                     },
                     {
                         emulateJSON: true
@@ -420,67 +496,47 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.$refs.elxEditable.remove(row);
-                        console.log("Delete");
+                        Message({message:"删除成功",type:"success"});
                     } else {
-                        window.alert("删除失败");
+                        Message({message:"删除失败",type:"warning"});
                     }
                 });
         },
         //保存对某一行的修改
         saveRowEvent(row) {
-            this.$refs.elxEditable.validateRow(row, valid => {
-                if (valid && this.$refs.elxEditable.hasRowChange(row)) {
-                    //数据发生了修改，需要反馈给服务器
-                    console.log(this.primary);
-                    if (this.primary != null) {
-                        row.id = this.primary; //禁止修改主键
-                    }
-
-                    this.$http
-                        .post(
-                            "http://" + document.domain + ":5000/account",
-                            {
-                                type: "Update",
-                                id: row.id,
-                                bank: row.bank,
-                                money: row.money,
-                                ownerid: this.newownerid,
-                                open_date: XEUtils.toDateString(row.open_date, "yyyy-MM-dd"),
-                                visit_date: XEUtils.toDateString(row.visit_date, "yyyy-MM-dd"),
-                                acctype: row.type,
-                                interest: row.interest,
-                                cashtype: row.cashtype,
-                                overdraft: row.overdraft,
-                                old_primary: this.primary //null代表新增
-                            },
-                            {
-                                emulateJSON: true
-                            }
-                        )
-                        .then(function(response) {
-                            if (parseInt(response.body.code) === 200) {
-                                //更新合法
-                                if (row.type === "0") {
-                                    row.overdraft = null;
-                                } else {
-                                    row.cashtype = null;
-                                    row.interest = null;
-                                }
-
-                                this.primary = null;
-                                this.$refs.elxEditable.clearActive();
-                                this.$refs.elxEditable.reloadRow(row);
-                                console.log("Update");
-                            } else {
-                                window.alert("更新非法");
-                            }
-                        });
-                } else if (valid && !this.$refs.elxEditable.hasRowChange(row)) {
-                    //数据没有修改，不需要向服务器反馈
-                    this.primary = null;
-                    this.$refs.elxEditable.clearActive();
-                }
-            });
+            if (this.$refs.elxEditable.hasRowChange(row)) {
+                //数据发生了修改，需要反馈给服务器
+                this.$http
+                    .post(
+                        "http://" + document.domain + ":5000/account",
+                        {
+                            type: "Update",
+                            id: row.id,
+                            bank: row.bank,
+                            money: row.money,
+                            ownerid: null,
+                            open_date: row.open_date,
+                            acctype: row.type,
+                            interest: row.interest,
+                            cashtype: row.cashtype,
+                            overdraft: row.overdraft,
+                            old_primary: row.id //null代表新增
+                        },
+                        {
+                            emulateJSON: true
+                        }
+                    )
+                    .then(function(response) {
+                        if (parseInt(response.body.code) === 200) {
+                            //更新合法
+                            this.$refs.elxEditable.clearActive();
+                            this.$refs.elxEditable.reloadRow(row);
+                            Message({message:"保存成功",type:"success"});
+                        } else {
+                            Message({message:"保存失败，可能是账户号已存在",type:"warning"});
+                        }
+                    });
+            }
         },
         //导出CSV
         exportCsvEvent() {
@@ -488,6 +544,7 @@ export default {
         },
         //提交查询请求
         submit() {
+            this.showlink=false;
             this.$http
                 .post(
                     "http://" + document.domain + ":5000/account",
@@ -511,8 +568,9 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.list = response.body.list;
+                        Message({message:"查询成功",type:"success"});
                     } else {
-                        window.alert("查询失败");
+                        Message({message:"查询结果为空",type:"warning"});
                     }
                 });
         },
@@ -541,7 +599,9 @@ export default {
                         type: "Insert",
                         accid: this.detail.id,
                         bank: this.detail.bank,
-                        ownerid: this.newOwner
+                        visit_date: XEUtils.toDateString(new Date(), "yyyy-MM-dd"),
+                        ownerid: this.newOwner,
+                        acctype: this.detail.type
                     },
                     {
                         emulateJSON: true
@@ -550,8 +610,9 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.ownerlist.push(response.body.record);
+                        Message({message:"新增户主成功",type:"success"});
                     } else {
-                        window.alert("查询失败");
+                        Message({message:"新增户主失败，可能是身份证号错误或其已经在该支行开设同类账户",type:"warning"});
                     }
                 });
         },
@@ -563,7 +624,8 @@ export default {
                         type: "Delete",
                         accid: this.detail.id,
                         bank: this.detail.bank,
-                        ownerid: row.ownerid
+                        ownerid: row.ownerid,
+                        acctype: this.detail.type
                     },
                     {
                         emulateJSON: true
@@ -572,6 +634,7 @@ export default {
                 .then(function(response) {
                     if (parseInt(response.body.code) === 200) {
                         this.$refs.elxEditable2.remove(row);
+                        Message({message:"删除成功",type:"success"});
                     } else {
                         window.alert("删除失败");
                     }
@@ -584,7 +647,8 @@ export default {
                     {
                         type: "Search",
                         accid: this.detail.id,
-                        bank: row.bank
+                        bank: row.bank,
+                        acctype: row.type
                     },
                     {
                         emulateJSON: true
@@ -597,8 +661,10 @@ export default {
                             this.ownerlist[i].id = row.id;
                             this.ownerlist[i].bank = row.bank;
                         }
+                        Message({message:"查询成功",type:"success"});
                     } else {
-                        window.alert("查询失败");
+                        this.showlink=false;
+                        Message({message:"查询失败",type:"error"});
                     }
                 });
         },
@@ -608,64 +674,77 @@ export default {
             console.log("update");
             console.log(row.id);
             this.searchOwner(row);
+        },
+        reset2() {
+            this.newbankname = "";
+            this.newmoneytype = "0";
+            this.newbankid = "";
+            this.newtype = "0";
+            this.newownerid = "";
         }
     }
 };
 </script>
 
 <style>
-.table {
-    border: 2px solid #429fff; /* 表格边框 */
-    font-family: "汉仪南宫体简";
-    font-size: 18px;
-    border-collapse: collapse; /* 边框重叠 */
-    overflow-x: auto;
-    overflow-y: auto;
+.input{
+    outline-style: none ;
+    border: 1px solid #ccc; 
+    border-radius: 6px;
+    padding: 8px 14px;
+    width: 620px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: "Fira Code", "汉仪南宫体简";
 }
-.table tr:hover {
-    background-color: #c4e4ff; /* 动态变色,IE6下无效！*/
+.input:focus{
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 3px 3px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
 }
-.table caption {
-    padding-top: 3px;
-    padding-bottom: 2px;
-    font: bold 1.1em;
-    color: #ff00ff;
-    background-color: #f0f7ff;
-    border: 1px solid #429fff; /* 表格标题边框 */
-}
-.table th {
-    border: 1px solid #429fff; /* 行、列名称边框 */
-    background-color: #d2e8ff;
-    font-weight: bold;
-    /* min-width: 200px;*/
-    padding-top: 4px;
-    padding-bottom: 4px;
-    padding-left: 10px;
-    padding-right: 10px;
-    text-align: center;
-}
-.table td {
-    border: 1px solid #429fff; /* 单元格边框 */
-    text-align: center;
-    padding: 4px;
-    /*  min-width: 200px;*/
-    word-break: break-all;
-}
-.table .ElInput {
-    min-width: 10px;
-}
-.button {
-    display: inline-block;
-    border-radius: 4px;
-    background-color: limegreen;
+.dropbtn {
+    border-radius: 6px;
+    background-color: rgb(223, 71, 71);
+    color: white;
+    padding: 8px;
+    font-size: 14px;
     border: none;
-    color: #ffffff;
-    text-align: center;
-    font-size: 15px;
-    padding: 5px;
-    width: 80px;
-    transition: all 0.5s;
     cursor: pointer;
-    margin: 5px;
+    width: 100px;
+    height: 35px;
+    font-family: "Fira Code", "汉仪南宫体简";
+}
+
+.dropdown {
+    position: relative;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.dropdown-content {
+    border-radius: 4px;
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content option {
+    color: black;
+    padding: 6px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content option :hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #b6f699;
 }
 </style>

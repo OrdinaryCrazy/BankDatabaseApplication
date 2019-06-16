@@ -24,12 +24,13 @@
             <button class="buttonred" v-on:click="goSummary" v-if="type == 'SUB_BANK'">
                 <span>业务统计</span>
             </button>
+        </div>
+        <p>
             <button class="buttonred" v-on:click="exit">
                 <span>退出登录</span>
             </button>
-        </div>
-        <br /><br /><br />
-        <div align="right"></div>
+        </p>
+        
     </div>
 </template>
 
@@ -99,7 +100,7 @@ export default {
     text-align: center;
     font-size: 18px;
     padding: 20px;
-    width: 150px;
+    width: 250px;
     transition: all 0.5s;
     cursor: pointer;
     margin: 5px;
