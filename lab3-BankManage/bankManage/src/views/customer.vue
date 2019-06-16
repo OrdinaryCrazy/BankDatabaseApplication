@@ -11,7 +11,7 @@
                 v-model="idSearch"
                 class="input"
                 required="false"
-                style=" width:300px;
+                style=" width:220px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;姓名
@@ -22,7 +22,7 @@
                 v-model="nameSearch"
                 class="input"
                 required="false"
-                style=" width:300px;
+                style=" width:220px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;联系电话
@@ -33,7 +33,7 @@
                 v-model="telSearch"
                 class="input"
                 required="false"
-                style=" width:300px;
+                style=" width:220px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;家庭住址
@@ -44,7 +44,7 @@
                 v-model="addrSearch"
                 class="input"
                 required="false"
-                style=" width:280px;
+                style=" width:220px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;<br /><br />联系人姓名
@@ -55,7 +55,7 @@
                 v-model="linknameSearch"
                 class="input"
                 required="false"
-                style=" width:300px;
+                style=" width:220px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;联系人手机号
@@ -66,7 +66,7 @@
                 v-model="linktelSearch"
                 class="input"
                 required="false"
-                style=" width:300px;
+                style=" width:220px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;联系人Email
@@ -77,7 +77,7 @@
                 class="input"
                 v-model="emailSearch"
                 required="false"
-                style=" width:300px;
+                style=" width:220px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;

@@ -11,7 +11,7 @@
                 v-model="idSearch"
                 class="input"
                 required="false"
-                style=" width:300px;
+                style=" width:220px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;姓名
@@ -22,7 +22,7 @@
                 v-model="nameSearch"
                 class="input"
                 required="false"
-                style=" width:300px;
+                style=" width:220px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;所属支行
@@ -33,7 +33,7 @@
                 class="input"
                 v-model="bankSearch"
                 required="false"
-                style=" width:300px;
+                style=" width:220px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;所在部门
@@ -44,7 +44,7 @@
                 class="input"
                 v-model="deptSearch"
                 required="false"
-                style=" width:280px;
+                style=" width:220px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;<br /><br />电话号码
@@ -55,7 +55,7 @@
                 v-model="telSearch"
                 class="input"
                 required="false"
-                style=" width:280px;
+                style=" width:180px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;家庭住址
@@ -66,7 +66,7 @@
                 v-model="addrSearch"
                 class="input"
                 required="false"
-                style=" width:300px;
+                style=" width:220px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;入职日期
@@ -77,7 +77,7 @@
                 v-model="lowerBound"
                 class="input"
                 required="false"
-                style="   width:200px;
+                style="   width:140px;
                     font-family: 'Fira Code', '汉仪南宫体简';
                 "
             />~~
@@ -88,7 +88,7 @@
                 id="upperBound"
                 v-model="upperBound"
                 required="false"
-                style=" width:200px;
+                style=" width:140px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;
