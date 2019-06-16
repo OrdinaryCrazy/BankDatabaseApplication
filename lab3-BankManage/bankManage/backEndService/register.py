@@ -15,9 +15,25 @@ register_api = Blueprint('register_api', __name__)
 # 注册 后台功能
 @register_api.route('/register',methods=['POST','OPTIONS'])
 def register():
-    username     = request.form['username']
-    password     = request.form['password']
-    account_type = request.form['type']
+    # username     = request.form['username']
+    # password     = request.form['password']
+    # account_type = request.form['type']
+    username        = request.form['username'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
+    password        = request.form['password'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
+    account_type    = request.form['type'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
+    city            = request.form['city'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
+    money           = request.form['money'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
+    name            = request.form['name'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
+    tel             = request.form['tel'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
+    addr            = request.form['addr'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
+    name_link       = request.form['name_link'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
+    tel_link        = request.form['tel_link'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
+    email_link      = request.form['email_link'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
+    relation        = request.form['relation'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
+    dept            = request.form['dept'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
+    date_s          = request.form['date_s'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
+    bankname        = request.form['bankname'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
+
     print(username)
     print(password)
     print(account_type)
@@ -27,22 +43,47 @@ def register():
     cursor = connection.cursor()
     sqlcommand = ""
     if account_type == "SUB_BANK" :
-        insert = "(" + "'" + username + "'" + ','  + "'" + password + "'" + ")"
+        insert = "(" + "'" + username + "'" + ','  + "'" + password + "', "
+        insert = insert + "'" + city    + "', "
+        insert = insert + "'" + money   + "'"
+        insert = insert + ")"
         sqlcommand =    """
                         INSERT INTO 
-                            SUB_BANK(BANK_NAME, BANK_PASS)
+                            SUB_BANK(BANK_NAME, BANK_PASS, CITY, POSSESSION)
                         VALUES """ + insert
     elif account_type == "EMPLOYEE":
-        insert = "(" + "'" + username + "'" + ','  + "'" + password + "'" + ")"
+        insert = "(" + "'" + username + "'" + ','  + "'" + password + "', " 
+        insert = insert + "'" + name        + "', " 
+        insert = insert + "'" + dept        + "', " 
+        insert = insert + "'" + tel         + "', " 
+        insert = insert + "'" + addr        + "', " 
+        insert = insert + "'" + bankname    + "', " 
+        insert = insert + "TO_DATE('" + date_s + "','YYYY-MM-DD')"
+        insert = insert + ")"
         sqlcommand =    """
                         INSERT INTO 
-                            EMPLOYEE(EMPLOYEE_ID, EMPLOYEE_PASS)
+                            EMPLOYEE(   EMPLOYEE_ID,        EMPLOYEE_PASS,  EMPLOYEE_NAME,
+                                        EMPLOYEE_DEPART_ID, EMPLOYEE_PHONE, EMPLOYEE_ADDRESS,
+                                        EMPLOYEE_BANK_NAME, EMPLOYEE_ENTERDATE
+                                        )
                         VALUES """ + insert
     else :
-        insert = "(" + "'" + username + "'" + ','  + "'" + password + "'" + ")"
+        insert = "(" + "'" + username + "'" + ','  + "'" + password + "', "
+        insert = insert + "'" + name        + "', " 
+        insert = insert + "'" + tel         + "', " 
+        insert = insert + "'" + addr        + "', " 
+        insert = insert + "'" + name_link   + "', " 
+        insert = insert + "'" + tel_link    + "', " 
+        insert = insert + "'" + email_link  + "', " 
+        insert = insert + "'" + relation    + "'" 
+        insert = insert + ")"
         sqlcommand =    """
                         INSERT INTO 
-                            CUSTOMER(CUSTOMER_ID, CUSTOMER_PASS)
+                            CUSTOMER(   CUSTOMER_ID,    CUSTOMER_PASS,      CUSTOMER_NAME,
+                                        CUSTOMER_PHONE, CUSTOMER_ADDRESS,
+                                        CUSTOMER_CONTACT_NAME,  CUSTOMER_CONTACT_PHONE,
+                                        CUSTOMER_CONTACT_EMAIL, CUSTOMER_CONTACT_RELATION
+                                )   
                         VALUES """ + insert
     print(sqlcommand)
     try :
