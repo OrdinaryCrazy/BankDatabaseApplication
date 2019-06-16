@@ -260,6 +260,10 @@ export default {
                         this.$refs[name].setActiveRow(row);
                     });
                 } else {
+                    if (this.permission != "SUB_BANK" && this.detail.id != localStorage.getItem("username")) {
+                        Message({ message: "您没有操作权限", type: "warning" });
+                        return;
+                    }
                     this.$refs[name].insert({ staffid: this.detail.id, staffname: this.detail.name }).then(({ row }) => {
                         this.$refs[name].setActiveRow(row);
                     });
