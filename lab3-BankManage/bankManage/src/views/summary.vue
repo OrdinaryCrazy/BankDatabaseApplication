@@ -187,7 +187,6 @@ export default {
                         this.userList = response.body.rawData;
                         this.makePieChart(response.body.columnList, response.body.rawData);
                         this.makeLineChart(response.body.columnList, response.body.rawData);
-
                         Message({ message: "查询成功", type: "success" });
                     }
                 });

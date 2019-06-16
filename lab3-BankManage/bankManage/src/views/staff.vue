@@ -98,7 +98,7 @@
         <br />
         <p style="color: red;font-size: 24px;" align="left">员工信息表</p>
         <div align="left">
-            <el-button type="success" size="small" @click="insertEvent('elxEditable1')">新增</el-button>
+            <el-button type="success" size="small" @click="insertEvent('elxEditable1')" v-if="permission == 'SUB_BANK'">新增</el-button>
             <el-button type="success" size="small" @click="exportCsvEvent('elxEditable1')">导出</el-button>
         </div>
         <br />
@@ -133,7 +133,7 @@
                     </template>
                     <template v-else>
                         <el-button size="small" type="primary" @click="openActiveRowEvent('elxEditable1', scope.row)">编辑</el-button>
-                        <el-button size="small" type="danger" @click="removeEvent('elxEditable1', scope.row)">删除</el-button>
+                        <el-button size="small" type="danger" @click="removeEvent('elxEditable1', scope.row)" v-if="permission == 'SUB_BANK'">删除</el-button>
                         <el-button size="small" type="success" @click="showDetail(scope.row)">详情</el-button>
                     </template>
                 </template>
@@ -268,6 +268,10 @@ export default {
                         this.$refs[name].setActiveRow(row);
                     });
                 } else {
+                    if (this.permission != "SUB_BANK" && this.detail.id != localStorage.getItem("username")) {
+                        Message({ message: "您没有操作权限", type: "warning" });
+                        return;
+                    }
                     this.$refs[name].insert({ staffid: this.detail.id, staffname: this.detail.name }).then(({ row }) => {
                         this.$refs[name].setActiveRow(row);
                     });
@@ -341,7 +345,7 @@ export default {
                         }
                         Message({ message: "查询成功", type: "success" });
                     } else {
-                        this.showlink=false;
+                        this.showlink = false;
                         Message({ message: "没有查到任何记录", type: "warning" });
                     }
                 });
@@ -385,6 +389,21 @@ export default {
             return this.isClearActiveFlag;
         },
         openActiveRowEvent(name, row) {
+            switch (name) {
+                case "elxEditable1":
+                    if (this.permission != "SUB_BANK" && row.id != localStorage.getItem("username")) {
+                        Message({ message: "您没有操作权限", type: "warning" });
+                        return;
+                    }
+                    break;
+                case "elxEditable2":
+                    if (this.permission != "SUB_BANK" && row.staffid != localStorage.getItem("username")) {
+                        Message({ message: "您没有操作权限", type: "warning" });
+                        return;
+                    }
+                    break;
+            }
+
             this.$nextTick(() => {
                 let activeInfo = this.$refs[name].getActiveRow();
                 // 如果当前行正在编辑中，禁止编辑其他行
@@ -431,6 +450,10 @@ export default {
             });
         },
         removeEvent(name, row) {
+            if (this.permission != "SUB_BANK" && row.staffid != localStorage.getItem("username")) {
+                Message({ message: "您没有操作权限", type: "warning" });
+                return;
+            }
             switch (name) {
                 case "elxEditable1":
                     this.$http
