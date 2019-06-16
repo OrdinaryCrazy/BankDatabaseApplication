@@ -63,7 +63,7 @@ def account():
             cursor.execute(sqlcommand)
             cursor.rowfactory = makeDictFactory(cursor)
             checkresult = cursor.fetchall()
-            for line in 
+            # for line in 
 
         if typeSearch == "any" or typeSearch == "saving" :
             sqlcommand = ""
