@@ -99,10 +99,12 @@ def loan():
 
         id_s        = request.form['id'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
         bank        = request.form['bank'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
-        customer    = request.form['customer'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
+        # customer    = request.form['customer'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
         amount      = request.form['amount'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
         status      = request.form['status'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
         old_primary = request.form['old_primary'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')  
+        customer    = request.form['customer'].rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
+        customer    = customer.split(',')
 
         sqlcommand = ""
         insert = "("
@@ -136,33 +138,33 @@ def loan():
             response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
             response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
             return response
+        for cus in customer :
+            sqlcommand = ""
+            insert = "("
+            insert = insert + "'" + cus     + "'" + ","
+            insert = insert + "'" + id_s    + "'"
+            insert = insert + ")"
+            sqlcommand =    sqlcommand +                                    \
+                            "   INSERT                                      \
+                                INTO LOAN_CUSTOMER (CUSTOMER_ID,LOAN_ID)    \
+                                VALUES                                      \
+                            " + insert
 
-        sqlcommand = ""
-        insert = "("
-        insert = insert + "'" + customer + "'" + ","
-        insert = insert + "'" + id_s     + "'"
-        insert = insert + ")"
-        sqlcommand =    sqlcommand +                                    \
-                        "   INSERT                                      \
-                            INTO LOAN_CUSTOMER (CUSTOMER_ID,LOAN_ID)    \
-                            VALUES                                      \
-                        " + insert
-
-        print(sqlcommand)
-        try :
-            cursor.execute(sqlcommand)
-        except :
-            cursor.close()
-            connection.close()
-            response = make_response(jsonify({    
-                                            'code':400,
-                                            'msg': 'fail'
-                                            })
-                                    )
-            response.headers['Access-Control-Allow-Origin'] = '*'
-            response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
-            response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
-            return response
+            print(sqlcommand)
+            try :
+                cursor.execute(sqlcommand)
+            except :
+                cursor.close()
+                connection.close()
+                response = make_response(jsonify({    
+                                                'code':400,
+                                                'msg': 'fail'
+                                                })
+                                        )
+                response.headers['Access-Control-Allow-Origin'] = '*'
+                response.headers['Access-Control-Allow-Methods'] = 'OPTIONS,HEAD,GET,POST'
+                response.headers['Access-Control-Allow-Headers'] = 'x-requested-with'
+                return response
 
         cursor.close()
         connection.commit()
