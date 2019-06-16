@@ -212,7 +212,7 @@ export default {
                         Message({ message: "查询成功", type: "success" });
                     } else {
                         Message({ message: "查询结果为空", type: "warning" });
-                        this.showlink = false;
+                        this.paylist=[];
                     }
                 });
         },
