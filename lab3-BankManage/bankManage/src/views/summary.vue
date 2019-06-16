@@ -201,6 +201,15 @@ export default {
                     }
                 }
             }
+            for (var i=0;i<rawData.length;i++){
+                for (var j=i+1;j<rawData.length;j++){
+                    if (rawData[i].time>rawData[j].time){
+                        var temp=rawData[i];
+                        rawData[i]=rawData[j];
+                        rawData[j]=temp;
+                    }
+                }
+            }
         },
         makePieChart: function(columnList, rawData) {
             //只有当用户选择按支行统计时，才会制作饼图，将同一支行在所有时间的值都加起来，显示在饼图上

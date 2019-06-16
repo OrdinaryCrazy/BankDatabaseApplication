@@ -186,7 +186,7 @@
             <elx-editable-column prop="open_date" label="开户日期"></elx-editable-column>
             <elx-editable-column prop="type" label="账户类型" :edit-render="{ name: 'ElSelect', options: typeList }"></elx-editable-column>
             <elx-editable-column prop="interest" label="利率" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
-            <elx-editable-column prop="cashtype" label="货币类型" ></elx-editable-column>
+            <elx-editable-column prop="cashtype" label="货币类型" :edit-render="{ name: 'ElSelect', options: cashList }"></elx-editable-column>
             <elx-editable-column prop="overdraft" label="透支额" :edit-render="{ name: 'ElInputNumber' }"></elx-editable-column>
             <elx-editable-column label="操作" width="350">
                 <template v-slot="scope">
