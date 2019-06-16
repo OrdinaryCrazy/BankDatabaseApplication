@@ -185,11 +185,22 @@ export default {
                             this.columnConfigs.push(item);
                         });
                         this.userList = response.body.rawData;
+                        this.cleanData(response.body.columnList, response.body.rawData);
                         this.makePieChart(response.body.columnList, response.body.rawData);
                         this.makeLineChart(response.body.columnList, response.body.rawData);
                         Message({ message: "查询成功", type: "success" });
                     }
                 });
+        },
+        cleanData: function(columnList, rawData){
+            //console.log();
+            for (var i = 0; i < rawData.length; i++) {
+                for (var j = 0; j < columnList.length; j++) {
+                    if (rawData[i][columnList[j]]==null){
+                        rawData[i][columnList[j]]=0;
+                    }
+                }
+            }
         },
         makePieChart: function(columnList, rawData) {
             //只有当用户选择按支行统计时，才会制作饼图，将同一支行在所有时间的值都加起来，显示在饼图上
