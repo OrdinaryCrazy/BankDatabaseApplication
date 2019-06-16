@@ -11,7 +11,7 @@
                 v-model="idSearch"
                 class="input"
                 required="false"
-                style=" width:300px;
+                style=" width:250px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;户主
@@ -22,7 +22,7 @@
                 v-model="ownerSearch"
                 class="input"
                 required="false"
-                style=" width:300px;
+                style=" width:250px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;开户银行
@@ -33,7 +33,7 @@
                 v-model="bankSearch"
                 required="false"
                 class="input"
-                style=" width:300px;
+                style=" width:250px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;账户类型
@@ -129,7 +129,7 @@
                 class="input"
                 id="newownerid"
                 v-model="newownerid"
-                style=" width:200px;
+                style=" width:220px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;账户号
@@ -139,7 +139,7 @@
                 id="newbankid"
                 class="input"
                 v-model="newbankid"
-                style=" width:200px;
+                style=" width:220px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;开户支行
@@ -149,10 +149,10 @@
                 id="newbankname"
                 v-model="newbankname"
                 class="input"
-                style=" width:200px;
+                style=" width:220px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
-            />&emsp;账户类型
+            />&emsp; <br/><br/>账户类型
             <select class="dropbtn" v-model="newtype">
                 <option value="0">储蓄账户</option>
                 <option value="1">支票账户</option> </select

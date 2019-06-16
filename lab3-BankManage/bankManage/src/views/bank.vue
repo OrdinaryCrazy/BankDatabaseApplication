@@ -11,7 +11,7 @@
                 id="bankSearch"
                 v-model="bankSearch"
                 required="false"
-                style=" width:300px;
+                style=" width:250px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;所在城市
@@ -22,7 +22,7 @@
                 id="citySearch"
                 v-model="citySearch"
                 required="false"
-                style=" width:300px;
+                style=" width:250px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;资产总额

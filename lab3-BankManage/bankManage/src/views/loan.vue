@@ -11,7 +11,7 @@
                 v-model="idSearch"
                 required="false"
                 class="input"
-                style=" width:300px;
+                style=" width:220px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;放款支行
@@ -22,7 +22,7 @@
                 v-model="bankSearch"
                 class="input"
                 required="false"
-                style=" width:300px;
+                style=" width:220px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;贷款人
@@ -33,7 +33,7 @@
                 v-model="custSearch"
                 class="input"
                 required="false"
-                style=" width:300px;
+                style=" width:220px;
               font-family: 'Fira Code', '汉仪南宫体简';
             "
             />&emsp;状态

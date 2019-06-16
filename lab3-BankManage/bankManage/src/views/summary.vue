@@ -12,7 +12,7 @@
                 id="lowerBound"
                 v-model="lowerBound"
                 required="true"
-                style=" width:200px;
+                style=" width:180px;
                 font-family: 'Fira Code', '汉仪南宫体简';
                 "
             />~~
@@ -24,7 +24,7 @@
                 id="upperBound"
                 v-model="upperBound"
                 required="true"
-                style=" width:200px;
+                style=" width:180px;
                 font-family: 'Fira Code', '汉仪南宫体简';
                 "
             />&emsp;时间粒度
@@ -34,12 +34,12 @@
                 <option value="year">年</option> </select
             >&emsp;业务分类
             <select class="dropbtn" v-model="sumtype" id="sumtype" placeholder="all">
-                <option value="all" selected>所有</option>
-                <option value="saving">储蓄业务</option>
+                <!-- <option value="all" selected>所有</option> -->
+                <option value="saving" selected>储蓄业务</option>
                 <option value="loan">贷款业务</option> </select
             >&emsp;统计项目
             <select class="dropbtn" v-model="datatype" id="datatype" placeholder="all">
-                <option value="money">业务总金额</option>
+                <option value="money" selected>业务总金额</option>
                 <option value="user">用户数</option> </select
             >&emsp;
             <el-button type="primary" v-on:click="start()">
@@ -146,7 +146,7 @@ export default {
             this.$router.push("/404");
         }
         this.timegrain = "month";
-        this.sumtype = "all";
+        this.sumtype = "saving";
         this.datatype = "money";
         this.graphtype = "curve";
     },
@@ -261,7 +261,7 @@ export default {
     font-size: 14px;
     border: none;
     cursor: pointer;
-    width: 120px;
+    width: 150px;
     height: 35px;
     font-family: "Fira Code", "汉仪南宫体简";
 }
