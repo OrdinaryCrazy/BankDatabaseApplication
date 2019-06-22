@@ -179,7 +179,7 @@ def account():
         cashtype    = request.form['cashtype']
         bank        = request.form['bank']
         ownerid     = request.form['ownerid']
-        overdraft   = request.form['overdraft']
+        # overdraft   = request.form['overdraft']
 
         id_s        = id_s.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         money       = money.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
@@ -191,7 +191,7 @@ def account():
         cashtype    = cashtype.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         bank        = bank.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
         ownerid     = ownerid.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
-        overdraft   = overdraft.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
+        # overdraft   = overdraft.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
 
         sqlcommand = ""
         if len(old_primary) > 0 : # 改 #
