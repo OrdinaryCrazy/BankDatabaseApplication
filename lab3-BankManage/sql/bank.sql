@@ -59,7 +59,7 @@ CREATE TABLE CHECK_ACCOUNT (
     CHECK_ACCOUNT_PASS          CHAR(6) DEFAULT '123456'
 );
 /*==============================================================*/
-/* 存储账户表 *//*@@@@@@@@@@@@@@@@*/
+/* 存储账户表 */
 CREATE TABLE DEPOSIT_ACCOUNT (
     DEPOSIT_ACCOUNT_ID              NUMBER(16) CONSTRAINT DEPOSIT_ACCOUNT_PK PRIMARY KEY,
     DEPOSIT_ACCOUNT_MONEY           FLOAT,
@@ -87,7 +87,7 @@ CREATE TABLE PAY (
     CONSTRAINT FK_LOAN_ID   FOREIGN KEY(LOAN_ID)    REFERENCES LOAN(LOAN_ID)
 );
 /*==============================================================*/
-CREATE TABLE CUSTOMER_DEPOSIT_ACCOUNT (/*@@@@@@@@@@@@@@@@*/
+CREATE TABLE CUSTOMER_DEPOSIT_ACCOUNT (
     BANK_NAME           CHAR(50),        /* CONSTRAINT CD_BANK_NAME_PK  PRIMARY KEY, */
     CUSTOMER_ID         NUMBER(16),     /* CONSTRAINT CD_CUSTOMER_ID   PRIMARY KEY, */
     DEPOSIT_ACCOUNT_ID  NUMBER(16),

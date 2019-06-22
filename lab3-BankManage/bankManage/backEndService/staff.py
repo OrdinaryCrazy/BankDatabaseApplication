@@ -451,9 +451,9 @@ def staffCustomer():
         connection = cx_Oracle.connect('System/db2019@localhost/ORCL')
         cursor = connection.cursor()
 
-        custID = request.form['custID']
+        custID = request.form['custid']
         custID = custID.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
-        staffID = request.form['staffID']
+        staffID = request.form['staffid']
         staffID = staffID.rstrip().replace('\'','').replace('\"','').replace('%','').replace('#','').replace(',','').replace(')','').replace('(','').replace('}','').replace('[','').replace(']','').replace('{','')
 
         

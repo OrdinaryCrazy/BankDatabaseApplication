@@ -438,8 +438,8 @@ export default {
                             "http://" + document.domain + ":5000/staffCustomer",
                             {
                                 type: "Delete",
-                                custID: row.id,
-                                staffID: row.staffid
+                                custid: row.id,
+                                staffid: row.staffid
                             },
                             {
                                 emulateJSON: true
